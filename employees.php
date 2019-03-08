@@ -12,7 +12,6 @@
 
 include("base.php");
 
-//echo $baseurl;
 
 ?>
 
@@ -24,21 +23,13 @@ include("base.php");
         ?>
 
         <div id="main-content" class="col-md-10">
-            <h1>Dashboard</h1>
+            <h1>Employees</h1>
 
-
-            <?php
-                include("fragments/cashflow_fragment.php");
-            ?>
-            <div class="m-3 p-3"></div>
-            <?php
-                include("fragments/total_balance_history_fragment.php");
-            ?>
-            <div class="m-3 p-3"></div>
-            <p>
-                maybe make a total balance history chart across all accounts
-                of this enterprise
-            </p>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    peter birne
+                </li>
+            </ul>
         </div>
     </div>
 </div>
