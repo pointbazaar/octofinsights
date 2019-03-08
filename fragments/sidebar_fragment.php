@@ -12,7 +12,7 @@
             new MenuItem("Reports(TODO)","."),
             new MenuItem("Sales and Leads(TODO)","."),
             new MenuItem("Employees(TODO)",$baseurl . "/employees.php"),
-            new MenuItem("Inventory(TODO)",".")
+            new MenuItem("Inventory(TODO)",$baseurl . "/inventory.php")
         );
 
         class MenuItem{
