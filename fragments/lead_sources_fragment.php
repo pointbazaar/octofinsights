@@ -7,6 +7,11 @@
     <canvas id="lead_sources_canvas"></canvas>
     <script>
 
+        var colors=[
+            "rgb(255,100,0)",
+            "rgb(255,150,50)",
+            "rgb(255,200,100)",
+        ];
 
         var ctx=document.getElementById("lead_sources_canvas").getContext("2d");
         var myChart = new Chart(ctx,
@@ -18,7 +23,7 @@
                         {
                             label:"leads by source",
                             data:[1,3,4],
-                            backgroundColor:["blue","red","green"]
+                            backgroundColor:colors
                         }
                     ]
                 },

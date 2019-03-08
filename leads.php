@@ -27,7 +27,7 @@ include("base.php");
             ?>
 
             <p>
-                TODO: put a half circle with lead sources<br>
+
                 TODO: put the different stages that leads are in<br>
             </p>
         </div>
