@@ -7,7 +7,7 @@ class InventoryItem{
 
     public $id;
 
-    function __construct($name,$price,$role)
+    function __construct($name,$price)
     {
         $this->name=$name;
         $this->price=$price;

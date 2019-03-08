@@ -34,6 +34,7 @@ include("base.php");
             <?php
                 include("model/inventoryitem.php");
                 $inventory_items=array(
+                        new InventoryItem("Kitchen Sink",30)
                 );
             ?>
 

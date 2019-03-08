@@ -38,14 +38,6 @@
                 echo "</a>";
             }
         ?>
-
-        <!--
-        <a href=".">
-            <li class="list-group-item">
-                Reports
-            </li>
-        </a>
-        -->
     </ul>
 
 </div>
