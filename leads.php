@@ -22,6 +22,10 @@ include("base.php");
         <div id="main-content" class="col-md-10">
             <h1>Leads</h1>
 
+            <?php
+                include("fragments/lead_sources_fragment.php");
+            ?>
+
             <p>
                 TODO: put a half circle with lead sources<br>
                 TODO: put the different stages that leads are in<br>
