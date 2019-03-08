@@ -62,7 +62,8 @@
                         {
                             label:"balance",
                             data:balance_history,
-                            backgroundColor:balance_history.map(x=>(x>=0)?"blue":"red"),
+                            backgroundColor:"black",
+                            borderColor:"black",
                             fill:false
                         }
                     ]
