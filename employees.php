@@ -23,7 +23,13 @@ include("base.php");
         ?>
 
         <div id="main-content" class="col-md-10">
-            <h1>Employees</h1>
+            <div class="row m-3">
+                <h1>Employees</h1>
+                <div class="m-3"></div>
+                <button class="btn btn-outline-primary ">
+                    Insert new Employee (TODO)
+                </button>
+            </div>
 
             <?php
                 include("model/employee.php");
