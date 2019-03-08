@@ -3,10 +3,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js">
     </script>
 
-    <h2 class="text-center">Cash Flow History</h2>
-    <canvas id="myChart"></canvas>
+    <h2 class="text-center">Total Balance History</h2>
+    <canvas id="chart_balance_history"></canvas>
     <script>
-        var monthly_totals = [
+        var balance_changes = [
             {
                 month:"February 2019",
                 total:-10
@@ -41,25 +41,37 @@
             }
         ];
 
-        var ctx=document.getElementById("myChart").getContext("2d");
+        var balance_history = [];
+
+        for(var i=1;i<=balance_changes.length;i++){
+            var element=balance_changes.map(x=>x.total).slice(0,i).reduce((a,b)=>a+b);
+
+
+            balance_history.push(element);
+        }
+
+        console.log(balance_history);
+
+        var ctx=document.getElementById("chart_balance_history").getContext("2d");
         var myChart = new Chart(ctx,
             {
-                type:'bar',
+                type:'line',
                 data:{
-                    labels:monthly_totals.map(x=>x.month),
+                    labels:balance_changes.map(x=>x.month).map(str=>"End "+str),
                     datasets:[
                         {
-                            label:"cashflow",
-                            data:monthly_totals.map(x=>x.total),
-                            backgroundColor:monthly_totals.map(x=>(x.total>=0)?"blue":"red")
+                            label:"balance",
+                            data:balance_history,
+                            backgroundColor:balance_history.map(x=>(x>=0)?"blue":"red"),
+                            fill:false
                         }
                     ]
                 },
                 options:{
                     scales:{
-                        yAxes:[{
-                            ticks: {
-                                beginAtZero:true
+                        xAxes:[{
+                            ticks:{
+                                autoSkip:false
                             }
                         }]
                     }
