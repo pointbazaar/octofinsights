@@ -11,7 +11,7 @@
                 new MenuItem("Dashboard",$baseurl . "/index.php"),
             new MenuItem("Reports(TODO)","."),
             new MenuItem("Sales(TODO)","."),
-            new MenuItem("Leads(TODO)","."),
+            new MenuItem("Leads",$baseurl . "/leads.php"),
             new MenuItem("Employees",$baseurl . "/employees.php"),
             new MenuItem("Inventory",$baseurl . "/inventory.php")
         );
