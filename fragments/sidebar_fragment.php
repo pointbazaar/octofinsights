@@ -11,8 +11,8 @@
                 new MenuItem("Dashboard",$baseurl . "/index.php"),
             new MenuItem("Reports(TODO)","."),
             new MenuItem("Sales and Leads(TODO)","."),
-            new MenuItem("Employees(TODO)",$baseurl . "/employees.php"),
-            new MenuItem("Inventory(TODO)",$baseurl . "/inventory.php")
+            new MenuItem("Employees",$baseurl . "/employees.php"),
+            new MenuItem("Inventory",$baseurl . "/inventory.php")
         );
 
         class MenuItem{
