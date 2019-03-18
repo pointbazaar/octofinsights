@@ -10,7 +10,7 @@
         $links = array(
                 new MenuItem("Dashboard",$baseurl . "/index.php"),
             new MenuItem("Reports(TODO)","."),
-            new MenuItem("Sales(TODO)","."),
+            new MenuItem("Sales",$baseurl . "/controllers/sales" . "/get_sales.php"),
             new MenuItem("Leads",$baseurl . "/leads.php"),
             new MenuItem("Employees",$baseurl . "/employees.php"),
             new MenuItem("Inventory",$baseurl . "/inventory.php")
