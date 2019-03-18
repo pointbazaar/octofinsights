@@ -36,5 +36,11 @@ include("../base.php");
     echo("</form>");
 ?>
 
+<p>
+    Credentials for testing:<br>
+    test<br>
+    test<br>
+</p>
+
 </body>
 </html>
