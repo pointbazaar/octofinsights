@@ -9,11 +9,8 @@
 <body>
 
 <?php
-
 include("base.php");
-
-//echo $baseurl;
-
+include("authentication/is_authenticated_otherwise_redirect.php");
 ?>
 
 <div id="container" class="container-fluid">

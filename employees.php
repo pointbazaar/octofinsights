@@ -11,7 +11,7 @@
 <?php
 
 include("base.php");
-
+include("authentication/is_authenticated_otherwise_redirect.php");
 
 ?>
 

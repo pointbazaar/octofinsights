@@ -10,6 +10,7 @@
 
 <?php
 include("base.php");
+include("authentication/is_authenticated_otherwise_redirect.php");
 ?>
 
 <div id="container" class="container-fluid">
