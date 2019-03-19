@@ -70,6 +70,7 @@ include_once("../../authentication/is_authenticated_otherwise_redirect.php");
                         <th scope="col">Customer Name</th>
                         <th scope="col">Date</th>
                         <th scope="col">Amount Received</th>
+                        <th scope="col">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -93,6 +94,14 @@ include_once("../../authentication/is_authenticated_otherwise_redirect.php");
                                     echo_td($sale[1]);
                                     echo_td($sale[2]);
                                     echo_td($sale[3] . " $");
+                                    $delete_button = "<button type='submit' class='btn btn-outline-warning'>" . "delete" . "</button>";
+
+                                echo("<td>");
+                                    echo("<form action='" . $baseurl . "/controllers/sales" . "/post_delete_sale.php" . "' method='post'>");
+                                        echo("<input type='number' name='id' hidden value='" . $sale[0] . "'>");
+                                    echo($delete_button);
+                                    echo("</form>");
+                                echo("</td>");
                                 echo("</tr>");
                             }
 
