@@ -87,17 +87,19 @@ include("../../authentication/is_authenticated_otherwise_redirect.php");
                         </tr>
 
                         <?php
-                            echo("trying to output db values");
+
                             try{
-                                include($absolute_file_url . "/database/make_database_connection.php");
+
+                                include_once($absolute_file_url . "/database/make_database_connection.php");
+
 
                                 $conn = getConnection();
 
                                 $statement = $conn->prepare("SELECT * FROM inventory;");
-                                echo("step 0");
+
                                 $statement->execute();
 
-                                echo("step 1");
+
 
                                 $results = $statement->setFetchMode(PDO::FETCH_ASSOC);
 
@@ -107,7 +109,7 @@ include("../../authentication/is_authenticated_otherwise_redirect.php");
                                     echo("</tr>");
                                 }
 
-                                $conn->close();
+                                $conn=null;
                             }catch (Exception $exception){
                                 echo($exception->getMessage());
                                 echo($exception->getTraceAsString());

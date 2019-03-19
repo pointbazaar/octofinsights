@@ -21,7 +21,7 @@ function getConnection(){
 
         $conn->exec("CREATE TABLE IF NOT EXISTS inventory " . $inventory_table_description . ";");
 
-        echo("Connected successfully to database");
+        //echo("Connected successfully to database");
 
         //$conn=null;
     }catch (Exception $e){
