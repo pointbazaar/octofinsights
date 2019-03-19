@@ -11,7 +11,7 @@
 <?php
 
 include_once("../../base.php");
-include_once("../../authentication/is_authenticated_otherwise_redirect.php");
+include_once($absolute_file_url . "/authentication/is_authenticated_otherwise_redirect.php");
 
 ?>
 
@@ -65,26 +65,6 @@ include_once("../../authentication/is_authenticated_otherwise_redirect.php");
                     </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        for($i=0; $i<sizeof($inventory_items); $i++){
-                            echo "<tr class=''>";
-                                echo("<td>" . $i . "</td>");
-                                echo "<td>";
-                                    echo($inventory_items[$i]->name);
-                                echo "</td>";
-                                echo("<td>"  . $inventory_items[$i]->price . "</td>");
-                                echo("<td>" . $inventory_items[$i]->amount . "</td>");
-                                echo("<td>");
-                                    echo "<button class='btn btn-outline-danger'>";
-                                        echo "It got lost";
-                                    echo "</button>";
-                                echo("</td>");
-                            echo "</tr>";
-                        }
-                        ?>
-                        <tr>
-
-                        </tr>
 
                         <?php
 
@@ -113,15 +93,16 @@ include_once("../../authentication/is_authenticated_otherwise_redirect.php");
                                         echo_td($item[1]);
                                         echo_td($item[2]);
                                         echo_td($item[3]);
-                                    echo("</tr>");
-                                }
 
-                                $results = $statement->setFetchMode(PDO::FETCH_ASSOC);
+                                        $delete_button = "<button type='submit' class='btn btn-outline-warning'>" . "delete" . "</input>";
 
-                                foreach (new RecursiveArrayIterator($statement->fetchAll()) as $key=>$value){
-                                    echo("<tr>");
-                                        echo_td($value[0]);
-                                        //echo($value);
+                                        echo("<td>");
+                                            echo("<form action='" . $baseurl . "/controllers/inventory" . "/post_delete_inventory.php" . "' method='post'>");
+                                                //id for the item to delete
+                                                echo("<input type='number' name='id' hidden value='" . $item[0] . "'>");
+                                                echo($delete_button);
+                                            echo("</form>");
+                                        echo("</td>");
                                     echo("</tr>");
                                 }
 
@@ -129,7 +110,6 @@ include_once("../../authentication/is_authenticated_otherwise_redirect.php");
                                 $conn=null;
                             }catch (Exception $exception){
                                 echo($exception->getMessage());
-                                echo($exception->getTraceAsString());
                             }
                         ?>
                     </tbody>
