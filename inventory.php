@@ -25,39 +25,68 @@ include("authentication/is_authenticated_otherwise_redirect.php");
         <div id="main-content" class="col-md-10">
             <div class="row m-3">
                 <h1>Inventory</h1>
-                <div class="m-3"></div>
-                <button class="btn btn-outline-primary ">
-                    Insert new Inventory Item (TODO)
-                </button>
             </div>
 
             <?php
                 include("model/inventoryitem.php");
                 $inventory_items=array(
-                        new InventoryItem("Kitchen Sink",30)
+                        new InventoryItem("Kitchen Sink",30,2),
+                        new InventoryItem("Printer",100,1)
                 );
             ?>
 
-            <ul class="list-group">
-                <?php
-                    for($i=0; $i<sizeof($inventory_items); $i++){
-                        echo "<li class='list-group-item'>";
-                            echo "<span>";
-                                echo($inventory_items[$i]->toString());
-                            echo "</span>";
-                            echo "<button class='btn btn-outline-danger float-right'>";
-                                echo "It got lost";
-                            echo "</button>";
-                        echo "</li>";
-                    }
-                ?>
-                <li class="list-group-item">
-                    <span>Good Knife [Price: 30 Euro]</span>
-                    <button class="btn btn-outline-danger float-right">
-                        It got Lost
-                    </button>
-                </li>
-            </ul>
+            <p>
+                TODO: have a form here to insert an inventory item
+            </p>
+            <form class="col">
+                <div class="form-group">
+                    <span>Item Name</span><input type="text" name="item-name" placeholder="item-name">
+
+                    <span>Amount</span>
+                    <input type="number" name="amount" placeholder="1">
+
+                    <span>Price</span>
+                    <input type="number" name="price" placeholder="1">
+                </div>
+                <button type="submit" class="btn btn-primary">Insert Item</button>
+            </form>
+
+
+            <div id="salestable">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Amount</th>
+
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        for($i=0; $i<sizeof($inventory_items); $i++){
+                            echo "<tr class=''>";
+                                echo("<td>" . $i . "</td>");
+                                echo "<td>";
+                                    echo($inventory_items[$i]->name);
+                                echo "</td>";
+                                echo("<td>"  . $inventory_items[$i]->price . "</td>");
+                                echo("<td>" . $inventory_items[$i]->amount . "</td>");
+                                echo("<td>");
+                                    echo "<button class='btn btn-outline-danger'>";
+                                        echo "It got lost";
+                                    echo "</button>";
+                                echo("</td>");
+                            echo "</tr>";
+                        }
+                        ?>
+                        <tr>
+
+                        </tr>
+                    </tbody>
+                </table>
         </div>
     </div>
 </div>
