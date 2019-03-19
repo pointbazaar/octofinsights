@@ -15,13 +15,17 @@ function getConnection(){
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $conn->exec("USE octofinsights;");
-        //$conn->commit();
 
         $inventory_table_description = "( id INT AUTO_INCREMENT PRIMARY KEY, item_name VARCHAR(128) NOT NULL, item_price INT NOT NULL, amount INT NOT NULL)";
 
         $conn->exec("CREATE TABLE IF NOT EXISTS inventory " . $inventory_table_description . ";");
 
-        //echo("Connected successfully to database");
+
+
+        $sales_table_description="(id INT AUTO_INCREMENT PRIMARY KEY, customer_name VARCHAR(128), time_of_sale TIMESTAMP, price_of_sale INT)";
+        $conn->exec("CREATE TABLE IF NOT EXISTS sales " . $sales_table_description . ";");
+
+
 
         //$conn=null;
     }catch (Exception $e){

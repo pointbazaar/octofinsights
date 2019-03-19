@@ -19,7 +19,7 @@ if(isset($_POST["item_name"]) && isset($_POST["item_price"])  && isset($_POST["a
     $item_price = $_POST["item_price"];
     $amount = $_POST["amount"];
 
-    //TODO: insert item into inventory
+    //insert item into inventory
 
     include($absolute_file_url . "/database/make_database_connection.php");
 

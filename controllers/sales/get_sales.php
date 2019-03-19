@@ -41,15 +41,17 @@ include_once("../../authentication/is_authenticated_otherwise_redirect.php");
                         <p>
                             TODO: have a form here to insert a sale
                         </p>
-                        <form class="col">
+                        <?php
+                            echo("<form class='col' method='post' action='" . $baseurl . "/controllers/sales/post_sales.php'>");
+                        ?>
                             <div class="form-group">
-                                <input type="text" name="customer name" placeholder="customer name">
+                                <input type="text" name="customer_name" placeholder="customer_name">
                             </div>
                             <div class="form-group">
-                                <input type="date" name="date" placeholder="date">
+                                <input type="date" name="time_of_sale" placeholder="time_of_sale">
                             </div>
                             <div class="form-group">
-                                <input type="number" name="amount" placeholder="amount">
+                                <input type="number" name="price_of_sale" placeholder="price_of_sale">
                             </div>
                             <button type="submit" value="insert sale" class="btn btn-primary">insert sale</button>
                         </form>
