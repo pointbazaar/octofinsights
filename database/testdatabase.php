@@ -2,15 +2,15 @@
 
 
 
-echo("database status: <br>");
+echo("database status:");
 
 include_once("make_database_connection.php");
 
 $my_connection = getConnection();
 if($my_connection==null){
-    echo("ERROR");
+    echo("<span class='float-right'>ERROR</span>");
 }else{
-    echo("connected");
+    echo("<span class='float-right'>connected</span>");
 }
 
 $my_connection=null;
