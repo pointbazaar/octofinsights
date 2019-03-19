@@ -10,8 +10,8 @@
 
 <?php
 
-include("../../base.php");
-include("../../authentication/is_authenticated_otherwise_redirect.php");
+include_once("../../base.php");
+include_once("../../authentication/is_authenticated_otherwise_redirect.php");
 
 ?>
 
@@ -19,7 +19,7 @@ include("../../authentication/is_authenticated_otherwise_redirect.php");
     <div class="row">
 
         <?php
-            include("../../fragments/sidebar_fragment.php");
+            include_once("../../fragments/sidebar_fragment.php");
         ?>
 
         <div id="main-content" class="col-md-10">
@@ -28,7 +28,7 @@ include("../../authentication/is_authenticated_otherwise_redirect.php");
             </div>
 
             <?php
-                include($absolute_file_url . "/model/inventoryitem.php");
+                include_once($absolute_file_url . "/model/inventoryitem.php");
                 $inventory_items=array(
                         new InventoryItem("Kitchen Sink",30,2),
                         new InventoryItem("Printer",100,1)

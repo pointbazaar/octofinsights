@@ -1,7 +1,7 @@
 <?php
 
-include("../../base.php");
-include("../../authentication/is_authenticated_otherwise_redirect.php");
+include_once("../../base.php");
+include_once($absolute_file_url . "/authentication/is_authenticated_otherwise_redirect.php");
 
 if(!$_SERVER["REQUEST_METHOD"] === "POST"){
     http_response_code(405);
@@ -33,8 +33,6 @@ if(isset($_POST["item_name"]) && isset($_POST["item_price"])  && isset($_POST["a
         $statement->bindParam(":amount", $amount);
         $statement->execute();
 
-        //$conn->commit();
-
         echo("inserted item");
 
     }catch (Exception $exception){
@@ -42,4 +40,4 @@ if(isset($_POST["item_name"]) && isset($_POST["item_price"])  && isset($_POST["a
     }
 }
 
-//header("Location: " . $baseurl . "/controllers/inventory/get_inventory.php");
+header("Location: " . $baseurl . "/controllers/inventory/get_inventory.php");

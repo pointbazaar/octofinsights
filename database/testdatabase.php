@@ -4,7 +4,7 @@
 
 echo("database status: <br>");
 
-include("make_database_connection.php");
+include_once("make_database_connection.php");
 
 $my_connection = getConnection();
 if($my_connection==null){

@@ -10,7 +10,7 @@ $_SESSION=array();
 ?>
 
 <?php
-include("../base.php");
+include_once("../base.php");
 ?>
 
 <html>

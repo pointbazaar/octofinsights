@@ -1,6 +1,6 @@
 <?php
 
-include("../base.php");
+include_once("../base.php");
 
 session_start();
 

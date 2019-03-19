@@ -9,15 +9,15 @@
 <body>
 
 <?php
-include("../../base.php");
-include("../../authentication/is_authenticated_otherwise_redirect.php");
+include_once("../../base.php");
+include_once("../../authentication/is_authenticated_otherwise_redirect.php");
 ?>
 
 <div id="container" class="container-fluid">
     <div class="row">
 
         <?php
-        include("../../fragments/sidebar_fragment.php");
+        include_once("../../fragments/sidebar_fragment.php");
         ?>
 
         <div id="main-content" class="col-md-10">

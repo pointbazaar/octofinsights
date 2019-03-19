@@ -33,7 +33,7 @@
 
         $absolute_file_url = $_SERVER["DOCUMENT_ROOT"] . "/octofinsights";
 
-        include($absolute_file_url . "/database/testdatabase.php");
+        include_once($absolute_file_url . "/database/testdatabase.php");
 
         echo("<br>");
 
