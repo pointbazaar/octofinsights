@@ -20,7 +20,7 @@ if(isset($_POST["item_name"]) && isset($_POST["item_price"])  && isset($_POST["a
     $amount = $_POST["amount"];
 
     //TODO: insert item into inventory
-    $absolute_file_url = $_SERVER["DOCUMENT_ROOT"] . "/octofinsights";
+
     include($absolute_file_url . "/database/make_database_connection.php");
 
     try {
@@ -30,6 +30,10 @@ if(isset($_POST["item_name"]) && isset($_POST["item_price"])  && isset($_POST["a
         $statement = $conn->prepare("INSERT INTO inventory (item_name,item_price,amount) VALUES (?,?,?);");
         $statement->bindParam("sii", $item_name, $item_price, $amount);
         $statement->execute();
+
+        $conn->commit();
+
+        echo("inserted item");
 
     }catch (Exception $exception){
         echo($exception->getMessage());

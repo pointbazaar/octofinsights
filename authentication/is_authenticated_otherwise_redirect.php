@@ -1,6 +1,6 @@
 <?php
-
-include("../base.php");
+$absolute_file_url = $_SERVER["DOCUMENT_ROOT"] . $baseurl;
+include($absolute_file_url . "/base.php");
 
 session_start();
 

@@ -28,7 +28,7 @@ include("../../authentication/is_authenticated_otherwise_redirect.php");
             </div>
 
             <?php
-                include("../../model/inventoryitem.php");
+                include($absolute_file_url . "/model/inventoryitem.php");
                 $inventory_items=array(
                         new InventoryItem("Kitchen Sink",30,2),
                         new InventoryItem("Printer",100,1)
@@ -85,6 +85,34 @@ include("../../authentication/is_authenticated_otherwise_redirect.php");
                         <tr>
 
                         </tr>
+
+                        <?php
+                            echo("trying to output db values");
+                            try{
+                                include($absolute_file_url . "/database/make_database_connection.php");
+
+                                $conn = getConnection();
+
+                                $statement = $conn->prepare("SELECT * FROM inventory;");
+                                echo("step 0");
+                                $statement->execute();
+
+                                echo("step 1");
+
+                                $results = $statement->setFetchMode(PDO::FETCH_ASSOC);
+
+                                foreach (new RecursiveArrayIterator($statement->fetchAll()) as $key=>$value){
+                                    echo("<tr>");
+                                        echo($value);
+                                    echo("</tr>");
+                                }
+
+                                $conn->close();
+                            }catch (Exception $exception){
+                                echo($exception->getMessage());
+                                echo($exception->getTraceAsString());
+                            }
+                        ?>
                     </tbody>
                 </table>
         </div>
