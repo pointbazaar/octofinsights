@@ -38,9 +38,6 @@ include_once("../../authentication/is_authenticated_otherwise_redirect.php");
                 </tr>
                 <tr>
                     <td>
-                        <p>
-                            TODO: have a form here to insert a sale
-                        </p>
                         <?php
                             echo("<form class='col' method='post' action='" . $baseurl . "/controllers/sales/post_sales.php'>");
                         ?>
