@@ -53,6 +53,9 @@ include_once("../../authentication/is_authenticated_otherwise_redirect.php");
                             <div class="form-group">
                                 <input type="number" name="price_of_sale" placeholder="price_of_sale">
                             </div>
+                            <div class="form-group">
+                                <input type="text" name="product_or_service" placeholder="product_or_service">
+                            </div>
                             <button type="submit" value="insert sale" class="btn btn-primary">insert sale</button>
                         </form>
 
@@ -70,6 +73,7 @@ include_once("../../authentication/is_authenticated_otherwise_redirect.php");
                         <th scope="col">Customer Name</th>
                         <th scope="col">Date</th>
                         <th scope="col">Amount Received</th>
+                        <th scope="col">Product or Service</th>
                         <th scope="col">Actions</th>
                     </tr>
                     </thead>
@@ -94,6 +98,7 @@ include_once("../../authentication/is_authenticated_otherwise_redirect.php");
                                     echo_td($sale[1]);
                                     echo_td($sale[2]);
                                     echo_td($sale[3] . " $");
+                                    echo_td($sale[4]);
                                     $delete_button = "<button type='submit' class='btn btn-outline-warning'>" . "delete" . "</button>";
 
                                 echo("<td>");

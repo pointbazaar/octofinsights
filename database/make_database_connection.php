@@ -22,7 +22,7 @@ function getConnection(){
 
 
 
-        $sales_table_description="(id INT AUTO_INCREMENT PRIMARY KEY, customer_name VARCHAR(128), time_of_sale TIMESTAMP, price_of_sale INT)";
+        $sales_table_description="(id INT AUTO_INCREMENT PRIMARY KEY, customer_name VARCHAR(128), time_of_sale TIMESTAMP, price_of_sale INT, product_or_service VARCHAR(128))";
         $conn->exec("CREATE TABLE IF NOT EXISTS sales " . $sales_table_description . ";");
 
 
