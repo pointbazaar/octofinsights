@@ -31,6 +31,10 @@ include("authentication/is_authenticated_otherwise_redirect.php");
                 <?php
                     include("fragments/total_balance_history_fragment.php");
                 ?>
+
+                <?php
+                    include("fragments/lead_sources_fragment.php");
+                ?>
             </div>
             <div class="m-3 p-3"></div>
             <p>
