@@ -75,6 +75,9 @@
                                 autoSkip:false
                             }
                         }]
+                    },
+                    animation:{
+                        duration:0
                     }
                 }
             }

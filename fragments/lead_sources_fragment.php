@@ -30,7 +30,10 @@
                 options:{
                     responsive:true,
                     rotation:-Math.PI,
-                    circumference:Math.PI
+                    circumference:Math.PI,
+                    animation:{
+                        duration:0
+                    }
                 }
             }
         );

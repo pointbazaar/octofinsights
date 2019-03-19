@@ -62,6 +62,9 @@
                                 beginAtZero:true
                             }
                         }]
+                    },
+                    animation:{
+                        duration:0
                     }
                 }
             }

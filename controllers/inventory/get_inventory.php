@@ -3,15 +3,15 @@
 <html>
 <head>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="style.css" rel="stylesheet">
+    <link href="../../style.css" rel="stylesheet">
 </head>
 
 <body>
 
 <?php
 
-include("base.php");
-include("authentication/is_authenticated_otherwise_redirect.php");
+include("../../base.php");
+include("../../authentication/is_authenticated_otherwise_redirect.php");
 
 ?>
 
@@ -19,7 +19,7 @@ include("authentication/is_authenticated_otherwise_redirect.php");
     <div class="row">
 
         <?php
-            include("fragments/sidebar_fragment.php");
+            include("../../fragments/sidebar_fragment.php");
         ?>
 
         <div id="main-content" class="col-md-10">
@@ -28,7 +28,7 @@ include("authentication/is_authenticated_otherwise_redirect.php");
             </div>
 
             <?php
-                include("model/inventoryitem.php");
+                include("../../model/inventoryitem.php");
                 $inventory_items=array(
                         new InventoryItem("Kitchen Sink",30,2),
                         new InventoryItem("Printer",100,1)

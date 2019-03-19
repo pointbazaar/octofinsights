@@ -23,6 +23,8 @@ include("authentication/is_authenticated_otherwise_redirect.php");
         <div id="main-content" class="col-md-10">
             <h1>Dashboard</h1>
 
+
+
             <div class="row">
                 <?php
                     include("fragments/cashflow_fragment.php");
