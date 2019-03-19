@@ -3,6 +3,7 @@
     <h2 class="text-center">
         OctoFinsights
     </h2>
+    <hr>
     <div class="text-center">
         <span class="float-left">
             Logged in as:
@@ -48,25 +49,28 @@
         }
     ?>
 
-    <ul class="list-group">
+    <div class="">
+        <hr>
         <?php
             for($i=0;$i<sizeof($links);$i++){
                 echo "<a href='" . $links[$i]->link . "'>";
-                    echo "<li class='list-group-item'>";
+                    echo "<div class=''>";
                         echo $links[$i]->name;
-                    echo "</li>";
+                    echo "</div>";
                 echo "</a>";
+                echo("<hr>");
             }
         ?>
         <?php
             echo("<a href='"  . $baseurl  . "/authentication/get_login.php' >");
         ?>
-        <li class="list-group-item">
+        <div class="">
             Logout
-        </li>
+        </div>
         <?php
             echo("</a>");
         ?>
-    </ul>
+        <hr>
+    </div>
 
 </div>
