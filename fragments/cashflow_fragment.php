@@ -1,4 +1,4 @@
-<div style="width:800px; height: 400px;" class="m-3">
+<div style="width:600px; height: 400px;" class="m-3">
     <!-- the chart is responsive to the size of the parent div -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js">
     </script>

@@ -1,8 +1,27 @@
-<div id="sidebar" class="col-md-2 sidebar">
+<div id="sidebar" class="col-md-2 sidebar" style="background-color: #f4f8f5">
 
     <h2 class="text-center">
         OctoFinsights
     </h2>
+    <div class="text-center">
+        <span class="float-left">
+            Logged in as:
+        </span>
+        <span class="float-right">
+        <?php
+            echo($_SESSION["username"]);
+        ?>
+        </span>
+        <br>
+        <span class="float-left">
+        on behalf of :
+        </span>
+        <span class="float-right">
+            Example Enterprise
+        </span>
+        <br>
+    </div>
+    <div class="p-3"></div>
     <?php
 
         include("../base.php");
@@ -38,6 +57,15 @@
                     echo "</li>";
                 echo "</a>";
             }
+        ?>
+        <?php
+            echo("<a href='"  . $baseurl  . "/authentication/get_login.php' >");
+        ?>
+        <li class="list-group-item">
+            Logout
+        </li>
+        <?php
+            echo("</a>");
         ?>
     </ul>
 

@@ -23,18 +23,18 @@ include("authentication/is_authenticated_otherwise_redirect.php");
         <div id="main-content" class="col-md-10">
             <h1>Dashboard</h1>
 
-
-            <?php
-                include("fragments/cashflow_fragment.php");
-            ?>
-            <div class="m-3 p-3"></div>
-            <?php
-                include("fragments/total_balance_history_fragment.php");
-            ?>
+            <div class="row">
+                <?php
+                    include("fragments/cashflow_fragment.php");
+                ?>
+                <div class="m-3 p-3"></div>
+                <?php
+                    include("fragments/total_balance_history_fragment.php");
+                ?>
+            </div>
             <div class="m-3 p-3"></div>
             <p>
-                maybe make a total balance history chart across all accounts
-                of this enterprise
+
             </p>
         </div>
     </div>
