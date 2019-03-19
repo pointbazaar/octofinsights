@@ -77,30 +77,24 @@ include_once("../../authentication/is_authenticated_otherwise_redirect.php");
                     <tbody>
                     <?php
                         try{
-                            include_once($absolute_file_url . "/database/make_database_connection.php");
-                            //TODO
+                            include_once($absolute_file_url . "/services/sales_service.php");
 
-                            $conn = getConnection();
-
-                            $statement = $conn->prepare("SELECT * FROM sales;");
-                            $statement->execute();
-
-                            $results = $statement->fetchAll();
+                            $results = get_all_sales();
 
                             for($i=0;$i<sizeof($results);$i++){
                                 $sale=$results[$i];
 
                                 echo("<tr>");
-                                    echo_td($sale[0]);
-                                    echo_td($sale[1]);
-                                    echo_td($sale[2]);
-                                    echo_td($sale[3] . " $");
-                                    echo_td($sale[4]);
+                                    echo_td($sale->id);
+                                    echo_td($sale->customer_name);
+                                    echo_td($sale->time_of_sale);
+                                    echo_td($sale->price_of_sale . " $");
+                                    echo_td($sale->product_or_service);
                                     $delete_button = "<button type='submit' class='btn btn-outline-warning'>" . "delete" . "</button>";
 
                                 echo("<td>");
                                     echo("<form action='" . $baseurl . "/controllers/sales" . "/post_delete_sale.php" . "' method='post'>");
-                                        echo("<input type='number' name='id' hidden value='" . $sale[0] . "'>");
+                                        echo("<input type='number' name='id' hidden value='" . $sale->id . "'>");
                                     echo($delete_button);
                                     echo("</form>");
                                 echo("</td>");
