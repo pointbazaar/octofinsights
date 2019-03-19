@@ -27,11 +27,13 @@ if(isset($_POST["item_name"]) && isset($_POST["item_price"])  && isset($_POST["a
 
         $conn = getConnection();
 
-        $statement = $conn->prepare("INSERT INTO inventory (item_name,item_price,amount) VALUES (?,?,?);");
-        $statement->bindParam("sii", $item_name, $item_price, $amount);
+        $statement = $conn->prepare("INSERT INTO inventory (item_name,item_price,amount) VALUES (:item_name,:item_price,:amount);");
+        $statement->bindParam(":item_name", $item_name);
+        $statement->bindParam(":item_price", $item_price);
+        $statement->bindParam(":amount", $amount);
         $statement->execute();
 
-        $conn->commit();
+        //$conn->commit();
 
         echo("inserted item");
 
@@ -40,4 +42,4 @@ if(isset($_POST["item_name"]) && isset($_POST["item_price"])  && isset($_POST["a
     }
 }
 
-header("Location: " . $baseurl . "/controllers/inventory/get_inventory.php");
+//header("Location: " . $baseurl . "/controllers/inventory/get_inventory.php");

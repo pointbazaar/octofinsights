@@ -88,6 +88,10 @@ include("../../authentication/is_authenticated_otherwise_redirect.php");
 
                         <?php
 
+                            function echo_td($contents){
+                                echo("<td>" . $contents . "</td>");
+                            }
+
                             try{
 
                                 include_once($absolute_file_url . "/database/make_database_connection.php");
@@ -99,15 +103,28 @@ include("../../authentication/is_authenticated_otherwise_redirect.php");
 
                                 $statement->execute();
 
+                                //test
+                                $results = $statement->fetchAll();
 
+                                for($i=0;$i<sizeof($results);$i++){
+                                    $item = $results[$i];
+                                    echo("<tr>");
+                                        echo_td($item[0]);
+                                        echo_td($item[1]);
+                                        echo_td($item[2]);
+                                        echo_td($item[3]);
+                                    echo("</tr>");
+                                }
 
                                 $results = $statement->setFetchMode(PDO::FETCH_ASSOC);
 
                                 foreach (new RecursiveArrayIterator($statement->fetchAll()) as $key=>$value){
                                     echo("<tr>");
-                                        echo($value);
+                                        echo_td($value[0]);
+                                        //echo($value);
                                     echo("</tr>");
                                 }
+
 
                                 $conn=null;
                             }catch (Exception $exception){
