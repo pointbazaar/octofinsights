@@ -34,10 +34,6 @@ include_once($absolute_file_url . "/authentication/is_authenticated_otherwise_re
                         new InventoryItem("Printer",100,1)
                 );
             ?>
-
-            <p>
-                TODO: have a form here to insert an inventory item
-            </p>
             <form class="col" action="post_inventory.php" method="post">
                 <div class="form-group">
                     <span>item_name</span><input type="text" name="item_name" placeholder="item_name">
