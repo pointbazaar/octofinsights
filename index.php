@@ -9,15 +9,15 @@
 <body>
 
 <?php
-include("base.php");
-include("authentication/is_authenticated_otherwise_redirect.php");
+include_once("base.php");
+include_once("authentication/is_authenticated_otherwise_redirect.php");
 ?>
 
 <div id="container" class="container-fluid">
     <div class="row">
 
         <?php
-            include("fragments/sidebar_fragment.php");
+            include_once("fragments/sidebar_fragment.php");
         ?>
 
         <div id="main-content" class="col-md-10">
@@ -27,15 +27,15 @@ include("authentication/is_authenticated_otherwise_redirect.php");
 
             <div class="row">
                 <?php
-                    include("fragments/cashflow_fragment.php");
+                    include_once("fragments/cashflow_fragment.php");
                 ?>
                 <div class="m-3 p-3"></div>
                 <?php
-                    include("fragments/total_balance_history_fragment.php");
+                    include_once("fragments/total_balance_history_fragment.php");
                 ?>
 
                 <?php
-                    include("fragments/lead_sources_fragment.php");
+                    include_once("fragments/lead_sources_fragment.php");
                 ?>
             </div>
             <div class="m-3 p-3"></div>

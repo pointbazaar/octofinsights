@@ -73,24 +73,33 @@ include_once("../../authentication/is_authenticated_otherwise_redirect.php");
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>1.3.2019</td>
-                        <td>300 $</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Jacob</td>
-                        <td>2.3.2019</td>
-                        <td>10300 $</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Larry</td>
-                        <td>3.3.2019</td>
-                        <td>50 $</td>
-                    </tr>
+                    <?php
+                        try{
+                            include_once($absolute_file_url . "/database/make_database_connection.php");
+                            //TODO
+
+                            $conn = getConnection();
+
+                            $statement = $conn->prepare("SELECT * FROM sales;");
+                            $statement->execute();
+
+                            $results = $statement->fetchAll();
+
+                            for($i=0;$i<sizeof($results);$i++){
+                                $sale=$results[$i];
+
+                                echo("<tr>");
+                                    echo_td($sale[0]);
+                                    echo_td($sale[1]);
+                                    echo_td($sale[2]);
+                                    echo_td($sale[3] . " $");
+                                echo("</tr>");
+                            }
+
+                        }catch (Exception $exception){
+                            echo($exception->getMessage());
+                        }
+                    ?>
                     </tbody>
                 </table>
             </div>

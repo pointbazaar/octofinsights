@@ -63,11 +63,6 @@ include_once($absolute_file_url . "/authentication/is_authenticated_otherwise_re
                     <tbody>
 
                         <?php
-
-                            function echo_td($contents){
-                                echo("<td>" . $contents . "</td>");
-                            }
-
                             try{
 
                                 include_once($absolute_file_url . "/database/make_database_connection.php");

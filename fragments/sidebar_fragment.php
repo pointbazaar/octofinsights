@@ -37,7 +37,7 @@
 
         echo("<br>");
 
-        include($absolute_file_url . "/base.php");
+        include_once($absolute_file_url . "/base.php");
 
         $links = array(
                 new MenuItem("Dashboard",$baseurl . "/index.php"),
