@@ -38,15 +38,15 @@ include("../../authentication/is_authenticated_otherwise_redirect.php");
             <p>
                 TODO: have a form here to insert an inventory item
             </p>
-            <form class="col">
+            <form class="col" action="post_inventory.php" method="post">
                 <div class="form-group">
-                    <span>Item Name</span><input type="text" name="item-name" placeholder="item-name">
+                    <span>item_name</span><input type="text" name="item_name" placeholder="item_name">
 
-                    <span>Amount</span>
+                    <span>amount</span>
                     <input type="number" name="amount" placeholder="1">
 
-                    <span>Price</span>
-                    <input type="number" name="price" placeholder="1">
+                    <span>item_price</span>
+                    <input type="number" name="item_price" placeholder="1">
                 </div>
                 <button type="submit" class="btn btn-primary">Insert Item</button>
             </form>

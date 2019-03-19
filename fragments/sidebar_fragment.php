@@ -27,7 +27,11 @@
 
             //echo(getcwd());
 
-            include("database/testdatabase.php");
+            //echo($_SERVER["DOCUMENT_ROOT"]);
+
+            $absolute_file_url = $_SERVER["DOCUMENT_ROOT"] . "/octofinsights";
+
+            include($absolute_file_url . "/database/testdatabase.php");
         ?>
     </div>
     <div class="p-3"></div>
