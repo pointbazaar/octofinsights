@@ -37,9 +37,6 @@ include($absolute_file_url . "/authentication/is_authenticated_otherwise_redirec
                 </tr>
                 <tr>
                     <td>
-                        <p>
-                            TODO: have a form here to insert a lead
-                        </p>
                         <form class="col" method="post" action=<?=$baseurl . "/controllers/leads/post_leads.php"?>>
                             <div class="form-group">
                                 <input type="text" name="lead_name" placeholder="lead_name">
