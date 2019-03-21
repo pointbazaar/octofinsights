@@ -24,3 +24,14 @@ function get_all_sales()
 
     return $typed_results;
 }
+
+function get_total_sales_price(){
+
+    $total=0;
+
+    foreach (get_all_sales() as $sale){
+        $total+=$sale->price_of_sale;
+    }
+
+    return $total;
+}
