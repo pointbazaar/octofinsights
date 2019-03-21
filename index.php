@@ -37,6 +37,11 @@ include_once("authentication/is_authenticated_otherwise_redirect.php");
                 <?php
                     include_once("fragments/lead_sources_fragment.php");
                 ?>
+
+
+                <?php
+                    echo("<img src='" . $baseurl . "/experimental/img.php" . "'>");
+                ?>
             </div>
             <div class="m-3 p-3"></div>
             <p>
