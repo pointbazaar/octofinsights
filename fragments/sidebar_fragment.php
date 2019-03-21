@@ -44,7 +44,7 @@
             new MenuItem("Reports(TODO)","."),
             new MenuItem("Sales",$baseurl . "/controllers/sales" . "/get_sales.php"),
             new MenuItem("Leads",$baseurl . "/leads.php"),
-            new MenuItem("Employees",$baseurl . "/employees.php"),
+            new MenuItem("Employees",$baseurl . "/controllers/employees/get_employees.php"),
             new MenuItem("Inventory",$baseurl . "/controllers/inventory" . "/get_inventory.php")
         );
 

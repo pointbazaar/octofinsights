@@ -28,7 +28,7 @@ include_once($absolute_file_url . "/authentication/is_authenticated_otherwise_re
             </div>
 
             <?php
-                include_once($absolute_file_url . "/model/inventoryitem.php");
+                include_once($absolute_file_url . "/model/inventory_item_entity.php");
                 $inventory_items=array(
                         new InventoryItem("Kitchen Sink",30,2),
                         new InventoryItem("Printer",100,1)

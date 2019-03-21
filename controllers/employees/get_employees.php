@@ -3,15 +3,15 @@
 <html>
 <head>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="style.css" rel="stylesheet">
+    <link href="../../style.css" rel="stylesheet">
 </head>
 
 <body>
 
 <?php
 
-include("base.php");
-include("authentication/is_authenticated_otherwise_redirect.php");
+include("../../base.php");
+include($absolute_file_url  . "/authentication/is_authenticated_otherwise_redirect.php");
 
 ?>
 
@@ -19,7 +19,7 @@ include("authentication/is_authenticated_otherwise_redirect.php");
     <div class="row">
 
         <?php
-            include("fragments/sidebar_fragment.php");
+            include($absolute_file_url . "/fragments/sidebar_fragment.php");
         ?>
 
         <div id="main-content" class="col-md-10">
@@ -27,13 +27,9 @@ include("authentication/is_authenticated_otherwise_redirect.php");
                 <h1>Employees</h1>
             </div>
 
-            <?php
-                include("model/employee.php");
-                $employees=array(
-                    new Employee("Peter","Muster","Admin"),
-                    new Employee("Sarah","Wiese","Accounting")
-                );
-            ?>
+
+
+
 
             <table class="">
                 <tr>
@@ -41,15 +37,23 @@ include("authentication/is_authenticated_otherwise_redirect.php");
                         <p>
                             TODO: have a form here to insert a employee
                         </p>
-                        <form class="col">
+                        <?php
+                            echo("<form class='col' action='" . $baseurl . "/controllers/employees/post_employees.php". "' method='post''>");
+                        ?>
+
                             <div class="form-group">
-                                <input type="text" name="employee-name" placeholder="employee-name">
+                                <input type="text" name="employee_name" placeholder="employee_name">
                             </div>
                             <div class="form-group">
-                                <input type="date" name="date-of-entry" placeholder="date-of-entry">
+                                <input type="text" name="employee_role" placeholder="employee_role">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" name="employee_email" placeholder="employee_email">
                             </div>
                             <button type="submit" value="insert employee" class="btn btn-primary">insert Employee</button>
-                        </form>
+                        <?php
+                            echo("</form>");
+                        ?>
 
                     </td>
                 </tr>
@@ -64,17 +68,21 @@ include("authentication/is_authenticated_otherwise_redirect.php");
                         <th scope="col">ID</th>
                         <th scope="col">Employee Name</th>
                         <th scope="col">Role</th>
-                        <th scope="col">Date of Entry</th>
                         <th scope="col">Email</th>
                         <th scope="col">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                         <?php
+
+                        include_once($absolute_file_url . "/model/employee_entity.php");
+                        include_once($absolute_file_url . "/services/employees_service.php");
+                        $employees=get_all_employees();
+
                         for($i=0;$i<sizeof($employees);$i++){
                             echo "<tr>";
                                 echo("<td>");
-                                    echo($i);
+                                    echo($employees[$i]->id);
                                 echo("</td>");
 
                                 echo("<td>");
@@ -86,11 +94,7 @@ include("authentication/is_authenticated_otherwise_redirect.php");
                                 echo("</td>");
 
                                 echo("<td>");
-                                    echo("1.2.2018");
-                                echo("</td>");
-
-                                echo("<td>");
-                                    echo($employees[$i]->name  . "@gmail.com");
+                                    echo($employees[$i]->email  . "@gmail.com");
                                 echo("</td>");
 
                                 echo "<td>";
