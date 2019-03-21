@@ -26,19 +26,21 @@ imagestring($im,5,0,$height/2,"0",$black);
 //imageline($im,10,10,10,$height,$black);
 
 //title
-imagestring($im,3,$width/2,10,"Total Business Value over Time",$black);
+imagestring($im,3,20,$height-20,"Total Business Value over Time",$black);
 
 
 //make the data points here
 $total_earnings = 0;
 $pos_x=20;
 
-$step_size_x=30;
+$sales_count = sizeof($my_sales);
+
+$step_size_x=10;
 
 $position_1 = array(10,$height/2);
 $position_2 = array(20,$height/2);
 
-$sales_count = sizeof($my_sales);
+
 
 foreach ($my_sales as $sale){
 
