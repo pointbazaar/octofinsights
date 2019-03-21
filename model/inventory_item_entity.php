@@ -19,6 +19,8 @@ class InventoryItem{
     function toString(){
         return $this->name . " " . " [Price: " . $this->price . "]" . $this->amount . " pieces";
     }
+
+
 }
 
 ?>

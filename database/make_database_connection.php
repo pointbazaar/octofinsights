@@ -1,5 +1,9 @@
 <?php
 
+include_once($_SERVER["DOCUMENT_ROOT"] . "/octofinsights/base.php");
+include_once($absolute_file_url . "/model/employee_entity.php");
+
+
 function getConnection(){
 
     $servername = "vanautrui.org";
@@ -25,8 +29,8 @@ function getConnection(){
         $sales_table_description=    "(id INT AUTO_INCREMENT PRIMARY KEY, customer_name VARCHAR(128), time_of_sale TIMESTAMP,   price_of_sale INT,        product_or_service VARCHAR(128) )";
         $conn->exec("CREATE TABLE IF NOT EXISTS sales " . $sales_table_description . ";");
 
-        $employees_table_description="(id INT AUTO_INCREMENT PRIMARY KEY, employee_name VARCHAR(32) , employee_role VARCHAR(32), employee_email VARCHAR(64) )";
-        $conn->exec("CREATE TABLE IF NOT EXISTS employees " . $employees_table_description . ";");
+
+        $conn->exec("CREATE TABLE IF NOT EXISTS employees " . Employee_Entity::getSchemaString() . ";");
 
 
 
