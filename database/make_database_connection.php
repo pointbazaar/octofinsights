@@ -37,10 +37,14 @@ function getConnection(){
     return $conn;
 }
 
+function getPreparedStatement($statement){
+    return getConnection()->prepare($statement);
+}
+
 function fetch_all_from($table){
     $statement = getConnection()->prepare("SELECT * FROM ". $table . ";");
     //$statement->bindParam(":table_name",$table);
-    
+
     $statement->execute();
 
     return $statement->fetchAll();

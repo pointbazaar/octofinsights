@@ -22,9 +22,7 @@ function get_all_employees()
 function delete_by_id($id){
     try {
 
-        $conn = getConnection();
-
-        $statement = $conn->prepare("DELETE FROM employees WHERE id=:id;");
+        $statement = getPreparedStatement("DELETE FROM employees WHERE id=:id;");
         $statement->bindParam(":id", $id);
         $statement->execute();
 

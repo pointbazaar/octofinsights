@@ -33,10 +33,7 @@ function get_total_sales_price(){
 function delete_by_id($id){
 
     try {
-
-        $conn = getConnection();
-
-        $statement = $conn->prepare("DELETE FROM sales WHERE id=:id;");
+        $statement = getPreparedStatement("DELETE FROM sales WHERE id=:id;");
         $statement->bindParam(":id", $id);
         $statement->execute();
 

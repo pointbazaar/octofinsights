@@ -21,9 +21,7 @@ function insert_inventory($item){
 
     try {
 
-        $conn = getConnection();
-
-        $statement = $conn->prepare("INSERT INTO inventory (item_name,item_price,amount) VALUES (:item_name,:item_price,:amount);");
+        $statement = getPreparedStatement("INSERT INTO inventory (item_name,item_price,amount) VALUES (:item_name,:item_price,:amount);");
         $statement->bindParam(":item_name", $item->name);
         $statement->bindParam(":item_price", $item->price);
         $statement->bindParam(":amount", $item->amount);
@@ -39,9 +37,7 @@ function insert_inventory($item){
 function delete_by_id($id){
     try {
 
-        $conn = getConnection();
-
-        $statement = $conn->prepare("DELETE FROM inventory WHERE id=:id;");
+        $statement = getPreparedStatement("DELETE FROM inventory WHERE id=:id;");
         $statement->bindParam(":id", $id);
         $statement->execute();
 
