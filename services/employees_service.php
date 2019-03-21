@@ -23,3 +23,17 @@ function get_all_employees()
 
     return $typed_results;
 }
+
+function delete_by_id($id){
+    try {
+
+        $conn = getConnection();
+
+        $statement = $conn->prepare("DELETE FROM employees WHERE id=:id;");
+        $statement->bindParam(":id", $id);
+        $statement->execute();
+
+    }catch (Exception $exception){
+        echo($exception->getMessage());
+    }
+}

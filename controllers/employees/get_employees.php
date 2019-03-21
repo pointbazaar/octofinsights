@@ -97,11 +97,15 @@ include($absolute_file_url  . "/authentication/is_authenticated_otherwise_redire
                                     echo($employees[$i]->email  . "@gmail.com");
                                 echo("</td>");
 
-                                echo "<td>";
-                                    echo "<button class='btn btn-outline-danger'>";
-                                        echo "Delete";
-                                    echo "</button>";
+                                $delete_button = "<button type='submit' class='btn btn-outline-warning'>" . "delete" . "</button>";
+
+                                echo("<td>");
+                                    echo("<form action='" . $baseurl . "/controllers/employees" . "/post_delete_employees.php" . "' method='post'>");
+                                        echo("<input type='number' name='id' hidden value='" . $employees[$i]->id . "'>");
+                                        echo($delete_button);
+                                    echo("</form>");
                                 echo("</td>");
+
                             echo "</tr>";
                         }
                         ?>
