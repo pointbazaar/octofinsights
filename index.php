@@ -27,18 +27,6 @@ include_once("authentication/is_authenticated_otherwise_redirect.php");
 
             <div class="row">
                 <?php
-                    include_once("fragments/cashflow_fragment.php");
-                ?>
-                <div class="m-3 p-3"></div>
-                <?php
-                    include_once("fragments/total_balance_history_fragment.php");
-                ?>
-
-                <?php
-                    include_once("fragments/lead_sources_fragment.php");
-                ?>
-
-                <?php
                     echo("<img src='" . $baseurl . "/experimental/cashflow_history.php" . "'>");
                 ?>
 
