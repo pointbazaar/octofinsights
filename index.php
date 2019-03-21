@@ -38,6 +38,9 @@ include_once("authentication/is_authenticated_otherwise_redirect.php");
                     include_once("fragments/lead_sources_fragment.php");
                 ?>
 
+                <?php
+                    echo("<img src='" . $baseurl . "/experimental/cashflow_history.php" . "'>");
+                ?>
 
                 <?php
                     echo("<img src='" . $baseurl . "/experimental/img.php" . "'>");
