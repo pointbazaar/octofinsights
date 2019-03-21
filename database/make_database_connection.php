@@ -38,8 +38,9 @@ function getConnection(){
 }
 
 function fetch_all_from($table){
-    $statement = getConnection()->prepare("SELECT * FROM :table ;");
-    $statement->bindParam(":table",$table);
+    $statement = getConnection()->prepare("SELECT * FROM ". $table . ";");
+    //$statement->bindParam(":table_name",$table);
+    
     $statement->execute();
 
     return $statement->fetchAll();
