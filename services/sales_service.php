@@ -7,14 +7,8 @@ include_once($absolute_file_url . "/model/sale_entity.php");
 function get_all_sales()
 {
 
-    $conn = getConnection();
-
-    $statement = $conn->prepare("SELECT * FROM sales;");
-    $statement->execute();
-
-    $results = $statement->fetchAll();
-
-    $typed_results = array();
+    $results = fetch_all_from("sales");
+    $typed_results=array();
 
     for($i=0;$i<sizeof($results);$i++) {
         $sale = $results[$i];

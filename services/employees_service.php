@@ -7,12 +7,7 @@ include_once($absolute_file_url . "/model/employee_entity.php");
 function get_all_employees()
 {
 
-    $conn = getConnection();
-
-    $statement = $conn->prepare("SELECT * FROM employees;");
-    $statement->execute();
-
-    $results = $statement->fetchAll();
+    $results = fetch_all_from("employees");
 
     $typed_results = array();
 

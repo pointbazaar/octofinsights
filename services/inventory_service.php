@@ -6,14 +6,7 @@ include_once($absolute_file_url . "/model/inventory_item_entity.php");
 
 function get_all_inventory()
 {
-
-    $conn = getConnection();
-
-    $statement = $conn->prepare("SELECT * FROM inventory;");
-    $statement->execute();
-
-    $results = $statement->fetchAll();
-
+    $results = fetch_all_from("inventory");
     $typed_results = array();
 
     for($i=0;$i<sizeof($results);$i++) {

@@ -36,3 +36,11 @@ function getConnection(){
     }
     return $conn;
 }
+
+function fetch_all_from($table){
+    $statement = getConnection()->prepare("SELECT * FROM :table ;");
+    $statement->bindParam(":table",$table);
+    $statement->execute();
+
+    return $statement->fetchAll();
+}
