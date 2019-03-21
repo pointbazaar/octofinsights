@@ -15,6 +15,12 @@ if(isset($_POST["customer_name"]) && isset($_POST["time_of_sale"]) && isset($_PO
     $price_of_sale = $_POST["price_of_sale"];
     $product_or_service = $_POST["product_or_service"];
 
+    if($price_of_sale<=0){
+        http_response_code(400);
+        echo("<br>cannot have negative sale values");
+        exit();
+    }
+
     //insert a sale into db
 
     include_once($absolute_file_url . "/database/make_database_connection.php");
