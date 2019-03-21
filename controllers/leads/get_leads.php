@@ -3,21 +3,21 @@
 <html>
 <head>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="style.css" rel="stylesheet">
+    <link href="../../style.css" rel="stylesheet">
 </head>
 
 <body>
 
 <?php
-include("base.php");
-include("authentication/is_authenticated_otherwise_redirect.php");
+include("../../base.php");
+include($absolute_file_url . "/authentication/is_authenticated_otherwise_redirect.php");
 ?>
 
 <div id="container" class="container-fluid">
     <div class="row">
 
         <?php
-            include("fragments/sidebar_fragment.php");
+            include($absolute_file_url . "/fragments/sidebar_fragment.php");
         ?>
 
         <div id="main-content" class="col-md-10">
