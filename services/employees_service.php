@@ -20,13 +20,5 @@ function get_all_employees()
 }
 
 function delete_by_id($id){
-    try {
-
-        $statement = getPreparedStatement("DELETE FROM employees WHERE id=:id;");
-        $statement->bindParam(":id", $id);
-        $statement->execute();
-
-    }catch (Exception $exception){
-        echo($exception->getMessage());
-    }
+    delete_from_where_id_is("employees",$id);
 }

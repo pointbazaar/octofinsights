@@ -40,15 +40,15 @@ include($absolute_file_url . "/authentication/is_authenticated_otherwise_redirec
                         <p>
                             TODO: have a form here to insert a lead
                         </p>
-                        <form class="col">
+                        <form class="col" method="post" action=<?=$baseurl . "/controllers/leads/post_leads.php"?>>
                             <div class="form-group">
-                                <input type="text" name="lead-name" placeholder="lead-name">
+                                <input type="text" name="lead_name" placeholder="lead_name">
                             </div>
                             <div class="form-group">
-                                <input type="date" name="date" placeholder="date">
+                                <input type="date" name="date_of_lead_entry" placeholder="date_of_lead_entry">
                             </div>
                             <div class="form-group">
-                                <input type="text" name="what-the-lead-wants" placeholder="what-the-lead-wants">
+                                <input type="text" name="what_the_lead_wants" placeholder="what_the_lead_wants">
                             </div>
                             <button type="submit" value="insert sale" class="btn btn-primary">insert lead</button>
                         </form>
@@ -67,27 +67,43 @@ include($absolute_file_url . "/authentication/is_authenticated_otherwise_redirec
                         <th scope="col">Lead Name</th>
                         <th scope="col">Date the Lead became interested</th>
                         <th scope="col">What the lead wants</th>
+                        <th scope="col">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>1.3.2019</td>
-                        <td>A website for his small business</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Jacob</td>
-                        <td>2.3.2019</td>
-                        <td>A calculator android app</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Larry</td>
-                        <td>3.3.2019</td>
-                        <td>An Ecommerce Store</td>
-                    </tr>
+
+
+                    <?php
+                    try{
+                        include_once($absolute_file_url . "/services/lead_service.php");
+
+                        $results = get_all_leads();
+
+                        for($i=0;$i<sizeof($results);$i++){
+                            $lead=$results[$i];
+
+                            echo("<tr>");
+                                echo_td($lead->id);
+                                echo_td($lead->lead_name);
+                                echo_td($lead->date_of_lead_entry);
+                                echo_td($lead->what_the_lead_wants);
+
+                                $delete_button = "<button type='submit' class='btn btn-outline-warning'>" . "delete" . "</button>";
+
+                                echo("<td>");
+                                    echo("<form action='" . $baseurl . "/controllers/leads" . "/post_delete_leads.php" . "' method='post'>");
+                                    echo("<input type='number' name='id' hidden value='" . $lead->id . "'>");
+                                    echo($delete_button);
+                                    echo("</form>");
+                                echo("</td>");
+                            echo("</tr>");
+                        }
+
+                    }catch (Exception $exception){
+                        echo($exception->getMessage());
+                    }
+                    ?>
+
                     </tbody>
                 </table>
             </div>

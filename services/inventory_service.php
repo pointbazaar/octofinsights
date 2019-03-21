@@ -35,13 +35,5 @@ function insert_inventory($item){
 }
 
 function delete_by_id($id){
-    try {
-
-        $statement = getPreparedStatement("DELETE FROM inventory WHERE id=:id;");
-        $statement->bindParam(":id", $id);
-        $statement->execute();
-
-    }catch (Exception $exception){
-        echo($exception->getMessage());
-    }
+    delete_from_where_id_is("inventory",$id);
 }

@@ -56,3 +56,14 @@ function fetch_all_from($table){
 
     return $statement->fetchAll();
 }
+
+function delete_from_where_id_is($table_name,$id){
+    try {
+        $statement = getPreparedStatement("DELETE FROM " . $table_name . " WHERE id=:id;");
+        $statement->bindParam(":id", $id);
+        $statement->execute();
+
+    }catch (Exception $exception){
+        echo($exception->getMessage());
+    }
+}
