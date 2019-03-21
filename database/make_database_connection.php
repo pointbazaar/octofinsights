@@ -30,16 +30,18 @@ function getConnectionPrevious(){
 
 function getConnectionAndInitDBWithTables(){
 
-        create_table_if_not_exists("inventory",InventoryItem_Entity::getSchemaString());
-        create_table_if_not_exists("sales",Sale_Entity::getSchemaString());
-        create_table_if_not_exists("employees",Employee_Entity::getSchemaString());
-        create_table_if_not_exists("leads",Lead_Entity::getSchemaString());
+    $connection = getConnectionPrevious();
 
-    return getConnectionPrevious();
+    create_table_if_not_exists($connection,"inventory",InventoryItem_Entity::getSchemaString());
+    create_table_if_not_exists($connection,"sales",Sale_Entity::getSchemaString());
+    create_table_if_not_exists($connection,"employees",Employee_Entity::getSchemaString());
+    create_table_if_not_exists($connection,"leads",Lead_Entity::getSchemaString());
+
+    return $connection;
 }
 
-function create_table_if_not_exists($table_name,$schema_string){
-    getConnectionPrevious()->exec("CREATE TABLE IF NOT EXISTS " . $table_name . "  " . $schema_string .";");
+function create_table_if_not_exists($connection,$table_name,$schema_string){
+    $connection->exec("CREATE TABLE IF NOT EXISTS " . $table_name . "  " . $schema_string .";");
 }
 
 function getPreparedStatement($statement){
