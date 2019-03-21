@@ -35,3 +35,20 @@ function get_total_sales_price(){
 
     return $total;
 }
+
+function delete_by_id($id){
+
+    try {
+
+        $conn = getConnection();
+
+        $statement = $conn->prepare("DELETE FROM sales WHERE id=:id;");
+        $statement->bindParam(":id", $id);
+        $statement->execute();
+
+        echo("deleted item");
+
+    }catch (Exception $exception){
+        echo($exception->getMessage());
+    }
+}
