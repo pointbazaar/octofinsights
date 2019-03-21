@@ -26,7 +26,7 @@ if(isset($_POST["customer_name"]) && isset($_POST["time_of_sale"]) && isset($_PO
     include_once($absolute_file_url . "/database/make_database_connection.php");
 
     try{
-        $conn = getConnection();
+        $conn = getConnectionAndInitDBWithTables();
         $statement = $conn->prepare("INSERT INTO sales (customer_name,time_of_sale,price_of_sale,product_or_service) VALUES (:customer_name,:time_of_sale,:price_of_sale,:product_or_service)");
 
         $statement->bindParam(":customer_name",$customer_name);

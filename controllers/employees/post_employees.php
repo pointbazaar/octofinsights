@@ -25,7 +25,7 @@ if(isset($_POST["employee_name"]) && isset($_POST["employee_role"])  && isset($_
 
     try {
 
-        $conn = getConnection();
+        $conn = getConnectionAndInitDBWithTables();
 
         $statement = $conn->prepare("INSERT INTO employees (employee_name,employee_role,employee_email) VALUES (:employee_name,:employee_role,:employee_email);");
         $statement->bindParam(":employee_name", $name);

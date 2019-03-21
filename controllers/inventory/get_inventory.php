@@ -30,8 +30,8 @@ include_once($absolute_file_url . "/authentication/is_authenticated_otherwise_re
             <?php
                 include_once($absolute_file_url . "/model/inventory_item_entity.php");
                 $inventory_items=array(
-                        new InventoryItem("Kitchen Sink",30,2),
-                        new InventoryItem("Printer",100,1)
+                        new InventoryItem_Entity("Kitchen Sink",30,2),
+                        new InventoryItem_Entity("Printer",100,1)
                 );
             ?>
             <form class="col" action="post_inventory.php" method="post">
@@ -68,7 +68,7 @@ include_once($absolute_file_url . "/authentication/is_authenticated_otherwise_re
                                 include_once($absolute_file_url . "/database/make_database_connection.php");
 
 
-                                $conn = getConnection();
+                                $conn = getConnectionAndInitDBWithTables();
 
                                 $statement = $conn->prepare("SELECT * FROM inventory;");
 

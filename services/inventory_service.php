@@ -11,7 +11,7 @@ function get_all_inventory()
 
     for($i=0;$i<sizeof($results);$i++) {
         $item = $results[$i];
-        array_push($typed_results,new InventoryItem($item[0],$item[1],$item[2]) );
+        array_push($typed_results,new InventoryItem_Entity($item[0],$item[1],$item[2]) );
     }
 
     return $typed_results;

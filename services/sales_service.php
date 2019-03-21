@@ -13,7 +13,7 @@ function get_all_sales()
     for($i=0;$i<sizeof($results);$i++) {
         $sale = $results[$i];
         //add sale to result
-        array_push($typed_results,new sale_entity($sale[0],$sale[1],$sale[2],$sale[3],$sale[4]));
+        array_push($typed_results,new Sale_Entity($sale[0],$sale[1],$sale[2],$sale[3],$sale[4]));
     }
 
     return $typed_results;

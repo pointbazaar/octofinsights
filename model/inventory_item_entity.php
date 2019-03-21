@@ -1,6 +1,9 @@
 <?php
+include_once($_SERVER["DOCUMENT_ROOT"] . "/octofinsights/base.php");
+include_once($absolute_file_url . "/model/IEntity.php");
 
-class InventoryItem{
+
+class InventoryItem_Entity implements IEntity {
     public $name;
 
     public $price;
@@ -21,6 +24,10 @@ class InventoryItem{
     }
 
 
+    public static function getSchemaString()
+    {
+        return "( id INT AUTO_INCREMENT PRIMARY KEY, item_name VARCHAR(128) NOT NULL, item_price INT NOT NULL, amount INT NOT NULL)";
+    }
 }
 
 ?>
