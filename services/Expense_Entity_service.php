@@ -35,7 +35,7 @@ function insert_expense($expense){
 
 }
 
-function delete_by_id($id){
+function delete_expense_entity_by_id($id){
 
     delete_from_where_id_is("expenses",$id);
 }

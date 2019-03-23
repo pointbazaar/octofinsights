@@ -74,7 +74,7 @@ include_once("../../authentication/is_authenticated_otherwise_redirect.php");
 
                                     echo("<form action='" . $baseurl . "/controllers/expenses" . "/post_delete_expense.php" . "' method='post'>");
                                         echo("<input type='number' name='id' hidden value='" . $expense->id . "'>");
-                                        echo_bootstrap_submit_button("delete");
+                                        echo_bootstrap_submit_button("delete(TODO)");
                                     echo("</form>");
 
                                 echo("</td>");

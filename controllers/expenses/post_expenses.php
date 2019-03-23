@@ -16,9 +16,9 @@ if(isset($_POST["expense_name"]) && isset($_POST["expense_date"]) && isset($_POS
     $expense_value = $_POST["expense_value"];
     $product_or_service = $_POST["product_or_service"];
 
-    if($expense_value<=0){
+    if($expense_value>=0){
         http_response_code(400);
-        echo("<br>cannot have negative expense values");
+        echo("<br>cannot have positive expense values");
         exit();
     }
 

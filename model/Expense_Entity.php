@@ -1,8 +1,9 @@
 <?php
 include_once($_SERVER["DOCUMENT_ROOT"] . "/octofinsights/base.php");
 include_once($absolute_file_url . "/model/IEntity.php");
+include_once($absolute_file_url . "/model/Transaction_Base_Entity.php");
 
-class Expense_Entity implements IEntity
+class Expense_Entity extends Transaction_Base_Entity implements IEntity
 {
 
     public $id;
@@ -20,5 +21,15 @@ class Expense_Entity implements IEntity
     public static function getSchemaString()
     {
         return "(id INT AUTO_INCREMENT PRIMARY KEY, expense_name VARCHAR(64), expense_date TIMESTAMP, expense_value INT )";
+    }
+
+    function getName()
+    {
+        return $this->expense_name;
+    }
+
+    function getValue()
+    {
+        return $this->expense_value;
     }
 }
