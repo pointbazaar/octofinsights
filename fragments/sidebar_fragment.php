@@ -40,12 +40,12 @@
         include_once($absolute_file_url . "/base.php");
 
         $links = array(
-                new MenuItem("Dashboard",$baseurl . "/index.php"),
-            new MenuItem("Reports(TODO)","."),
-            new MenuItem("Sales",$baseurl . "/controllers/sales" . "/get_sales.php"),
-            new MenuItem("Leads",$baseurl . "/controllers/leads/get_leads.php"),
-            new MenuItem("Employees",$baseurl . "/controllers/employees/get_employees.php"),
-            new MenuItem("Inventory",$baseurl . "/controllers/inventory" . "/get_inventory.php")
+            new MenuItem("Dashboard",    $baseurl . "/index.php"),
+            new MenuItem("Sales",        $baseurl . "/controllers/sales" . "/get_sales.php"),
+            new MenuItem("Leads",        $baseurl . "/controllers/leads/get_leads.php"),
+            new MenuItem("Employees",    $baseurl . "/controllers/employees/get_employees.php"),
+            new MenuItem("Inventory",    $baseurl . "/controllers/inventory" . "/get_inventory.php"),
+            new MenuItem("Expenses",     $baseurl . "/controllers/expenses" . "/get_expenses.php")
         );
 
         class MenuItem{

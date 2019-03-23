@@ -5,6 +5,7 @@ include_once($absolute_file_url . "/model/employee_entity.php");
 include_once($absolute_file_url . "/model/Lead_Entity.php");
 include_once($absolute_file_url . "/model/sale_entity.php");
 include_once($absolute_file_url . "/model/inventory_item_entity.php");
+include_once($absolute_file_url . "/model/Expense_Entity.php");
 
 function getConnectionPrevious(){
     $servername = "vanautrui.org";
@@ -36,6 +37,7 @@ function getConnectionAndInitDBWithTables(){
     create_table_if_not_exists($connection,"sales",Sale_Entity::getSchemaString());
     create_table_if_not_exists($connection,"employees",Employee_Entity::getSchemaString());
     create_table_if_not_exists($connection,"leads",Lead_Entity::getSchemaString());
+    create_table_if_not_exists($connection,"expenses",Expense_Entity::getSchemaString());
 
     return $connection;
 }
