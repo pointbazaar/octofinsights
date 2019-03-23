@@ -94,7 +94,7 @@ include($absolute_file_url  . "/authentication/is_authenticated_otherwise_redire
                                 echo("</td>");
 
                                 echo("<td>");
-                                    echo($employees[$i]->email  . "@gmail.com");
+                                    echo($employees[$i]->email);
                                 echo("</td>");
 
                                 $delete_button = "<button type='submit' class='btn btn-outline-warning'>" . "delete" . "</button>";
