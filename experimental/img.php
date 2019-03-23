@@ -46,8 +46,8 @@ foreach ($transactions as $transaction){
 
     $total_earnings += $transaction->getValue();
 
-    $max_height = $height/2;
-    $point_height = - (($total_earnings/$highest_absolute_transaction) * ($height/2) );
+    $max_height = $highest_absolute_transaction*3;
+    $point_height = - (($total_earnings/$max_height) * ($height/2) );
 
     $position_2=array($pos_x,$point_height+($height/2));
     imageline($im,$position_1[0],$position_1[1],$position_2[0],$position_2[1],$black);

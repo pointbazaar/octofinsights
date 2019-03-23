@@ -45,7 +45,8 @@
             new MenuItem("Leads",        $baseurl . "/controllers/leads/get_leads.php"),
             new MenuItem("Employees",    $baseurl . "/controllers/employees/get_employees.php"),
             new MenuItem("Inventory",    $baseurl . "/controllers/inventory" . "/get_inventory.php"),
-            new MenuItem("Expenses",     $baseurl . "/controllers/expenses" . "/get_expenses.php")
+            new MenuItem("Expenses",     $baseurl . "/controllers/expenses" . "/get_expenses.php"),
+            new MenuItem("Shareholders(TODO)",$baseurl . "/controllers/shareholders/get_shareholders.php")
         );
 
         class MenuItem{
