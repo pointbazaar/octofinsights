@@ -59,7 +59,7 @@ foreach ($transactions as $transaction){
 
 //top value the business ever was a
 //imageline($im,50,1,$width,0,$black);
-imagestring($im,10,$pos_x-$step_size_x,0,get_total_sales_price(),$black);
+imagestring($im,10,$pos_x-$step_size_x,0,$total_earnings,$black);
 
 
 header("Content-Type: image/png");
