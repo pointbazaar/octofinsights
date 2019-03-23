@@ -7,15 +7,10 @@ include_once($absolute_file_url . "/authentication/is_authenticated_otherwise_re
 //error_log must be configured in php.ini
 //journalctl -u php7.2-fpm.service
 
-try{
-    $my_transactions = Transaction_Service::get_all_transactions();
 
-    //TODO: this seems to return 0, fix that
-    $highest_absolute_transaction = Transaction_Service::getHighestAbsoluteTransactionValue();
-}catch (Exception $exception){
-    //echo($exception->getMessage());
-    http_response_code(500);
-}
+$my_transactions = Transaction_Service::get_all_transactions();
+$highest_absolute_transaction = Transaction_Service::getHighestAbsoluteTransactionValue();
+
 
 $width = 600;
 $height= 200;

@@ -1,11 +1,11 @@
 <?php
 
 include_once("../base.php");
-include_once($absolute_file_url . "/services/sales_service.php");
+include_once($absolute_file_url . "/services/Transaction_Service.php");
 include_once($absolute_file_url . "/authentication/is_authenticated_otherwise_redirect.php");
 
-$my_sales = get_all_sales();
-
+$transactions = Transaction_Service::get_all_transactions();
+$highest_absolute_transaction = Transaction_Service::getHighestAbsoluteTransactionValue();
 
 
 $width = 600;
@@ -33,7 +33,7 @@ imagestring($im,3,20,$height-20,"Total Business Value over Time",$black);
 $total_earnings = 0;
 $pos_x=20;
 
-$sales_count = sizeof($my_sales);
+$sales_count = sizeof($transactions);
 
 $step_size_x=10;
 
@@ -42,12 +42,12 @@ $position_2 = array(20,$height/2);
 
 
 
-foreach ($my_sales as $sale){
+foreach ($transactions as $transaction){
 
-    $total_earnings += $sale->price_of_sale;
+    $total_earnings += $transaction->getValue();
 
     $max_height = $height/2;
-    $point_height = - (as_fraction($total_earnings,get_total_sales_price()) * ($height/2) );
+    $point_height = - (($total_earnings/$highest_absolute_transaction) * ($height/2) );
 
     $position_2=array($pos_x,$point_height+($height/2));
     imageline($im,$position_1[0],$position_1[1],$position_2[0],$position_2[1],$black);
@@ -60,10 +60,6 @@ foreach ($my_sales as $sale){
 //top value the business ever was a
 //imageline($im,50,1,$width,0,$black);
 imagestring($im,10,$pos_x-$step_size_x,0,get_total_sales_price(),$black);
-
-function as_fraction($value,$max){
-    return $value/$max;
-}
 
 
 header("Content-Type: image/png");
