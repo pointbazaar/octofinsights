@@ -45,6 +45,7 @@ include_once("../../authentication/is_authenticated_otherwise_redirect.php");
 
             <div class="m-3 p-3"></div>
             <div id="salestable">
+                <p>ordered by date</p>
                 <table class="table">
                     <thead>
                     <tr>

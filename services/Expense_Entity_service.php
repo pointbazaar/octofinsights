@@ -7,7 +7,7 @@ include_once($absolute_file_url . "/model/Expense_Entity.php");
 function get_all_expenses()
 {
 
-    $results = fetch_all_from("expenses");
+    $results = fetch_all_from_order_by("expenses","expense_date","DESC");
     $typed_results=array();
 
     for($i=0;$i<sizeof($results);$i++) {

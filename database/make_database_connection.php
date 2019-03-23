@@ -52,10 +52,13 @@ function getPreparedStatement($statement){
 
 function fetch_all_from($table){
     $statement = getConnectionAndInitDBWithTables()->prepare("SELECT * FROM ". $table . ";");
-    //$statement->bindParam(":table_name",$table);
-
     $statement->execute();
+    return $statement->fetchAll();
+}
 
+function fetch_all_from_order_by($table,$column,$ordering){
+    $statement = getConnectionAndInitDBWithTables()->prepare("SELECT * FROM ". $table . " ORDER BY " . $column . " " . $ordering . ";");
+    $statement->execute();
     return $statement->fetchAll();
 }
 
