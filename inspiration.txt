@@ -1,0 +1,26 @@
+//salesforce training video
+https://www.youtube.com/watch?v=YYUiGs1dFno
+
+- store customer and lead contact info
+- store opportunities
+- analytics of leads, customers, opportunities
+
+
+//octofinsight should be cloud native solution
+//where new user can sign up in a minute and get CRM and such started for his business
+
+LEAD STATUS
+- open - not contacted yet
+- open - contacted
+- closed - not converted
+- closed - converted
+
+
+FEATURE IDEAS:
+- ability to sort sales and expenses and tables in general by their fields
+- ability to create tasks related to leads/opportunities
+- lead source (where a lead came from, can be a person,website and so on)
+    - this should be with category
+- probability of a lead or opportunity close, meaning that the sale will happen
+    - based on previous data for similar leads and sales
+- every lead should have a "next step" field unless it is closed
