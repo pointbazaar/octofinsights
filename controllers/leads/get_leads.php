@@ -54,6 +54,9 @@ include($absolute_file_url . "/authentication/is_authenticated_otherwise_redirec
                 </tr>
 
             </table>
+            <p>
+                TODO: ability to sort the table by the different fields
+            </p>
 
             <div class="m-3 p-3"></div>
             <div id="salestable">
@@ -62,6 +65,8 @@ include($absolute_file_url . "/authentication/is_authenticated_otherwise_redirec
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Lead Name</th>
+                        <th scope="col">Lead Status</th>
+                        <th scope="col">Lead Website(TODO, may be empty)</th>
                         <th scope="col">Date the Lead became interested</th>
                         <th scope="col">What the lead wants</th>
                         <th scope="col">Actions</th>
@@ -82,6 +87,8 @@ include($absolute_file_url . "/authentication/is_authenticated_otherwise_redirec
                             echo("<tr>");
                                 echo_td($lead->id);
                                 echo_td($lead->lead_name);
+                                echo_td("TODO: make field for lead status");
+                                echo_td("TODO: make field in db");
                                 echo_td($lead->date_of_lead_entry);
                                 echo_td($lead->what_the_lead_wants);
 

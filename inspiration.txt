@@ -10,10 +10,11 @@ https://www.youtube.com/watch?v=YYUiGs1dFno
 //where new user can sign up in a minute and get CRM and such started for his business
 
 LEAD STATUS
-- open - not contacted yet
-- open - contacted
-- closed - not converted
-- closed - converted
+- open_not_contacted
+- open_contacted
+- open_awaiting_response
+- closed_not_converted
+- closed_converted
 
 
 FEATURE IDEAS:

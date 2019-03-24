@@ -31,6 +31,9 @@ include_once("authentication/is_authenticated_otherwise_redirect.php");
                 <?php
                     echo("<img src='" . $baseurl . "/experimental/img.php" . "'>");
                 ?>
+                <p>
+                    TODO: make bar chart that shows the number of new leads in history
+                </p>
             </div>
             <div class="m-3 p-3"></div>
             <p>
