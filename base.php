@@ -10,6 +10,15 @@ function echo_td($contents){
     echo("<td>" . $contents . "</td>");
 }
 
+function echo_strong($contents){
+    echo("<strong>" . $contents . "</strong>");
+}
+
+function echo_div($contents){
+    echo("<div>" . $contents . "</div>");
+}
+
+
 function echo_bootstrap_form_group($type, $name, $placeholder){
     echo("<div class='form-group'>");
         echo("<input type='" . $type . "' name='" . $name . "' placeholder='" . $placeholder . "' >");
