@@ -54,7 +54,8 @@ include_once($absolute_file_url . "/authentication/is_authenticated_otherwise_re
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Item Name</th>
-                        <th scope="col">Price</th>
+                        <th scope="col">(TODO: make field, maybe empty)Price it was bought for</th>
+                        <th scope="col">Price for Selling</th>
                         <th scope="col">Amount</th>
 
                         <th scope="col">Actions</th>
@@ -82,6 +83,7 @@ include_once($absolute_file_url . "/authentication/is_authenticated_otherwise_re
                                     echo("<tr>");
                                         echo_td($item[0]);
                                         echo_td($item[1]);
+                                        echo_td("TODO: create this field");
                                         echo_td($item[2]);
                                         echo_td($item[3]);
 
@@ -106,6 +108,13 @@ include_once($absolute_file_url . "/authentication/is_authenticated_otherwise_re
                     </tbody>
                 </table>
         </div>
+
+        <p>
+            TODO: ability to modify the amount in inventory (increment-, decrement by one)<br>
+            TODO: ability to create a sale from an inventory item using the price for selling on that item as a preset value<br>
+            TODO: ability to edit the item in inventory in all its fields
+
+        </p>
     </div>
 </div>
 
