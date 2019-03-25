@@ -76,7 +76,7 @@ include($absolute_file_url . "/authentication/is_authenticated_otherwise_redirec
                         <th scope="col">Lead Name</th>
                         <th scope="col">Lead Status</th>
 
-                        <th scope="col">Date the Lead became interested</th>
+                        <th scope="col">Date of Contact</th>
                         <th scope="col">What the lead wants</th>
                         <th scope="col">Actions</th>
                     </tr>
@@ -100,7 +100,7 @@ include($absolute_file_url . "/authentication/is_authenticated_otherwise_redirec
                                             make_form($baseurl . "/controllers/leads" . "/post_change_lead_status.php",
                                                 make_hidden_input_number("id","",$lead->id)
                                                 . make_select(Lead_Entity::get_lead_status_valid_values(),$lead->lead_status,"lead_status")
-                                                . make_submit_button("update lead_status","btn btn-outline-secondary")
+                                                . make_submit_button("update status","btn btn-outline-secondary")
                                             )
                                 );
 
