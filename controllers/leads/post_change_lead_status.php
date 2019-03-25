@@ -12,15 +12,18 @@ if(!$_SERVER["REQUEST_METHOD"] === "POST"){
 session_start();
 
 //check for post parameters
-if(isset($_POST["lead_name"]) && isset($_POST["lead_status"]) && isset($_POST["date_of_lead_entry"])  && isset($_POST["what_the_lead_wants"])  ){
+if(  isset($_POST["id"]) && isset($_POST["lead_status"])  ){
     echo("post parameters correct");
 
     $lead_status = $_POST["lead_status"];
+    $id = $_POST["id"]; //id of the lead
 
     //check if lead_status is one of the correct values
     if( in_array($lead_status, Lead_Entity::get_lead_status_valid_values())){
-        insert_lead(new Lead_Entity($_POST["lead_name"],$lead_status,$_POST["date_of_lead_entry"],$_POST["what_the_lead_wants"]));
+        change_lead_status($id,$lead_status);
+        header("Location: " . $baseurl . "/controllers/leads/get_leads.php");
+    }else{
+        echo("lead status not correct");
     }
 }
 
-header("Location: " . $baseurl . "/controllers/leads/get_leads.php");

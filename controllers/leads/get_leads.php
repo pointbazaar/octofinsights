@@ -42,6 +42,15 @@ include($absolute_file_url . "/authentication/is_authenticated_otherwise_redirec
                                 <input type="text" name="lead_name" placeholder="lead_name">
                             </div>
                             <div class="form-group">
+                                <select class="form-control" name="lead_status">
+                                    <option>open_not_contacted</option>
+                                    <option>open_contacted</option>
+                                    <option>open_awaiting_response</option>
+                                    <option>closed_not_converted</option>
+                                    <option>closed_converted</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <input type="date" name="date_of_lead_entry" placeholder="date_of_lead_entry">
                             </div>
                             <div class="form-group">
@@ -66,7 +75,7 @@ include($absolute_file_url . "/authentication/is_authenticated_otherwise_redirec
                         <th scope="col">ID</th>
                         <th scope="col">Lead Name</th>
                         <th scope="col">Lead Status</th>
-                        <th scope="col">Lead Website(TODO, may be empty)</th>
+
                         <th scope="col">Date the Lead became interested</th>
                         <th scope="col">What the lead wants</th>
                         <th scope="col">Actions</th>
@@ -87,19 +96,23 @@ include($absolute_file_url . "/authentication/is_authenticated_otherwise_redirec
                             echo("<tr>");
                                 echo_td($lead->id);
                                 echo_td($lead->lead_name);
-                                echo_td("TODO: make field for lead status");
-                                echo_td("TODO: make field in db");
-                                echo_td($lead->date_of_lead_entry);
+                                echo_td(
+                                            make_form($baseurl . "/controllers/leads" . "/post_change_lead_status.php",
+                                                make_hidden_input_number("id","",$lead->id)
+                                                . make_select(Lead_Entity::get_lead_status_valid_values(),$lead->lead_status,"lead_status")
+                                                . make_bootstrap_submit_button("change lead_status")
+                                            )
+                                );
+
+                                echo_td(date("d-m-Y",strtotime($lead->date_of_lead_entry)));
                                 echo_td($lead->what_the_lead_wants);
 
                                 $delete_button = "<button type='submit' class='btn btn-outline-warning'>" . "delete" . "</button>";
-
-                                echo("<td>");
-                                    echo("<form action='" . $baseurl . "/controllers/leads" . "/post_delete_leads.php" . "' method='post'>");
-                                    echo("<input type='number' name='id' hidden value='" . $lead->id . "'>");
-                                    echo($delete_button);
-                                    echo("</form>");
-                                echo("</td>");
+                                echo_td(
+                                    make_form($baseurl . "/controllers/leads" . "/post_delete_leads.php",
+                                        make_hidden_input_number("id", "",$lead->id) . $delete_button
+                                    )
+                                );
                             echo("</tr>");
                         }
 
