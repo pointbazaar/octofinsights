@@ -100,7 +100,7 @@ include($absolute_file_url . "/authentication/is_authenticated_otherwise_redirec
                                             make_form($baseurl . "/controllers/leads" . "/post_change_lead_status.php",
                                                 make_hidden_input_number("id","",$lead->id)
                                                 . make_select(Lead_Entity::get_lead_status_valid_values(),$lead->lead_status,"lead_status")
-                                                . make_bootstrap_submit_button("change lead_status")
+                                                . make_submit_button("update lead_status","btn btn-outline-secondary")
                                             )
                                 );
 

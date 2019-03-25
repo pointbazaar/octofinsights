@@ -56,12 +56,12 @@ function echo_bootstrap_form_group($type, $name, $placeholder){
     echo("</div>");
 }
 
-function make_bootstrap_submit_button($text){
-    return "<button type='submit'  class='btn btn-primary'>" . $text . "</button>";
+function make_submit_button($text,$class_attribute){
+    return "<button type='submit'  class='" . $class_attribute ."'>" . $text . "</button>";
 }
 
-function echo_bootstrap_submit_button($text){
-    echo(make_bootstrap_submit_button($text));
+function make_bootstrap_submit_button($text){
+    return make_submit_button($text,"btn btn-primary");
 }
 
 ?>
