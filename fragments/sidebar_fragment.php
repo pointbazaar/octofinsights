@@ -27,17 +27,14 @@
     <?php
 
 
-        //echo(getcwd());
 
-        //echo($_SERVER["DOCUMENT_ROOT"]);
-
-        $absolute_file_url = $_SERVER["DOCUMENT_ROOT"] . "/octofinsights";
-
+        include_once($_SERVER["DOCUMENT_ROOT"] . "/base.php");
+        
         include_once($absolute_file_url . "/database/testdatabase.php");
 
         echo("<br>");
 
-        include_once($absolute_file_url . "/base.php");
+
 
         $links = array(
             new MenuItem("Dashboard",    $baseurl . "/index.php",false),
