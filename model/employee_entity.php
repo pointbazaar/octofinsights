@@ -1,7 +1,7 @@
 <?php
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/octofinsights/base.php");
-include_once($absolute_file_url . "/model/IEntity.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/base.php");
+include_once($absolute_file_url . "/include_many.php");
 
 class Employee_Entity implements IEntity {
     public $name;

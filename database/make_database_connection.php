@@ -1,11 +1,7 @@
 <?php
 
 include_once($_SERVER["DOCUMENT_ROOT"] . "/base.php");
-include_once($absolute_file_url . "/model/employee_entity.php");
-include_once($absolute_file_url . "/model/Lead_Entity.php");
-include_once($absolute_file_url . "/model/sale_entity.php");
-include_once($absolute_file_url . "/model/inventory_item_entity.php");
-include_once($absolute_file_url . "/model/Expense_Entity.php");
+include_once($absolute_file_url . "/include_many.php");
 
 function getConnectionPrevious(){
     $servername = "vanautrui.org";

@@ -2,13 +2,7 @@
 include_once($_SERVER["DOCUMENT_ROOT"] . "/base.php");
 include_once($absolute_file_url . "/database/make_database_connection.php");
 
-include_once($absolute_file_url . "/model/sale_entity.php");
-include_once($absolute_file_url . "/model/Expense_Entity.php");
-
-include_once($absolute_file_url . "/services/sales_service.php");
-include_once($absolute_file_url . "/services/Expense_Entity_service.php");
-
-include_once($absolute_file_url . "/model/Transaction_Base_Entity.php");
+include_once($absolute_file_url . "/include_many.php");
 
 class Transaction_Service{
 

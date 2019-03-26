@@ -1,8 +1,12 @@
 <?php
 
+
+
 $baseurl="";
 
 $absolute_file_url = $_SERVER["DOCUMENT_ROOT"] . $baseurl;
+
+include_once($absolute_file_url . "/include_many.php");
 
 //https://www.chartjs.org/samples/latest/
 

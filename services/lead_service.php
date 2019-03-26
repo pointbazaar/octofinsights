@@ -1,8 +1,7 @@
 <?php
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/octofinsights" . "/base.php");
-include_once($absolute_file_url . "/database/make_database_connection.php");
-include_once($absolute_file_url . "/model/Lead_Entity.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/base.php");
+include_once($absolute_file_url . "/include_many.php");
 
 function get_all_leads()
 {
