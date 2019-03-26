@@ -1,6 +1,6 @@
 <?php
 
-$baseurl="/octofinsights";
+$baseurl="";
 
 $absolute_file_url = $_SERVER["DOCUMENT_ROOT"] . $baseurl;
 

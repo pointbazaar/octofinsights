@@ -1,6 +1,6 @@
 <?php
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/octofinsights/base.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/base.php");
 include_once($absolute_file_url . "/model/employee_entity.php");
 include_once($absolute_file_url . "/model/Lead_Entity.php");
 include_once($absolute_file_url . "/model/sale_entity.php");
