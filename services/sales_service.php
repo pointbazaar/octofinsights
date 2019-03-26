@@ -1,7 +1,7 @@
 <?php
 
 include_once($_SERVER["DOCUMENT_ROOT"] . "/base.php");
-include_once($absolute_file_url . "/include_many.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/include_many.php");
 
 function get_all_sales()
 {
@@ -29,7 +29,7 @@ function get_total_sales_price(){
     return $total;
 }
 
-function delete_by_id($id){
+function delete_sale_by_id($id){
 
     delete_from_where_id_is("sales",$id);
 }

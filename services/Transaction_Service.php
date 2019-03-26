@@ -1,8 +1,9 @@
 <?php
 include_once($_SERVER["DOCUMENT_ROOT"] . "/base.php");
-include_once($absolute_file_url . "/database/make_database_connection.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/include_many.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/database/make_database_connection.php");
 
-include_once($absolute_file_url . "/include_many.php");
+
 
 class Transaction_Service{
 

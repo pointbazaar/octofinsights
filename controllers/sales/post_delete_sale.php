@@ -14,7 +14,7 @@ if( isset($_POST["id"]) ){
 
     echo("<p>post parameters correct</p>");
 
-    delete_by_id($_POST["id"]);
+    delete_sale_by_id($_POST["id"]);
 }
 
 header("Location: " . $baseurl . "/controllers/sales/get_sales.php");

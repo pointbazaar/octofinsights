@@ -1,7 +1,7 @@
 <?php
 
 include_once($_SERVER["DOCUMENT_ROOT"] . "/base.php");
-include_once($absolute_file_url . "/include_many.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/include_many.php");
 
 function get_all_leads()
 {
@@ -48,7 +48,7 @@ function change_lead_status($id,$lead_status){
     }
 }
 
-function delete_by_id($id){
+function delete_lead_by_id($id){
     delete_from_where_id_is("leads",$id);
 }
 

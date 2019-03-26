@@ -12,7 +12,7 @@ if(!$_SERVER["REQUEST_METHOD"] === "POST"){
 //check for post parameters
 if( isset($_POST["id"]) ){
     echo("<p>post parameters correct</p>");
-    delete_by_id($_POST["id"]);
+    delete_inventory_item_by_id($_POST["id"]);
 }
 
 header("Location: " . $baseurl . "/controllers/inventory/get_inventory.php");
