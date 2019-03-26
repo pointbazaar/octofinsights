@@ -1,6 +1,6 @@
 <?php
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/octofinsights" . "/base.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/base.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/include_many.php");
 
 function get_all_employees()
