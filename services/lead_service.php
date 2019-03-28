@@ -18,6 +18,19 @@ function get_all_leads()
     return $typed_results;
 }
 
+function get_all_leads_with_status($status){
+    $results = fetch_all_from_where("leads","lead_status='" . $status . "'");
+    $typed_results=array();
+
+    for($i=0;$i<sizeof($results);$i++) {
+        $lead = $results[$i];
+        array_push($typed_results,new Lead_Entity($lead[1],$lead[2],$lead[3],$lead[4]));
+        $typed_results[sizeof($typed_results)-1]->id=$lead[0];
+    }
+
+    return $typed_results;
+}
+
 
 function insert_lead($lead){
 

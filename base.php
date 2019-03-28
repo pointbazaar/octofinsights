@@ -10,6 +10,10 @@ include_once($absolute_file_url . "/include_many.php");
 
 //https://www.chartjs.org/samples/latest/
 
+function make_strong($content){
+    return "<strong>" . $content . "</strong>";
+}
+
 function make_td($contents){
     return "<td>" . $contents . "</td>";
 }
@@ -37,6 +41,36 @@ function make_hidden_input_number($name,$placeholder,$value){
 
 function make_tr($contents){
     return "<tr>". $contents . "</tr>";
+}
+
+function make_th($contents){
+    return "<th scope='col'>" . $contents . "</th>";
+}
+
+function make_thead($content){
+    return "<thead>" . $content . "</thead>";
+}
+
+function make_tbody($content){
+    return "<tbody>" . $content . "</tbody>";
+}
+
+function make_table_simple($class_attr, $contents){
+    return "<table class='" . $class_attr . "'>"
+        . $contents
+        . "</table>";
+}
+
+function make_table($class_attr, $headers,$contents){
+    $header_html = "";
+    for($i=0;$i<sizeof($headers);$i++){
+        $header_html .= make_th($headers[$i]);
+    }
+    return make_table_simple($class_attr, make_thead(make_tr($header_html)) . make_tbody($contents));
+}
+
+function make_hr(){
+    return "<hr>";
 }
 
 function make_input_number($name,$placeholder,$value,$is_hidden){

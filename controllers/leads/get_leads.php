@@ -69,41 +69,43 @@ include($absolute_file_url . "/authentication/is_authenticated_otherwise_redirec
 
             <div class="m-3 p-3"></div>
             <div id="salestable">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Lead Name</th>
-                        <th scope="col">Lead Status</th>
-
-                        <th scope="col">Date of Contact</th>
-                        <th scope="col">What the lead wants</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
 
                     <?php
                     try{
-                        //include_once($absolute_file_url . "/services/lead_service.php");
 
-                        $results = get_all_leads();
+                        $map_to_html = function($item){return $item->get_table_row_html();};
 
-                        for($i=0;$i<sizeof($results);$i++){
-                            $lead=$results[$i];
+                        $open_awaiting_response_result = join("",array_map($map_to_html,get_all_leads_with_status("open_awaiting_response")));
 
-                            echo($lead->get_table_row_html());
-                        }
+                        $open_not_contacted_result =join("",array_map($map_to_html,get_all_leads_with_status("open_not_contacted")));
+
+                        $open_contacted_result = join("",array_map($map_to_html,get_all_leads_with_status("open_contacted")));
+
+                        $closed_converted_result = join("",array_map($map_to_html,get_all_leads_with_status("closed_converted")));
+
+                        $closed_not_converted_result = join("",array_map($map_to_html,get_all_leads_with_status("closed_not_converted")));
+
+                        $table_headers = array("ID","Lead Name","Lead Status","Date of Contact","What the Lead wants","Actions");
+
+
+                        echo(make_strong("NOT CONTACTED:"));
+                        echo(make_table("table",$table_headers,$open_not_contacted_result));
+                        echo(make_strong("Already Contacted:"));
+                        echo(make_table("table",$table_headers,$open_contacted_result));
+                        echo(make_strong("Waiting for Response:"));
+                        echo(make_table("table",$table_headers,$open_awaiting_response_result));
+
+                        echo(make_strong("Closed, Converted:"));
+                        echo(make_table("table",$table_headers,$closed_converted_result));
+                        echo(make_strong("Closed, Not Converted:"));
+                        echo(make_table("table",$table_headers,$closed_not_converted_result));
 
                     }catch (Exception $exception){
                         echo($exception->getMessage());
                     }
-                    
+
                     ?>
 
-                    </tbody>
-                </table>
             </div>
 
             <p>

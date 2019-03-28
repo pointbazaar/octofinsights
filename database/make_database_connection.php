@@ -52,6 +52,12 @@ function fetch_all_from($table){
     return $statement->fetchAll();
 }
 
+function fetch_all_from_Where($table, $whereclause){
+    $statement = getConnectionAndInitDBWithTables()->prepare("SELECT * FROM ". $table . " WHERE " . $whereclause . ";");
+    $statement->execute();
+    return $statement->fetchAll();
+}
+
 function fetch_all_from_order_by($table,$column,$ordering){
     $statement = getConnectionAndInitDBWithTables()->prepare("SELECT * FROM ". $table . " ORDER BY " . $column . " " . $ordering . ";");
     $statement->execute();
