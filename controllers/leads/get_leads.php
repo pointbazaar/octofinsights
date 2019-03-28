@@ -86,39 +86,20 @@ include($absolute_file_url . "/authentication/is_authenticated_otherwise_redirec
 
                     <?php
                     try{
-                        include_once($absolute_file_url . "/services/lead_service.php");
+                        //include_once($absolute_file_url . "/services/lead_service.php");
 
                         $results = get_all_leads();
 
                         for($i=0;$i<sizeof($results);$i++){
                             $lead=$results[$i];
 
-                            echo("<tr>");
-                                echo_td($lead->id);
-                                echo_td($lead->lead_name);
-                                echo_td(
-                                            make_form($baseurl . "/controllers/leads" . "/post_change_lead_status.php",
-                                                make_hidden_input_number("id","",$lead->id)
-                                                . make_select(Lead_Entity::get_lead_status_valid_values(),$lead->lead_status,"lead_status")
-                                                . make_submit_button("update status","btn btn-outline-secondary")
-                                            )
-                                );
-
-                                echo_td(date("d-m-Y",strtotime($lead->date_of_lead_entry)));
-                                echo_td($lead->what_the_lead_wants);
-
-                                $delete_button = "<button type='submit' class='btn btn-outline-warning'>" . "delete" . "</button>";
-                                echo_td(
-                                    make_form($baseurl . "/controllers/leads" . "/post_delete_leads.php",
-                                        make_hidden_input_number("id", "",$lead->id) . $delete_button
-                                    )
-                                );
-                            echo("</tr>");
+                            echo($lead->get_table_row_html());
                         }
 
                     }catch (Exception $exception){
                         echo($exception->getMessage());
                     }
+                    
                     ?>
 
                     </tbody>

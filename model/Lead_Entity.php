@@ -35,4 +35,33 @@ class Lead_Entity implements IEntity
         $index = array_search($this->lead_status,$pretty_values);
         return $pretty_values[$index];
     }
+
+    public function get_table_row_html(){
+        $result=make_tr(
+            make_td($this->id)
+            .
+            make_td($this->lead_name)
+            .
+            make_td(
+                make_form("/controllers/leads" . "/post_change_lead_status.php",
+                    make_hidden_input_number("id","",$this->id)
+                    . make_select(Lead_Entity::get_lead_status_valid_values(),$this->lead_status,"lead_status")
+                    . make_submit_button("update status","btn btn-outline-secondary")
+                )
+            )
+            .
+            make_td(date("d-m-Y",strtotime($this->date_of_lead_entry)))
+            .
+            make_td($this->what_the_lead_wants)
+            .
+            make_td(
+                make_form("/controllers/leads" . "/post_delete_leads.php",
+                    make_hidden_input_number("id", "",$this->id)
+                    .
+                    make_submit_button("delete","btn btn-outline-warning")
+                )
+            )
+        );
+        return $result;
+    }
 }

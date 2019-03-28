@@ -10,8 +10,12 @@ include_once($absolute_file_url . "/include_many.php");
 
 //https://www.chartjs.org/samples/latest/
 
+function make_td($contents){
+    return "<td>" . $contents . "</td>";
+}
+
 function echo_td($contents){
-    echo("<td>" . $contents . "</td>");
+    echo make_td($contents);
 }
 
 function echo_strong($contents){
@@ -29,6 +33,10 @@ function make_form($url,$contents)
 
 function make_hidden_input_number($name,$placeholder,$value){
     return make_input_number($name,$placeholder,$value,true);
+}
+
+function make_tr($contents){
+    return "<tr>". $contents . "</tr>";
 }
 
 function make_input_number($name,$placeholder,$value,$is_hidden){
