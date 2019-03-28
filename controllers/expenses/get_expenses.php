@@ -34,7 +34,7 @@ include_once("../../authentication/is_authenticated_otherwise_redirect.php");
                             echo_bootstrap_form_group("date","expense_date","expense_date");
                             echo_bootstrap_form_group("number","expense_value","expense_value");
 
-                            echo(make_bootstrap_submit_button("Insert Expense"));
+                            echo(bootstrap_submit_button("Insert Expense"));
                             echo("</form>");
                         ?>
 
@@ -75,7 +75,7 @@ include_once("../../authentication/is_authenticated_otherwise_redirect.php");
 
                                     echo("<form action='" . $baseurl . "/controllers/expenses" . "/post_delete_expense.php" . "' method='post'>");
                                         echo("<input type='number' name='id' hidden value='" . $expense->id . "'>");
-                                        echo(make_bootstrap_submit_button("delete"));
+                                        echo(bootstrap_submit_button("delete"));
                                     echo("</form>");
 
                                 echo("</td>");

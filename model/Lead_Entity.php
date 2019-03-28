@@ -37,16 +37,16 @@ class Lead_Entity implements IEntity
     }
 
     public function get_table_row_html(){
-        $result=make_tr(
+        $result=tr(
             make_td($this->id)
             .
             make_td($this->lead_name)
             .
             make_td(
-                make_form("/controllers/leads" . "/post_change_lead_status.php",
+                form("/controllers/leads" . "/post_change_lead_status.php",
                     make_hidden_input_number("id","",$this->id)
-                    . make_select(Lead_Entity::get_lead_status_valid_values(),$this->lead_status,"lead_status")
-                    . make_submit_button("update status","btn btn-outline-secondary")
+                    . select(Lead_Entity::get_lead_status_valid_values(),$this->lead_status,"lead_status")
+                    . submit_button("update status","btn btn-outline-secondary")
                 )
             )
             .
@@ -55,10 +55,10 @@ class Lead_Entity implements IEntity
             make_td($this->what_the_lead_wants)
             .
             make_td(
-                make_form("/controllers/leads" . "/post_delete_leads.php",
+                form("/controllers/leads" . "/post_delete_leads.php",
                     make_hidden_input_number("id", "",$this->id)
                     .
-                    make_submit_button("delete","btn btn-outline-warning")
+                    submit_button("delete","btn btn-outline-warning")
                 )
             )
         );

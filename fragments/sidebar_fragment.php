@@ -46,7 +46,10 @@
             new MenuItem("Employees",    $baseurl . "/controllers/employees/get_employees.php",false),
             new MenuItem("Inventory",    $baseurl . "/controllers/inventory" . "/get_inventory.php",false),
 
-            new MenuItem("Shareholders(TODO)",$baseurl . "/controllers/shareholders/get_shareholders.php",false)
+            new MenuItem("Shareholders(TODO)",$baseurl . "/controllers/shareholders/get_shareholders.php",false),
+            new MenuItem("Timetracking(TODO)","",false),
+            new MenuItem("Taxes(TODO)","",false),
+            new MenuItem("Payroll(TODO)","",false)
         );
 
         class MenuItem{
@@ -68,13 +71,10 @@
         <hr>
         <?php
             for($i=0;$i<sizeof($links);$i++){
-                echo "<a href='" . $links[$i]->link . "'>";
-                    if($links[$i]->is_important){
-                        echo_strong($links[$i]->name);
-                    }else{
-                        echo_div($links[$i]->name);
-                    }
-                echo "</a>";
+                echo(a($links[$i]->link,
+                    div($links[$i]->name)
+                ));
+
                 echo("<hr>");
             }
         ?>

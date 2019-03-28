@@ -88,17 +88,13 @@ include($absolute_file_url . "/authentication/is_authenticated_otherwise_redirec
                         $table_headers = array("ID","Lead Name","Lead Status","Date of Contact","What the Lead wants","Actions");
 
 
-                        echo(make_strong("NOT CONTACTED:"));
-                        echo(make_table("table",$table_headers,$open_not_contacted_result));
-                        echo(make_strong("Already Contacted:"));
-                        echo(make_table("table",$table_headers,$open_contacted_result));
-                        echo(make_strong("Waiting for Response:"));
-                        echo(make_table("table",$table_headers,$open_awaiting_response_result));
 
-                        echo(make_strong("Closed, Converted:"));
-                        echo(make_table("table",$table_headers,$closed_converted_result));
-                        echo(make_strong("Closed, Not Converted:"));
-                        echo(make_table("table",$table_headers,$closed_not_converted_result));
+                        echo(table("table",$table_headers,$open_not_contacted_result
+                        . $open_contacted_result
+                        . $open_awaiting_response_result
+                        . $closed_converted_result
+                        . $closed_not_converted_result));
+
 
                     }catch (Exception $exception){
                         echo($exception->getMessage());
