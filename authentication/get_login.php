@@ -10,7 +10,7 @@ $_SESSION=array();
 ?>
 
 <?php
-include_once("../base.php");
+//include_once("../base.php");
 ?>
 
 <html>
@@ -23,14 +23,16 @@ include_once("../base.php");
 <?php
 
     echo("<h1> Login Page </h1>");
-    echo("<form action='" . $baseurl . "/authentication" ."/post_login.php" . "' method='post'>");
+    echo("<form action='" . "/authentication" ."/post_login.php" . "' method='post'>");
 ?>
 
 <input type="text" name="username" placeholder="username">
 <input type="text" name="password" placeholder="password">
 
+<!--
 <input type="text" name="db-username" placeholder="db-username">
 <input type="text" name="db-password" placeholder="db-password">
+-->
 
 <input type="submit" value="Login">
 

@@ -1,8 +1,12 @@
 <?php
-$absolute_file_url = $_SERVER["DOCUMENT_ROOT"] . $baseurl;
-include_once($absolute_file_url . "/base.php");
 
-session_start();
+include_once($_SERVER["DOCUMENT_ROOT"] . "/base.php");
+
+//session_start();
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 if(!$_SESSION["authenticated"]){
     echo($_SESSION);

@@ -2,17 +2,15 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"] . "/base.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/include_many.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/authentication/is_authenticated_otherwise_redirect.php");
 
 function getConnectionPrevious(){
     $servername = "vanautrui.org";
 
-    $username = $_SESSION["db-username"];
-    $password = $_SESSION["db-password"];
-
     $conn=null;
 
     try {
-        $conn = new PDO("mysql:host=" . $servername . ";", $username, $password);
+        $conn = new PDO("mysql:host=" . $servername . ";", $_SESSION["db-username"], $_SESSION["db-password"]);
 
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

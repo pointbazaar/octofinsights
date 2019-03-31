@@ -1,4 +1,7 @@
+.credentials
+
 .idea/
+
 
 vendor/
 node_modules/

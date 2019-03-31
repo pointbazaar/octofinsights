@@ -64,7 +64,8 @@ include($absolute_file_url . "/authentication/is_authenticated_otherwise_redirec
 
             </table>
             <p>
-                TODO: ability to sort the table by the different fields
+                TODO: ability to sort the table by the different fields<br>
+                TODO: ability to search (searches every field)
             </p>
 
             <div class="m-3 p-3"></div>
