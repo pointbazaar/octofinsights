@@ -1,9 +1,6 @@
 package org.vanautrui.octofinsights;
 
-import org.vanautrui.octofinsights.controllers.IndexController;
-import org.vanautrui.octofinsights.controllers.LeadsController;
-import org.vanautrui.octofinsights.controllers.LoginController;
-import org.vanautrui.octofinsights.controllers.SalesController;
+import org.vanautrui.octofinsights.controllers.*;
 import org.vanautrui.octofinsights.controllers.api.CashFlowEndpoint;
 import org.vanautrui.vaquitamvc.VaquitaApp;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
@@ -24,6 +21,7 @@ public class App
         routes.put("/sales",new SalesController());
 
         routes.put("/login",new LoginController());
+        routes.put("/logout",new LogoutController());
 
         routes.put("/api/cashflow",new CashFlowEndpoint());
 
