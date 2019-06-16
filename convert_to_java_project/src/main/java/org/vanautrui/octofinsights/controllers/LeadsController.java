@@ -21,6 +21,7 @@ import org.vanautrui.vaquitamvc.responses.VaquitaRedirectResponse;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,7 +42,19 @@ public class LeadsController extends VaquitaController {
             ObjectMapper mapper = new ObjectMapper();
             ArrayNode node =  mapper.createArrayNode();
 
-            Result<Record> records = create.select(LEADS.asterisk()).from(LEADS).fetch();
+            //Result<Record> records = create.select(LEADS.asterisk()).from(LEADS).fetch().sortAsc(LEADS.LEAD_STATUS.startsWith("open"));
+            Result<Record> records = create.select(LEADS.asterisk()).from(LEADS).fetch().sortDesc(LEADS.LEAD_STATUS, new Comparator<String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    if(o1.startsWith("open")){
+                        return 1;
+                    }
+                    if(o2.startsWith("open")){
+                        return -1;
+                    }
+                    return 0;
+                }
+            });
 
             String page=
                     html(
