@@ -51,11 +51,14 @@ public class IndexController extends VaquitaController {
                         attrs(".row"),
                         sidebar,
                         div(attrs("#main-content"),
-                            h1("Hello"),
+                            h1("Dashboard"),
                             p(request.session().get().get("username")),
                             p("you have logged in correctly"),
                             /*img().withSrc("/img/hello.png"),*/
-                            canvas(attrs("#myChart")).attr("width",500).attr("height",300)
+                            div(attrs(".col"),
+                                    canvas(attrs("#myChart")).attr("width",500).attr("height",300),
+                                    canvas(attrs("#myChartBusinessValue")).attr("width",500).attr("height",300)
+                            )
                         )
                     ),
                     script().withSrc("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"),
