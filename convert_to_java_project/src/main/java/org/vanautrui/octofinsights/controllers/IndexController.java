@@ -1,6 +1,7 @@
 package org.vanautrui.octofinsights.controllers;
 
 import j2html.tags.ContainerTag;
+import org.vanautrui.octofinsights.SideBarUtil;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
@@ -20,25 +21,11 @@ public class IndexController extends VaquitaController {
     @Override
     public VaquitaHTTPResponse handleGET(VaquitaHTTPRequest request) throws Exception {
 
-        String[] sidebar_links = new String[]{"/sales","/leads","/expenses","/employees","/inventory"};
+
 
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true") ){
 
-            ContainerTag sidebar = div(
-                    attrs("#sidebar .col-md-2 .sidebar .p-3 .bg-light"),
-                    a(h2("Octofinsights")).withHref("/"),
-                    div(
-                        each(
-                                Arrays.stream(sidebar_links).collect(Collectors.toList()),
-                                link->div(
-                                        attrs(".m-3"),
-                                        hr(),
-                                        a(strong(link.substring(1).toUpperCase()))
-                                                .withHref(link)
-                                )
-                        )
-                    )
-            );
+
 
             String page=
             html(
@@ -49,7 +36,7 @@ public class IndexController extends VaquitaController {
                 body(
                     div(
                         attrs(".row"),
-                        sidebar,
+                            SideBarUtil.createSidebar(),
                         div(attrs("#main-content"),
                             h1("Dashboard"),
                             p(request.session().get().get("username")),

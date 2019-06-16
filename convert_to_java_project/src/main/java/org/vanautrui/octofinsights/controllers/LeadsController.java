@@ -1,0 +1,143 @@
+package org.vanautrui.octofinsights.controllers;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import j2html.tags.ContainerTag;
+import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Result;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
+import org.vanautrui.octofinsights.SideBarUtil;
+import org.vanautrui.octofinsights.generated.tables.Leads;
+import org.vanautrui.vaquitamvc.controller.VaquitaController;
+import org.vanautrui.vaquitamvc.controller.VaquitaHTMLController;
+import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
+import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
+import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
+import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
+import org.vanautrui.vaquitamvc.responses.VaquitaRedirectResponse;
+
+import java.sql.Connection;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static j2html.TagCreator.*;
+import static j2html.TagCreator.script;
+import static org.vanautrui.octofinsights.generated.tables.Leads.LEADS;
+
+public class LeadsController extends VaquitaController {
+
+    @Override
+    public VaquitaHTTPResponse handleGET(VaquitaHTTPRequest request) throws Exception {
+
+        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true") ){
+
+            Connection conn= DBUtils.makeDBConnection();
+            DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+            ObjectMapper mapper = new ObjectMapper();
+            ArrayNode node =  mapper.createArrayNode();
+
+            Result<Record> records = create.select(LEADS.asterisk()).from(LEADS).fetch();
+
+            String page=
+                    html(
+                            head(
+                                    title("Octofinsights"),
+                                    link().withRel("stylesheet").withHref("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
+                            ),
+                            body(
+                                    div(
+                                            attrs(".row"),
+                                            SideBarUtil.createSidebar(),
+                                            div(attrs("#main-content"),
+                                                    h1("Leads"),
+                                                    table(
+                                                            attrs(".table"),
+                                                            thead(
+                                                                    th("ID").attr("scope","col"),
+                                                                    th("Lead Name").attr("scope","col"),
+                                                                    th("Lead Status").attr("scope","col"),
+                                                                    th("What the Lead wants").attr("scope","col"),
+                                                                    th("Actions").attr("scope","col")
+                                                            ),
+                                                            tbody(
+                                                                    tr(
+                                                                            td("1"),
+                                                                            td("Max Mustermann"),
+                                                                            td("contacted"),
+                                                                            td("website for his music business"),
+                                                                            td(
+                                                                                    button(attrs(".btn .btn-outline-danger"),"delete"),
+                                                                                    button(attrs(".btn .btn-light"),"update"),
+                                                                                    button(attrs(".btn .btn-light"),"contacted (multiple context sensitive buttons)"),
+                                                                                    button(attrs(".btn .btn-light"),"converted"),
+                                                                                    button(attrs(".btn .btn-light"),"...")
+                                                                            )
+                                                                    ),
+                                                                    each(
+                                                                            records,
+                                                                            record ->
+                                                                                    tr(
+                                                                                            td(record.get(LEADS.ID).toString()),
+                                                                                            td(record.get(LEADS.LEAD_NAME)),
+                                                                                            td(record.get(LEADS.LEAD_STATUS)),
+                                                                                            td(record.get(LEADS.WHAT_THE_LEAD_WANTS)),
+                                                                                            td(
+                                                                                                form(
+                                                                                                        input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
+                                                                                                        button(attrs(".btn .btn-outline-danger"),"delete").withType("submit")
+                                                                                                ).withAction("/leads?action=delete").withMethod("post")
+                                                                                            )
+                                                                                    )
+                                                                    )
+                                                            )
+                                                    )
+                                            )
+                                    )
+                                    /*,
+                                    script().withSrc("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"),
+                                    script().withSrc("/cashflow_chart.js")
+                                     */
+
+                            )
+                    ).render();
+
+            conn.close();
+            return new VaquitaHTMLResponse(200,page);
+
+        }else {
+            return new VaquitaRedirectResponse("/login.html", request);
+        }
+    }
+
+    @Override
+    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest) throws Exception {
+
+        VaquitaHTTPRequest request = vaquitaHTTPEntityEnclosingRequest;
+        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true") ) {
+
+            System.out.println("\ttrying to delete a lead.");
+
+            String action = vaquitaHTTPEntityEnclosingRequest.getQueryParameter("action");
+
+            if(action.equals("delete") && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("id")){
+
+                System.out.println("step 2");
+                int id = Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("id"));
+
+                //delete the lead with that id
+                Connection conn= DBUtils.makeDBConnection();
+
+                DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+                create.deleteFrom(LEADS).where( (LEADS.ID).eq(id) ).execute();
+
+                conn.close();
+            }
+            return new VaquitaHTMLResponse(200,"<html><a href='/leads'>go back to leads</a></html>");
+        }else {
+            return new VaquitaHTMLResponse(400,"<html><a href='/login.html'>go back to login. this was unauthenticated request</a></html>");
+        }
+    }
+}

@@ -1,6 +1,7 @@
 package org.vanautrui.octofinsights;
 
 import org.vanautrui.octofinsights.controllers.IndexController;
+import org.vanautrui.octofinsights.controllers.LeadsController;
 import org.vanautrui.octofinsights.controllers.LoginController;
 import org.vanautrui.octofinsights.controllers.api.CashFlowEndpoint;
 import org.vanautrui.vaquitamvc.VaquitaApp;
@@ -18,6 +19,7 @@ public class App
         Map<String, VaquitaController> routes=new HashMap<String, VaquitaController>();
 
         routes.put("/", new IndexController());
+        routes.put("/leads",new LeadsController());
 
         routes.put("/login",new LoginController());
 
