@@ -92,27 +92,36 @@ public class LeadsController extends VaquitaController {
                                                                                             td(record.get(LEADS.LEAD_STATUS)),
                                                                                             td(record.get(LEADS.WHAT_THE_LEAD_WANTS)),
                                                                                             td(
-                                                                                                form(
-                                                                                                        input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                        button(attrs(".btn .btn-outline-danger"),"delete").withType("submit")
-                                                                                                ).withAction("/leads?action=delete").withMethod("post"),
+                                                                                                div(attrs(".row"),
+                                                                                                        form(
+                                                                                                                input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
+                                                                                                                button(attrs(".btn .btn-outline-danger"),"delete").withType("submit")
+                                                                                                        ).withAction("/leads?action=delete").withMethod("post"),
 
-                                                                                                /*Open the lead again, after it has been closed.
-                                                                                                * Some people become repeat customers.
-                                                                                                * Some people get back to you, even after you have forgotten them
-                                                                                                * */
-                                                                                                form(
-                                                                                                        input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                        button(attrs(".btn .btn-outline-danger"),"open").withType("submit")
-                                                                                                ).withAction("/leads?action=open").withMethod("post"),
+                                                                                                        /*Open the lead again, after it has been closed.
+                                                                                                         * Some people become repeat customers.
+                                                                                                         * Some people get back to you, even after you have forgotten them
+                                                                                                         * */
+                                                                                                        iff(
+                                                                                                                record.get(LEADS.LEAD_STATUS).startsWith("closed"),
+                                                                                                                form(
+                                                                                                                        input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
+                                                                                                                        button(attrs(".btn .btn-outline-danger"),"open").withType("submit")
+                                                                                                                ).withAction("/leads?action=open").withMethod("post")
+                                                                                                        ),
 
-                                                                                                /*close the lead. either they accepted to become a client, or not,
-                                                                                                * the important thing is that we no longer worry about the lead
-                                                                                                * */
-                                                                                                form(
-                                                                                                        input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                        button(attrs(".btn .btn-outline-danger"),"close").withType("submit")
-                                                                                                ).withAction("/leads?action=close").withMethod("post")
+
+                                                                                                        /*close the lead. either they accepted to become a client, or not,
+                                                                                                         * the important thing is that we no longer worry about the lead
+                                                                                                         * */
+                                                                                                        iff(
+                                                                                                            record.get(LEADS.LEAD_STATUS).startsWith("open"),
+                                                                                                            form(
+                                                                                                                    input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
+                                                                                                                    button(attrs(".btn .btn-outline-danger"),"close").withType("submit")
+                                                                                                            ).withAction("/leads?action=close").withMethod("post")
+                                                                                                        )
+                                                                                                )
                                                                                             )
                                                                                     )
                                                                     )
@@ -170,6 +179,22 @@ public class LeadsController extends VaquitaController {
 
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
                 create.insertInto(LEADS).columns(LEADS.LEAD_NAME,LEADS.LEAD_STATUS,LEADS.DATE_OF_LEAD_ENTRY, LEADS.WHAT_THE_LEAD_WANTS).values(name,"open_contacted",new Timestamp(new Date().getTime()),what_the_lead_wants).execute();
+
+                conn.close();
+            }
+
+            if(
+                    (action.equals("open") || action.equals("close")) && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("id")
+            ){
+
+                int id = Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("id"));
+
+                Connection conn= DBUtils.makeDBConnection();
+
+                String new_status = (action.equals("open"))?"open_contacted":"closed_not_converted";
+
+                DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+                create.update(LEADS).set(LEADS.LEAD_STATUS,new_status).where(LEADS.ID.eq(id)).execute();
 
                 conn.close();
             }
