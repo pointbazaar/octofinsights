@@ -4,8 +4,8 @@
   <jdbc>
     <driver>com.mysql.jdbc.Driver</driver>
     <url>jdbc:mysql://vanautrui.org:3306/octofinsights</url>
-    <user>USER</user>
-    <password>PASSWORD</password>
+    <user>root</user>
+    <password>Enderborn1</password>
   </jdbc>
 
   <generator>
@@ -23,7 +23,7 @@
 
       <!-- The database schema (or in the absence of schema support, in your RDBMS this
            can be the owner, user, database name) to be generated -->
-      <inputSchema>library</inputSchema>
+      <inputSchema>octofinsights</inputSchema>
 
       <!-- All elements that are generated from your schema
            (A Java regular expression. Use the pipe to separate several expressions)
@@ -38,10 +38,10 @@
 
     <target>
       <!-- The destination package of your generated classes (within the destination directory) -->
-      <packageName>test.generated</packageName>
+      <packageName>org.vanautrui.octofinsights.generated</packageName>
 
       <!-- The destination directory of your generated classes. Using Maven directory layout here -->
-      <directory>/octofinsights/src/main/java</directory>
+      <directory>target/generated-sources</directory>
     </target>
   </generator>
 </configuration>
