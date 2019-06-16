@@ -1,14 +1,18 @@
 var ctx = document.getElementById('myChart').getContext('2d');
 var ctx2 = document.getElementById('myChartBusinessValue').getContext('2d');
 
+
 fetch("/api/cashflow").then(data=>data.json()).then(data=>{draw_sales(data);});
 
+
+
+var myChart;
 
 function draw_sales(values){
 
     console.log(values);
 
-    var myChart = new Chart(ctx, {
+    myChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: values.map(x=>x.label),

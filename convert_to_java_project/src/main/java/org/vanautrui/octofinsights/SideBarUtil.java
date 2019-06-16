@@ -11,7 +11,7 @@ public class SideBarUtil {
 
     public static ContainerTag createSidebar(){
 
-        String[] sidebar_links = new String[]{"/sales","/leads","/expenses","/employees","/inventory"};
+        String[] sidebar_links = new String[]{"/sales","/leads","/logout"};
 
         ContainerTag sidebar = div(
                 attrs("#sidebar .col-md-2 .sidebar .p-3 .bg-light"),

@@ -43,8 +43,8 @@ public class IndexController extends VaquitaController {
                             p("you have logged in correctly"),
                             /*img().withSrc("/img/hello.png"),*/
                             div(attrs(".col"),
-                                    canvas(attrs("#myChart")).attr("width",500).attr("height",300),
-                                    canvas(attrs("#myChartBusinessValue")).attr("width",500).attr("height",300)
+                                    canvas(attrs("#myChart")),
+                                    canvas(attrs("#myChartBusinessValue"))
                             )
                         )
                     ),
