@@ -83,19 +83,6 @@ public class LeadsController extends VaquitaController {
                                                                     th("Actions").attr("scope","col")
                                                             ),
                                                             tbody(
-                                                                    tr(
-                                                                            td("1"),
-                                                                            td("Max Mustermann"),
-                                                                            td("contacted"),
-                                                                            td("website for his music business"),
-                                                                            td(
-                                                                                    button(attrs(".btn .btn-outline-danger"),"delete"),
-                                                                                    button(attrs(".btn .btn-light"),"update"),
-                                                                                    button(attrs(".btn .btn-light"),"contacted (multiple context sensitive buttons)"),
-                                                                                    button(attrs(".btn .btn-light"),"converted"),
-                                                                                    button(attrs(".btn .btn-light"),"...")
-                                                                            )
-                                                                    ),
                                                                     each(
                                                                             records,
                                                                             record ->
