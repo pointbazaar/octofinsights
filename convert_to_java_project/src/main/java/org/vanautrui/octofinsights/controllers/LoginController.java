@@ -1,4 +1,4 @@
-package org.vanautrui.controllers;
+package org.vanautrui.octofinsights.controllers;
 
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
@@ -8,9 +8,7 @@ import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class LoginController extends VaquitaController {
 

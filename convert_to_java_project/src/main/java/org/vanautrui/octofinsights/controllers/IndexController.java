@@ -1,17 +1,13 @@
-package org.vanautrui.controllers;
+package org.vanautrui.octofinsights.controllers;
 
 import j2html.tags.ContainerTag;
-import j2html.tags.EmptyTag;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
-import org.vanautrui.vaquitamvc.controller.VaquitaTextController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
-
-import javax.swing.text.Document;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;

@@ -97,7 +97,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>org.vanautrui.App</mainClass>
+                    <mainClass>org.vanautrui.octofinsights.App</mainClass>
                 </configuration>
                 <version>1.6.0</version>
             </plugin>

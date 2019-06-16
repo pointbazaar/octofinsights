@@ -1,12 +1,10 @@
-package org.vanautrui;
+package org.vanautrui.octofinsights;
 
-import org.vanautrui.controllers.IndexController;
-import org.vanautrui.controllers.LoginController;
+import org.vanautrui.octofinsights.controllers.IndexController;
+import org.vanautrui.octofinsights.controllers.LoginController;
+import org.vanautrui.octofinsights.controllers.api.CashFlowEndpoint;
 import org.vanautrui.vaquitamvc.VaquitaApp;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
-import org.vanautrui.vaquitamvc.controller.VaquitaTextController;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
-import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +20,8 @@ public class App
         routes.put("/", new IndexController());
 
         routes.put("/login",new LoginController());
+
+        routes.put("/api/cashflow",new CashFlowEndpoint());
 
         try {
             VaquitaApp app = new VaquitaApp(8080, routes, false);
