@@ -19,7 +19,9 @@ import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectResponse;
 
 import java.sql.Connection;
+import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,6 +55,11 @@ public class LeadsController extends VaquitaController {
                                             SideBarUtil.createSidebar(),
                                             div(attrs("#main-content"),
                                                     h1("Leads"),
+                                                    form(
+                                                            input().withName("name").withPlaceholder("name"),
+                                                            input().withName("what_the_lead_wants").withPlaceholder("what the lead wants"),
+                                                            button(attrs(".btn .btn-outline-success"),"Insert").withType("submit")
+                                                    ).withAction("/leads?action=insert").withMethod("post"),
                                                     table(
                                                             attrs(".table"),
                                                             thead(
@@ -88,7 +95,24 @@ public class LeadsController extends VaquitaController {
                                                                                                 form(
                                                                                                         input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
                                                                                                         button(attrs(".btn .btn-outline-danger"),"delete").withType("submit")
-                                                                                                ).withAction("/leads?action=delete").withMethod("post")
+                                                                                                ).withAction("/leads?action=delete").withMethod("post"),
+
+                                                                                                /*Open the lead again, after it has been closed.
+                                                                                                * Some people become repeat customers.
+                                                                                                * Some people get back to you, even after you have forgotten them
+                                                                                                * */
+                                                                                                form(
+                                                                                                        input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
+                                                                                                        button(attrs(".btn .btn-outline-danger"),"open").withType("submit")
+                                                                                                ).withAction("/leads?action=open").withMethod("post"),
+
+                                                                                                /*close the lead. either they accepted to become a client, or not,
+                                                                                                * the important thing is that we no longer worry about the lead
+                                                                                                * */
+                                                                                                form(
+                                                                                                        input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
+                                                                                                        button(attrs(".btn .btn-outline-danger"),"close").withType("submit")
+                                                                                                ).withAction("/leads?action=close").withMethod("post")
                                                                                             )
                                                                                     )
                                                                     )
@@ -118,8 +142,6 @@ public class LeadsController extends VaquitaController {
         VaquitaHTTPRequest request = vaquitaHTTPEntityEnclosingRequest;
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true") ) {
 
-            System.out.println("\ttrying to delete a lead.");
-
             String action = vaquitaHTTPEntityEnclosingRequest.getQueryParameter("action");
 
             if(action.equals("delete") && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("id")){
@@ -135,6 +157,23 @@ public class LeadsController extends VaquitaController {
 
                 conn.close();
             }
+
+            if(action.equals("insert")
+                    && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("name")
+                    && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("what_the_lead_wants")
+            ){
+
+                String name = vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("name");
+                String what_the_lead_wants = vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("what_the_lead_wants");
+
+                Connection conn= DBUtils.makeDBConnection();
+
+                DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+                create.insertInto(LEADS).columns(LEADS.LEAD_NAME,LEADS.LEAD_STATUS,LEADS.DATE_OF_LEAD_ENTRY, LEADS.WHAT_THE_LEAD_WANTS).values(name,"open_contacted",new Timestamp(new Date().getTime()),what_the_lead_wants).execute();
+
+                conn.close();
+            }
+
             return new VaquitaHTMLResponse(200,"<html><a href='/leads'>go back to leads</a></html>");
         }else {
             return new VaquitaHTMLResponse(400,"<html><a href='/login.html'>go back to login. this was unauthenticated request</a></html>");
