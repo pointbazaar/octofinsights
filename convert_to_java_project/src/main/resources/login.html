@@ -9,23 +9,55 @@
 <html>
 <head>
     <meta charset="=UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
 </head>
 
 <body>
 
-    <h1> Login Page </h1>
-    <form action="/login" method="post">
-        <input type="text" name="username" value="test" placeholder="username">
-        <input type="text" name="password" value="test" placeholder="password">
-        <input type="text" name="business" value="vanautrui" placeholder="vanautrui">
-        <input type="submit" value="Login">
-    </form>
+    <div class="container">
+        <h1> Login Page </h1>
 
-    <p>
-        Credentials for testing:<br>
-        test<br>
-        test<br>
-    </p>
+        <form action="/login" method="post">
+            <div class="form-group">
+                <label for="username">Email address</label>
+                <input
+                        name="username"
+                        type="text"
+                        class="form-control"
+                        id="username"
+                        placeholder="username"
+                        value="test">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                        name="password"
+                        type="password"
+                        class="form-control"
+                        id="password"
+                        placeholder="Password"
+                        value="test">
+            </div>
+            <div class="form-group">
+                <label for="business">Email address</label>
+                <input
+                        name="business"
+                        type="text"
+                        class="form-control"
+                        id="business"
+                        placeholder="business"
+                        value="vanautrui">
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+
+        <p>
+            Credentials for testing:<br>
+            test<br>
+            test<br>
+            vanautrui<br>
+        </p>
+    </div>
 
 </body>
 </html>
