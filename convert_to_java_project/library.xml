@@ -4,8 +4,8 @@
   <jdbc>
     <driver>com.mysql.jdbc.Driver</driver>
     <url>jdbc:mysql://vanautrui.org:3306/octofinsights</url>
-    <user>root</user>
-    <password>Enderborn1</password>
+    <user>username</user>
+    <password>password</password>
   </jdbc>
 
   <generator>
