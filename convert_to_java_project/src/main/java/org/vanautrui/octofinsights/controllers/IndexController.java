@@ -1,7 +1,7 @@
 package org.vanautrui.octofinsights.controllers;
 
-import j2html.tags.ContainerTag;
-import org.vanautrui.octofinsights.SideBarUtil;
+import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
+import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
@@ -9,9 +9,6 @@ import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
-
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 import static j2html.TagCreator.*;
 
@@ -29,14 +26,10 @@ public class IndexController extends VaquitaController {
 
             String page=
             html(
-                head(
-                    title("Octofinsights"),
-                    link().withRel("stylesheet").withHref("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
-                ),
+                HeadUtil.makeHead(),
                 body(
+                    NavigationUtil.createNavbar(),
                     div(
-                        attrs(".row"),
-                            SideBarUtil.createSidebar(),
                         div(attrs("#main-content"),
                             h1("Dashboard"),
                             p(request.session().get().get("username")),
@@ -57,7 +50,7 @@ public class IndexController extends VaquitaController {
             return new VaquitaHTMLResponse(200,page);
 
         }else {
-            return new VaquitaRedirectResponse("/login.html", request);
+            return new VaquitaRedirectResponse("/login", request);
         }
     }
 

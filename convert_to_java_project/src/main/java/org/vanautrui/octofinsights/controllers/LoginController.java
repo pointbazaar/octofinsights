@@ -1,5 +1,7 @@
 package org.vanautrui.octofinsights.controllers;
 
+import j2html.tags.ContainerTag;
+import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
@@ -10,6 +12,8 @@ import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
 
 import java.util.Map;
 
+import static j2html.TagCreator.*;
+
 public class LoginController extends VaquitaController {
 
 
@@ -17,7 +21,30 @@ public class LoginController extends VaquitaController {
     @Override
     public VaquitaHTTPResponse handleGET(VaquitaHTTPRequest vaquitaHTTPRequest) throws Exception {
 
-        return new VaquitaTextResponse(404,"not implemented GET for logincontroller");
+        ContainerTag page =
+                html(
+                        HeadUtil.makeHead(),
+                        body(
+                                div(
+                                        attrs(".container"),
+                                        h1("Login"),
+                                        form(
+                                                label("Email"),
+                                                input().withName("username").withPlaceholder("username").withValue("test").withType("text"),
+                                                label("Password"),
+                                                input().withName("password").withPlaceholder("password").withValue("test").withType("password"),
+                                                label("Business"),
+                                                input().withName("business").withPlaceholder("business").withValue("test").withType("text"),
+                                                button(attrs(".btn .btn-primary"),"Login").withType("submit")
+                                        ).withAction("/login").withMethod("post"),
+                                        p(
+                                                "test credentials: 'test','test','vanautrui'"
+                                        )
+                                )
+                        )
+                );
+
+        return new VaquitaHTMLResponse(200,page.render());
     }
 
     @Override
@@ -39,6 +66,6 @@ public class LoginController extends VaquitaController {
             }
         }
 
-        return new VaquitaRedirectResponse("/login.html?message=wrong_password",vaquitaHTTPEntityEnclosingRequest);
+        return new VaquitaRedirectResponse("/login?message=wrong_password",vaquitaHTTPEntityEnclosingRequest);
     }
 }

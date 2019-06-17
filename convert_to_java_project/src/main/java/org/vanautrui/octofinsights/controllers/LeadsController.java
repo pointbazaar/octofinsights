@@ -2,16 +2,14 @@ package org.vanautrui.octofinsights.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import j2html.tags.ContainerTag;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
-import org.vanautrui.octofinsights.SideBarUtil;
-import org.vanautrui.octofinsights.generated.tables.Leads;
+import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
+import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
-import org.vanautrui.vaquitamvc.controller.VaquitaHTMLController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
@@ -20,11 +18,8 @@ import org.vanautrui.vaquitamvc.responses.VaquitaRedirectResponse;
 
 import java.sql.Connection;
 import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static j2html.TagCreator.*;
 import static j2html.TagCreator.script;
@@ -58,14 +53,10 @@ public class LeadsController extends VaquitaController {
 
             String page=
                     html(
-                            head(
-                                    title("Octofinsights"),
-                                    link().withRel("stylesheet").withHref("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
-                            ),
+                            HeadUtil.makeHead(),
                             body(
+                                    NavigationUtil.createNavbar(),
                                     div(
-                                            attrs(".row"),
-                                            SideBarUtil.createSidebar(),
                                             div(attrs("#main-content"),
                                                     h1("Leads"),
                                                     form(
@@ -141,7 +132,7 @@ public class LeadsController extends VaquitaController {
             return new VaquitaHTMLResponse(200,page);
 
         }else {
-            return new VaquitaRedirectResponse("/login.html", request);
+            return new VaquitaRedirectResponse("/login", request);
         }
     }
 
@@ -201,7 +192,7 @@ public class LeadsController extends VaquitaController {
 
             return new VaquitaHTMLResponse(200,"<html><a href='/leads'>go back to leads</a></html>");
         }else {
-            return new VaquitaHTMLResponse(400,"<html><a href='/login.html'>go back to login. this was unauthenticated request</a></html>");
+            return new VaquitaHTMLResponse(400,"<html><a href='/login'>go back to login. this was unauthenticated request</a></html>");
         }
     }
 }
