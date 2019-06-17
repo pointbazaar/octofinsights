@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.jooq.*;
 import org.jooq.impl.DSL;
-import org.vanautrui.octofinsights.controllers.DBUtils;
+import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.vaquitamvc.controller.VaquitaJSONController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;

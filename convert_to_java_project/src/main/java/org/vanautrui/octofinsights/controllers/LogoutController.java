@@ -1,15 +1,10 @@
 package org.vanautrui.octofinsights.controllers;
 
-import org.vanautrui.vaquitamvc.VaquitaAppBase;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
-
-import java.util.Map;
 
 public class LogoutController extends VaquitaController {
 

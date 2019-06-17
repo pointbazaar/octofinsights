@@ -17,11 +17,15 @@ public class App
         Map<String, VaquitaController> routes=new HashMap<String, VaquitaController>();
 
         routes.put("/", new IndexController());
+
+        routes.put("/dashboard",new DashboardController());
         routes.put("/leads",new LeadsController());
         routes.put("/sales",new SalesController());
 
         routes.put("/login",new LoginController());
         routes.put("/logout",new LogoutController());
+
+        routes.put("/register",new RegisterController());
 
         routes.put("/api/cashflow",new CashFlowEndpoint());
 
