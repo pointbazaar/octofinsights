@@ -19,11 +19,7 @@ public class NavigationUtil {
                         attrs(".navbar .navbar-expand-lg .navbar-light .bg-light"),
                         a(
                                 attrs(".navbar-brand"),
-                                div(
-                                        attrs(".row .align-items-center"),
-                                        img().withSrc("https://image.flaticon.com/icons/svg/1197/1197854.svg").withStyle("height: 14vw; max-height:2cm; min-height:0.5cm;"),
-                                        h2("Octofinsights").withStyle("color: "+ App.octofinsights_primary_color+"")
-                                )
+                                BrandUtil.createBrandLogoAndText()
                         ).withHref("/"),
                         button(
                                 attrs(".navbar-toggler"),
