@@ -135,7 +135,7 @@ public class ExpensesController extends VaquitaController {
                 String expense_name = vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("expense_name");
                 String expense_date= vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("expense_date");
 
-                Date expenseDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(expense_date);
+                Date expenseDate = new SimpleDateFormat("yyyy-MM-dd").parse(expense_date);
 
                 Timestamp expense_date_timestamp = new Timestamp(expenseDate.getTime());
 
@@ -152,7 +152,7 @@ public class ExpensesController extends VaquitaController {
                 conn.close();
             }
 
-            return new VaquitaRedirectToGETResponse("/EXPENSES",request);
+            return new VaquitaRedirectToGETResponse("/expenses",request);
         }else {
             return new VaquitaRedirectToGETResponse("/login",request);
         }

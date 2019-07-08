@@ -12,7 +12,13 @@ public class NavigationUtil {
 
 
     public static ContainerTag createNavbar(String username){
-        String[][] sidebar_links = new String[][]{new String[]{"/","Dashboard"},new String[]{"/sales","Sales"},new String[]{"/leads","Leads"},new String[]{"/logout","Logout"}};
+        String[][] sidebar_links = new String[][]{
+                new String[]{"/","Dashboard"},
+                new String[]{"/sales","Sales"},
+                new String[]{"/leads","Leads"},
+                new String[]{"/logout","Logout"},
+                new String[]{"/expenses","Expenses"}
+        };
 
         ContainerTag navbar=
                 nav(

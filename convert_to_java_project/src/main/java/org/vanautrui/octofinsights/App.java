@@ -25,6 +25,8 @@ public class App
         routes.put("/leads",new LeadsController());
         routes.put("/sales",new SalesController());
 
+        routes.put("/expenses",new ExpensesController());
+
         routes.put("/login",new LoginController());
         routes.put("/logout",new LogoutController());
 
