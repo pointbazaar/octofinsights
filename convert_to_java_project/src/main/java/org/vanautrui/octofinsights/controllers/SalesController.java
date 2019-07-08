@@ -43,7 +43,7 @@ public class SalesController extends VaquitaController {
                             HeadUtil.makeHead(),
                             body(
                                     NavigationUtil.createNavbar(),
-                                    div(
+                                    div(attrs(".container"),
                                             div(attrs("#main-content"),
                                                     h1("Sales"),
                                                     form(
