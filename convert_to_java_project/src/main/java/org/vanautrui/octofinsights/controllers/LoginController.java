@@ -39,8 +39,6 @@ public class LoginController extends VaquitaController {
                                                 input().withName("username").withPlaceholder("username").withValue("test").withType("text"),
                                                 label("Password"),
                                                 input().withName("password").withPlaceholder("password").withValue("test").withType("password"),
-                                                label("Business"),
-                                                input().withName("business").withPlaceholder("business").withValue("test").withType("text"),
                                                 button(attrs(".btn .btn-primary"),"Login").withType("submit")
                                         ).withAction("/login").withMethod("post"),
                                         p(
@@ -87,7 +85,7 @@ public class LoginController extends VaquitaController {
 
                 vaquitaHTTPEntityEnclosingRequest.session().get().put("authenticated", "true");
                 vaquitaHTTPEntityEnclosingRequest.session().get().put("username", parameters.get("username"));
-                vaquitaHTTPEntityEnclosingRequest.session().get().put("user_business_id", id.get().toString());
+                vaquitaHTTPEntityEnclosingRequest.session().get().put("user_id", id.get().toString());
 
                 return new VaquitaRedirectToGETResponse("/",vaquitaHTTPEntityEnclosingRequest);
             }else {

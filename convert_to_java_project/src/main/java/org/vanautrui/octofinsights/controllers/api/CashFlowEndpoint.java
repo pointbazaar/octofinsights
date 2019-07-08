@@ -9,7 +9,9 @@ import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
+import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaJSONResponse;
+import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
 
 import java.sql.Connection;
 import java.sql.Timestamp;
@@ -19,12 +21,15 @@ import static org.vanautrui.octofinsights.generated.Tables.*;
 
 public class CashFlowEndpoint extends VaquitaController {
     @Override
-    public VaquitaJSONResponse handleGET(VaquitaHTTPRequest vaquitaHTTPRequest) throws Exception {
+    public VaquitaHTTPResponse handleGET(VaquitaHTTPRequest req) throws Exception {
 
-        Connection conn= DBUtils.makeDBConnection();
-        DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-        ObjectMapper mapper = new ObjectMapper();
-        ArrayNode node =  mapper.createArrayNode();
+        if(req.session().isPresent() && req.session().get().containsKey("user_id")){
+            int user_id = Integer.parseInt(req.session().get().get("user_id"));
+
+            Connection conn= DBUtils.makeDBConnection();
+            DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+            ObjectMapper mapper = new ObjectMapper();
+            ArrayNode node =  mapper.createArrayNode();
 
         /*
         Result<Record2<Integer, String>> result = create.select(
@@ -34,34 +39,41 @@ public class CashFlowEndpoint extends VaquitaController {
          */
 
 
-        Result<Record3<Integer, String, Timestamp>> result =
-                create.select(
+            Result<Record3<Integer, String, Timestamp>> result =
+                    create.select(
                             (SALES.PRICE_OF_SALE).as("value"),
                             (SALES.PRODUCT_OR_SERVICE).as("label"),
                             (SALES.TIME_OF_SALE).as("time")
-                )
-                        .from(SALES)
-                        .union(create.select(
-                                (EXPENSES.EXPENSE_VALUE).as("value"),
-                                (EXPENSES.EXPENSE_NAME).as("label"),
-                                (EXPENSES.EXPENSE_DATE).as("time")
-                        )
-                                .from(EXPENSES)).orderBy(3)
-                        .fetch();
+                    )
+                            .from(SALES).where(SALES.USER_ID.eq(user_id)).orderBy(SALES.TIME_OF_SALE)
+                            .union(create.select(
+                                    (EXPENSES.EXPENSE_VALUE).as("value"),
+                                    (EXPENSES.EXPENSE_NAME).as("label"),
+                                    (EXPENSES.EXPENSE_DATE).as("time")
+                            )
+                                    .from(EXPENSES).where(EXPENSES.USER_ID.eq(user_id))).orderBy(3)
+                            .fetch();
 
-        //List<Integer> sales_list = new ArrayList<>();
+            //List<Integer> sales_list = new ArrayList<>();
 
-        for(Record3<Integer, String, Timestamp> r : result){
-            ObjectNode objectNode = mapper.createObjectNode();
-            objectNode.put("value",r.value1());
-            objectNode.put("label",r.value2().substring(0,Math.min(r.value2().length(),25)));
+            for(Record3<Integer, String, Timestamp> r : result){
+                ObjectNode objectNode = mapper.createObjectNode();
+                objectNode.put("value",r.value1());
+                objectNode.put("label",r.value2().substring(0,Math.min(r.value2().length(),25)));
 
-            node.add(objectNode);
+                node.add(objectNode);
+            }
+
+            conn.close();
+
+            return new VaquitaJSONResponse(200,node);
+        }else{
+            return new VaquitaTextResponse(400, "Bad Request, no user_id found in session.");
         }
 
-        conn.close();
 
-        return new VaquitaJSONResponse(200,node);
+
+
     }
 
     @Override

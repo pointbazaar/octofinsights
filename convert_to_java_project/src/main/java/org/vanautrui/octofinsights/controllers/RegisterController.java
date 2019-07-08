@@ -39,9 +39,7 @@ public class RegisterController extends VaquitaController {
                                                 label("username"),
                                                 input().withName("username").withPlaceholder("username").withType("text"),
                                                 label("Password"),
-                                                input().withName("password").withPlaceholder("password").withType("password")/*,
-                                                label("Business"),
-                                                input().withName("business").withPlaceholder("business").withValue("test").withType("text")*/,
+                                                input().withName("password").withPlaceholder("password").withType("password"),
                                                 button(attrs(".btn .btn-primary"),"Register").withType("submit")
                                         ).withAction("/register").withMethod("post")
                                 )

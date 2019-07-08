@@ -28,7 +28,10 @@ public class SalesController extends VaquitaController {
     @Override
     public VaquitaHTTPResponse handleGET(VaquitaHTTPRequest request) throws Exception {
 
-        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true") ){
+        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
+                && request.session().get().containsKey("user_id")
+        ){
+            int user_id = Integer.parseInt(request.session().get().get("user_id"));
 
             Connection conn= DBUtils.makeDBConnection();
             DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -36,7 +39,7 @@ public class SalesController extends VaquitaController {
             ArrayNode node =  mapper.createArrayNode();
 
             //Result<Record> records = create.select(LEADS.asterisk()).from(LEADS).fetch().sortAsc(LEADS.LEAD_STATUS.startsWith("open"));
-            Result<Record> records = create.select(SALES.asterisk()).from(SALES).fetch().sortDesc(SALES.TIME_OF_SALE);
+            Result<Record> records = create.select(SALES.asterisk()).from(SALES).where(SALES.USER_ID.eq(user_id)).fetch().sortDesc(SALES.TIME_OF_SALE);
 
             String page=
                     html(
@@ -104,7 +107,11 @@ public class SalesController extends VaquitaController {
     public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest) throws Exception {
 
         VaquitaHTTPRequest request = vaquitaHTTPEntityEnclosingRequest;
-        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true") ) {
+        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
+                && request.session().get().containsKey("user_id")
+        ) {
+
+            int user_id = Integer.parseInt(request.session().get().get("user_id"));
 
             String action = vaquitaHTTPEntityEnclosingRequest.getQueryParameter("action");
 
@@ -117,7 +124,7 @@ public class SalesController extends VaquitaController {
                 Connection conn= DBUtils.makeDBConnection();
 
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-                create.deleteFrom(SALES).where( (SALES.ID).eq(id) ).execute();
+                create.deleteFrom(SALES).where( (SALES.ID).eq(id).and((SALES.USER_ID).eq(user_id)) ).execute();
 
                 conn.close();
             }
@@ -137,8 +144,8 @@ public class SalesController extends VaquitaController {
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
                 create
                         .insertInto(SALES)
-                        .columns(SALES.CUSTOMER_NAME,SALES.PRODUCT_OR_SERVICE,SALES.PRICE_OF_SALE)
-                        .values(customer_name,product_or_service,price).execute();
+                        .columns(SALES.CUSTOMER_NAME,SALES.PRODUCT_OR_SERVICE,SALES.PRICE_OF_SALE, SALES.USER_ID)
+                        .values(customer_name,product_or_service,price,user_id).execute();
 
                 conn.close();
             }

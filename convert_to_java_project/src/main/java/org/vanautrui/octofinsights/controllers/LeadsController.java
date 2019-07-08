@@ -25,13 +25,18 @@ import java.util.Comparator;
 import java.util.Date;
 
 import static j2html.TagCreator.*;
+import static org.vanautrui.octofinsights.generated.tables.Leads.LEADS;
 
 public class LeadsController extends VaquitaController {
 
     @Override
     public VaquitaHTTPResponse handleGET(VaquitaHTTPRequest request) throws Exception {
 
-        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true") ){
+        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
+                && request.session().get().containsKey("user_id")
+        ){
+
+            int user_id = Integer.parseInt(request.session().get().get("user_id"));
 
             Connection conn= DBUtils.makeDBConnection();
             DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -39,7 +44,7 @@ public class LeadsController extends VaquitaController {
             ArrayNode node =  mapper.createArrayNode();
 
             //Result<Record> records = create.select(LEADS.asterisk()).from(LEADS).fetch().sortAsc(LEADS.LEAD_STATUS.startsWith("open"));
-            Result<Record> records = create.select(Leads.LEADS.asterisk()).from(Leads.LEADS).fetch().sortDesc(Leads.LEADS.LEAD_STATUS, new Comparator<String>() {
+            Result<Record> records = create.select(LEADS.asterisk()).from(LEADS).where(LEADS.USER_ID.eq(user_id)).fetch().sortDesc(LEADS.LEAD_STATUS, new Comparator<String>() {
                 @Override
                 public int compare(String o1, String o2) {
                     if(o1.startsWith("open")){
@@ -79,14 +84,14 @@ public class LeadsController extends VaquitaController {
                                                                             records,
                                                                             record ->
                                                                                     tr(
-                                                                                            td(record.get(Leads.LEADS.ID).toString()),
-                                                                                            td(record.get(Leads.LEADS.LEAD_NAME)),
-                                                                                            td(record.get(Leads.LEADS.LEAD_STATUS)),
-                                                                                            td(record.get(Leads.LEADS.WHAT_THE_LEAD_WANTS)),
+                                                                                            td(record.get(LEADS.ID).toString()),
+                                                                                            td(record.get(LEADS.LEAD_NAME)),
+                                                                                            td(record.get(LEADS.LEAD_STATUS)),
+                                                                                            td(record.get(LEADS.WHAT_THE_LEAD_WANTS)),
                                                                                             td(
                                                                                                 div(attrs(".row"),
                                                                                                         form(
-                                                                                                                input().withName("id").isHidden().withValue(record.get(Leads.LEADS.ID).toString()),
+                                                                                                                input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
                                                                                                                 button(attrs(".btn .btn-outline-danger"),"delete").withType("submit")
                                                                                                         ).withAction("/leads?action=delete").withMethod("post"),
 
@@ -95,9 +100,9 @@ public class LeadsController extends VaquitaController {
                                                                                                          * Some people get back to you, even after you have forgotten them
                                                                                                          * */
                                                                                                         iff(
-                                                                                                                record.get(Leads.LEADS.LEAD_STATUS).startsWith("closed"),
+                                                                                                                record.get(LEADS.LEAD_STATUS).startsWith("closed"),
                                                                                                                 form(
-                                                                                                                        input().withName("id").isHidden().withValue(record.get(Leads.LEADS.ID).toString()),
+                                                                                                                        input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
                                                                                                                         button(attrs(".btn .btn-outline-danger"),"open").withType("submit")
                                                                                                                 ).withAction("/leads?action=open").withMethod("post")
                                                                                                         ),
@@ -107,9 +112,9 @@ public class LeadsController extends VaquitaController {
                                                                                                          * the important thing is that we no longer worry about the lead
                                                                                                          * */
                                                                                                         iff(
-                                                                                                            record.get(Leads.LEADS.LEAD_STATUS).startsWith("open"),
+                                                                                                            record.get(LEADS.LEAD_STATUS).startsWith("open"),
                                                                                                             form(
-                                                                                                                    input().withName("id").isHidden().withValue(record.get(Leads.LEADS.ID).toString()),
+                                                                                                                    input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
                                                                                                                     button(attrs(".btn .btn-outline-danger"),"close").withType("submit")
                                                                                                             ).withAction("/leads?action=close").withMethod("post")
                                                                                                         )
@@ -141,7 +146,11 @@ public class LeadsController extends VaquitaController {
     public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest) throws Exception {
 
         VaquitaHTTPRequest request = vaquitaHTTPEntityEnclosingRequest;
-        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true") ) {
+        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
+                && request.session().get().containsKey("user_id")
+        ){
+
+            int user_id = Integer.parseInt(request.session().get().get("user_id"));
 
             String action = vaquitaHTTPEntityEnclosingRequest.getQueryParameter("action");
 
@@ -154,7 +163,7 @@ public class LeadsController extends VaquitaController {
                 Connection conn= DBUtils.makeDBConnection();
 
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-                create.deleteFrom(Leads.LEADS).where( (Leads.LEADS.ID).eq(id) ).execute();
+                create.deleteFrom(LEADS).where( (LEADS.ID).eq(id).and(LEADS.USER_ID.eq(user_id)) ).execute();
 
                 conn.close();
             }
@@ -170,7 +179,7 @@ public class LeadsController extends VaquitaController {
                 Connection conn= DBUtils.makeDBConnection();
 
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-                create.insertInto(Leads.LEADS).columns(Leads.LEADS.LEAD_NAME, Leads.LEADS.LEAD_STATUS, Leads.LEADS.DATE_OF_LEAD_ENTRY, Leads.LEADS.WHAT_THE_LEAD_WANTS).values(name,"open_contacted",new Timestamp(new Date().getTime()),what_the_lead_wants).execute();
+                create.insertInto(LEADS).columns(LEADS.LEAD_NAME, LEADS.LEAD_STATUS, LEADS.DATE_OF_LEAD_ENTRY, LEADS.WHAT_THE_LEAD_WANTS,LEADS.USER_ID).values(name,"open_contacted",new Timestamp(new Date().getTime()),what_the_lead_wants,user_id).execute();
 
                 conn.close();
             }
@@ -186,7 +195,7 @@ public class LeadsController extends VaquitaController {
                 String new_status = (action.equals("open"))?"open_contacted":"closed_not_converted";
 
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-                create.update(Leads.LEADS).set(Leads.LEADS.LEAD_STATUS,new_status).where(Leads.LEADS.ID.eq(id)).execute();
+                create.update(LEADS).set(LEADS.LEAD_STATUS,new_status).where(LEADS.ID.eq(id).and(LEADS.USER_ID.eq(user_id))).execute();
 
                 conn.close();
             }
