@@ -8,6 +8,7 @@ import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
+import org.vanautrui.octofinsights.generated.tables.Expenses;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
@@ -15,15 +16,17 @@ import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaRedirectResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 
 import java.sql.Connection;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static j2html.TagCreator.*;
-import static org.vanautrui.octofinsights.generated.tables.Sales.SALES;
+import static org.vanautrui.octofinsights.generated.tables.Expenses.EXPENSES;
 
-public class SalesController extends VaquitaController {
+public class ExpensesController extends VaquitaController {
 
     @Override
     public VaquitaHTTPResponse handleGET(VaquitaHTTPRequest request) throws Exception {
@@ -37,9 +40,8 @@ public class SalesController extends VaquitaController {
             DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
             ObjectMapper mapper = new ObjectMapper();
             ArrayNode node =  mapper.createArrayNode();
-
-            //Result<Record> records = create.select(LEADS.asterisk()).from(LEADS).fetch().sortAsc(LEADS.LEAD_STATUS.startsWith("open"));
-            Result<Record> records = create.select(SALES.asterisk()).from(SALES).where(SALES.USER_ID.eq(user_id)).fetch().sortDesc(SALES.TIME_OF_SALE);
+            
+            Result<Record> records = create.select(EXPENSES.asterisk()).from(EXPENSES).where(EXPENSES.USER_ID.eq(user_id)).fetch().sortDesc(EXPENSES.EXPENSE_DATE);
 
             String page=
                     html(
@@ -48,20 +50,20 @@ public class SalesController extends VaquitaController {
                                     NavigationUtil.createNavbar(request.session().get().get("username")),
                                     div(attrs(".container"),
                                             div(attrs("#main-content"),
-                                                    h1("Sales"),
+                                                    h1("EXPENSES"),
                                                     form(
-                                                            input().withName("customer_name").withPlaceholder("customer_name").withType("text"),
-                                                            input().withName("price_of_sale").withPlaceholder("price_of_sale").withType("number"),
-                                                            input().withName("product_or_service").withPlaceholder("product_or_service").withType("text"),
+                                                            input().withName("expense_name").withPlaceholder("expense_name").withType("text"),
+                                                            input().withName("expense_date").withPlaceholder("expense_date").withType("date"),
+                                                            input().withName("expense_value").withPlaceholder("expense_value").withType("number"),
                                                             button(attrs(".btn .btn-outline-success"),"Insert").withType("submit")
-                                                    ).withAction("/sales?action=insert").withMethod("post"),
+                                                    ).withAction("/expenses?action=insert").withMethod("post"),
                                                     table(
                                                             attrs(".table"),
                                                             thead(
                                                                     th("ID").attr("scope","col"),
-                                                                    th("Customer ").attr("scope","col"),
-                                                                    th("Price").attr("scope","col"),
-                                                                    th("Product or Service").attr("scope","col"),
+                                                                    th("Expense Name").attr("scope","col"),
+                                                                    th("Expense Date").attr("scope","col"),
+                                                                    th("Expense Value").attr("scope","col"),
                                                                     th("Actions").attr("scope","col")
                                                             ),
                                                             tbody(
@@ -69,16 +71,16 @@ public class SalesController extends VaquitaController {
                                                                             records,
                                                                             record ->
                                                                                     tr(
-                                                                                            td(record.get(SALES.ID).toString()),
-                                                                                            td(record.get(SALES.CUSTOMER_NAME)),
-                                                                                            td(record.get(SALES.PRICE_OF_SALE).toString()),
-                                                                                            td(record.get(SALES.PRODUCT_OR_SERVICE)),
+                                                                                            td(record.get(EXPENSES.ID).toString()),
+                                                                                            td(record.get(EXPENSES.EXPENSE_NAME)),
+                                                                                            td(record.get(EXPENSES.EXPENSE_DATE).toString()),
+                                                                                            td(record.get(EXPENSES.EXPENSE_VALUE).toString()),
                                                                                             td(
                                                                                                 div(attrs(".row"),
                                                                                                         form(
-                                                                                                                input().withName("id").isHidden().withValue(record.get(SALES.ID).toString()),
+                                                                                                                input().withName("id").isHidden().withValue(record.get(EXPENSES.ID).toString()),
                                                                                                                 button(attrs(".btn .btn-outline-danger"),"delete").withType("submit")
-                                                                                                        ).withAction("/sales?action=delete").withMethod("post")
+                                                                                                        ).withAction("/expenses?action=delete").withMethod("post")
                                                                                                 )
                                                                                             )
                                                                                     )
@@ -87,11 +89,6 @@ public class SalesController extends VaquitaController {
                                                     )
                                             )
                                     )
-                                    /*,
-                                    script().withSrc("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"),
-                                    script().withSrc("/cashflow_chart.js")
-                                     */
-
                             )
                     ).render();
 
@@ -124,33 +121,38 @@ public class SalesController extends VaquitaController {
                 Connection conn= DBUtils.makeDBConnection();
 
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-                create.deleteFrom(SALES).where( (SALES.ID).eq(id).and((SALES.USER_ID).eq(user_id)) ).execute();
+                create.deleteFrom(EXPENSES).where( (EXPENSES.ID).eq(id).and((EXPENSES.USER_ID).eq(user_id)) ).execute();
 
                 conn.close();
             }
 
             if(action.equals("insert")
-                    && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("customer_name")
-                    && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("product_or_service")
-                    && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("price_of_sale")
+                    && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("expense_name")
+                    && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("expense_date")
+                    && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("expense_value")
             ){
 
-                String customer_name = vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("customer_name");
-                String product_or_service= vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("product_or_service");
-                int price= Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("price_of_sale"));
+                String expense_name = vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("expense_name");
+                String expense_date= vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("expense_date");
+
+                Date expenseDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(expense_date);
+
+                Timestamp expense_date_timestamp = new Timestamp(expenseDate.getTime());
+
+                int expense_value= Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("expense_value"));
 
                 Connection conn= DBUtils.makeDBConnection();
 
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
                 create
-                        .insertInto(SALES)
-                        .columns(SALES.CUSTOMER_NAME,SALES.PRODUCT_OR_SERVICE,SALES.PRICE_OF_SALE, SALES.USER_ID)
-                        .values(customer_name,product_or_service,price,user_id).execute();
+                        .insertInto(EXPENSES)
+                        .columns(EXPENSES.EXPENSE_NAME,EXPENSES.EXPENSE_DATE,EXPENSES.EXPENSE_VALUE, EXPENSES.USER_ID)
+                        .values(expense_name,expense_date_timestamp,expense_value,user_id).execute();
 
                 conn.close();
             }
 
-            return new VaquitaRedirectToGETResponse("/sales",request);
+            return new VaquitaRedirectToGETResponse("/EXPENSES",request);
         }else {
             return new VaquitaRedirectToGETResponse("/login",request);
         }

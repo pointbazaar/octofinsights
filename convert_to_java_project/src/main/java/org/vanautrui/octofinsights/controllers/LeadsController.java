@@ -61,7 +61,7 @@ public class LeadsController extends VaquitaController {
                     html(
                             HeadUtil.makeHead(),
                             body(
-                                    NavigationUtil.createNavbar(),
+                                    NavigationUtil.createNavbar(request.session().get().get("username")),
                                     div(attrs(".container"),
                                             div(attrs("#main-content"),
                                                     h1("Leads"),
@@ -179,7 +179,8 @@ public class LeadsController extends VaquitaController {
                 Connection conn= DBUtils.makeDBConnection();
 
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-                create.insertInto(LEADS).columns(LEADS.LEAD_NAME, LEADS.LEAD_STATUS, LEADS.DATE_OF_LEAD_ENTRY, LEADS.WHAT_THE_LEAD_WANTS,LEADS.USER_ID).values(name,"open_contacted",new Timestamp(new Date().getTime()),what_the_lead_wants,user_id).execute();
+                create.insertInto(LEADS).columns(LEADS.LEAD_NAME, LEADS.LEAD_STATUS, LEADS.DATE_OF_LEAD_ENTRY, LEADS.WHAT_THE_LEAD_WANTS,LEADS.USER_ID)
+                        .values(name,"open_contacted",new Timestamp(new Date().getTime()),what_the_lead_wants,user_id).execute();
 
                 conn.close();
             }

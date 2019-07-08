@@ -40,10 +40,7 @@ public class LoginController extends VaquitaController {
                                                 label("Password"),
                                                 input().withName("password").withPlaceholder("password").withValue("test").withType("password"),
                                                 button(attrs(".btn .btn-primary"),"Login").withType("submit")
-                                        ).withAction("/login").withMethod("post"),
-                                        p(
-                                                "test credentials: 'test','test','vanautrui'"
-                                        )
+                                        ).withAction("/login").withMethod("post")
                                 )
                         )
                 );

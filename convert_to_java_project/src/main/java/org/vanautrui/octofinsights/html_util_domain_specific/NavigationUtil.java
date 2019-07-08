@@ -11,7 +11,7 @@ import static j2html.TagCreator.*;
 public class NavigationUtil {
 
 
-    public static ContainerTag createNavbar(){
+    public static ContainerTag createNavbar(String username){
         String[][] sidebar_links = new String[][]{new String[]{"/","Dashboard"},new String[]{"/sales","Sales"},new String[]{"/leads","Leads"},new String[]{"/logout","Logout"}};
 
         ContainerTag navbar=
@@ -38,7 +38,10 @@ public class NavigationUtil {
                                                                 strong(link[1])
                                                         ).withHref(link[0])
                                                 )
-                                        )
+                                        ),
+                                        li(
+                                                p("Logged in as : "+username).withClasses("m-2")
+                                        ).withClasses("nav-item")
                                 )
                         ).withId("navbarSupportedContent")
 
