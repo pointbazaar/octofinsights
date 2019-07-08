@@ -16,6 +16,7 @@ import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectResponse;
+import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 
 import java.sql.Connection;
 
@@ -95,7 +96,7 @@ public class SalesController extends VaquitaController {
             return new VaquitaHTMLResponse(200,page);
 
         }else {
-            return new VaquitaRedirectResponse("/login", request);
+            return new VaquitaRedirectToGETResponse("/login", request);
         }
     }
 
@@ -142,9 +143,9 @@ public class SalesController extends VaquitaController {
                 conn.close();
             }
 
-            return new VaquitaHTMLResponse(200,"<html><a href='/sales'>go back to sales</a></html>");
+            return new VaquitaRedirectToGETResponse("/sales",request);
         }else {
-            return new VaquitaHTMLResponse(400,"<html><a href='/login'>go back to login. this was unauthenticated request</a></html>");
+            return new VaquitaRedirectToGETResponse("/login",request);
         }
     }
 }

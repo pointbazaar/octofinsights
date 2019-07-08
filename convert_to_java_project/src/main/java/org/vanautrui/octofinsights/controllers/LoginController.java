@@ -10,6 +10,7 @@ import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
+import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
 
 import java.sql.Connection;
@@ -88,7 +89,7 @@ public class LoginController extends VaquitaController {
                 vaquitaHTTPEntityEnclosingRequest.session().get().put("username", parameters.get("username"));
                 vaquitaHTTPEntityEnclosingRequest.session().get().put("user_business_id", id.get().toString());
 
-                return new VaquitaHTMLResponse(200, "<html><a href='/'>successfully logged in. click here.</a></html>");
+                return new VaquitaRedirectToGETResponse("/",vaquitaHTTPEntityEnclosingRequest);
             }else {
                 return new VaquitaTextResponse(500,"user seems not to exist");
             }

@@ -5,6 +5,7 @@ import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectResponse;
+import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 
 public class LogoutController extends VaquitaController {
 
@@ -17,7 +18,7 @@ public class LogoutController extends VaquitaController {
             request.session().get().remove("authenticated");
         }
 
-        return new VaquitaRedirectResponse("/",request);
+        return new VaquitaRedirectToGETResponse("/",request);
     }
 
     @Override

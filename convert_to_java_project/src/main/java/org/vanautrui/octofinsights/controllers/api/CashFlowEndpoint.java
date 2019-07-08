@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
-import org.vanautrui.vaquitamvc.controller.VaquitaJSONController;
+import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
 import org.vanautrui.vaquitamvc.responses.VaquitaJSONResponse;
@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 import static org.vanautrui.octofinsights.generated.Tables.*;
 
 
-public class CashFlowEndpoint extends VaquitaJSONController {
+public class CashFlowEndpoint extends VaquitaController {
     @Override
     public VaquitaJSONResponse handleGET(VaquitaHTTPRequest vaquitaHTTPRequest) throws Exception {
 

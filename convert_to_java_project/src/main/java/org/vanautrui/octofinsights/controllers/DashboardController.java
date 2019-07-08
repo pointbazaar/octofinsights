@@ -5,10 +5,7 @@ import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaRedirectResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
+import org.vanautrui.vaquitamvc.responses.*;
 
 import static j2html.TagCreator.*;
 
@@ -50,7 +47,7 @@ public class DashboardController extends VaquitaController {
             return new VaquitaHTMLResponse(200,page);
 
         }else {
-            return new VaquitaRedirectResponse("/login", request);
+            return new VaquitaRedirectToGETResponse("/login", request);
         }
     }
 

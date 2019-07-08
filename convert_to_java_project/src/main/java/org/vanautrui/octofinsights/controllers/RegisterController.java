@@ -13,6 +13,7 @@ import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
+import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 
 import java.sql.Connection;
 import java.util.Map;
@@ -77,6 +78,6 @@ public class RegisterController extends VaquitaController {
 
         conn.close();
 
-        return new VaquitaHTMLResponse(200, "<html><a href='/'>successfully logged in. click here.</a></html>");
+        return new VaquitaRedirectToGETResponse("/",vaquitaHTTPEntityEnclosingRequest);
     }
 }
