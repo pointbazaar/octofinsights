@@ -16,7 +16,6 @@ public class NavigationUtil {
                 new String[]{"/","Dashboard"},
                 new String[]{"/sales","Sales"},
                 new String[]{"/leads","Leads"},
-                new String[]{"/logout","Logout"},
                 new String[]{"/expenses","Expenses"}
         };
 
@@ -45,6 +44,10 @@ public class NavigationUtil {
                                                         ).withHref(link[0])
                                                 )
                                         ),
+                                        
+                                        li(
+                                                a(strong("Logout")).withClasses("nav-link p-2").withHref("/logout")
+                                        ).withClasses("nav-item"),
                                         li(
                                                 p("Logged in as : "+username).withClasses("m-2")
                                         ).withClasses("nav-item")
