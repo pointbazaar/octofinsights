@@ -35,7 +35,7 @@ public class App
         routes.put("/api/cashflow",new CashFlowEndpoint());
 
         try {
-            VaquitaApp app = new VaquitaApp(8080, routes, false);
+            VaquitaApp app = new VaquitaApp(9377, routes, false);
         }catch (Exception e){
             e.printStackTrace();
         }

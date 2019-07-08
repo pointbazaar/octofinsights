@@ -44,7 +44,7 @@ public class NavigationUtil {
                                                         ).withHref(link[0])
                                                 )
                                         ),
-                                        
+
                                         li(
                                                 a(strong("Logout")).withClasses("nav-link p-2").withHref("/logout")
                                         ).withClasses("nav-item"),
