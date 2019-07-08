@@ -5,8 +5,9 @@ var ctx2 = document.getElementById('myChartBusinessValue').getContext('2d');
 fetch("/api/cashflow").then(data=>data.json()).then(data=>{draw_sales(data);});
 
 
-
+//to be able to manipulate in browser
 var myChart;
+var myChart2;
 
 function draw_sales(values){
 
@@ -46,7 +47,7 @@ function draw_sales(values){
     console.log("partial_sums:");
     console.log(partial_sums);
 
-    var myChart2 = new Chart(ctx2, {
+    myChart2 = new Chart(ctx2, {
         type: 'line',
         data: {
             labels: values.map(x=>x.label),

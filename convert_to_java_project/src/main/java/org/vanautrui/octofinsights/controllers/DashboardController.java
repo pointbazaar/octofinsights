@@ -35,10 +35,10 @@ public class DashboardController extends VaquitaController {
                             p(request.session().get().get("username")),
                             p("you have logged in correctly"),
                             /*img().withSrc("/img/hello.png"),*/
-                            div(attrs(".col"),
-                                    canvas(attrs("#myChart")),
-                                    canvas(attrs("#myChartBusinessValue"))
-                            )
+                            div(
+                                    div(canvas(attrs("#myChart"))).withClass("col-md-6"),
+                                    div(canvas(attrs("#myChartBusinessValue"))).withClass("col-md-6")
+                            ).withClasses("row justify-content-center")
                         )
                     ),
                     script().withSrc("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"),

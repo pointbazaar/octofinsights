@@ -10,6 +10,9 @@ import java.util.Map;
 
 public class App
 {
+
+    public static String octofinsights_primary_color = "#ffc143";
+
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
