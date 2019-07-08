@@ -5,3 +5,4 @@ library.xml
 credentials.txt
 *.iml
 src/main/java/generated
+src/main/java/org/vanautrui/octofinsights/generated

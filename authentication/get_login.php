@@ -42,10 +42,15 @@ $_SESSION=array();
 ?>
 
 <p>
+    You do not have an account?<br>
+    <a href="./register/register_new_user.php">Register here</a>
+</p>
+
+<!--
     Credentials for testing:<br>
     test<br>
     test<br>
-</p>
+-->
 
 </body>
 </html>
