@@ -1,4 +1,9 @@
+cd /home/vanautrui/octofinsights
+pwd 
+
+
 sh generate_classes.sh
+
 mvn install
 
 #kill all apps running on this port
