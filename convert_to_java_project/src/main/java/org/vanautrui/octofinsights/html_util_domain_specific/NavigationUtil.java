@@ -11,7 +11,7 @@ import static j2html.TagCreator.*;
 public class NavigationUtil {
 
 
-    public static ContainerTag createNavbar(String username){
+    public static ContainerTag createNavbar(String username, String currentPageName){
         String[][] sidebar_links = new String[][]{
                 new String[]{"/","Dashboard"},
                 new String[]{"/sales","Sales"},
@@ -38,15 +38,12 @@ public class NavigationUtil {
                                                 Arrays.stream(sidebar_links).collect(Collectors.toList()),
                                                 link->li(
                                                         attrs(".nav-item"),
-                                                        a(
-                                                                attrs(".nav-link .p-2"),
-                                                                strong(link[1])
-                                                        ).withHref(link[0])
+                                                        makeLinkCustom(link[1],link[0],currentPageName)
                                                 )
                                         ),
 
                                         li(
-                                                a(strong("Logout")).withClasses("nav-link p-2").withHref("/logout")
+                                                a(span("Logout")).withClasses("nav-link p-2").withHref("/logout")
                                         ).withClasses("nav-item"),
                                         li(
                                                 p("Logged in as : "+username).withClasses("m-2")
@@ -56,8 +53,17 @@ public class NavigationUtil {
 
                 );
 
+
+
         return navbar;
     }
 
+    private static ContainerTag makeLinkCustom(String name,String href, String currentPageName){
+        ContainerTag result = a(
+                attrs(".nav-link .p-2"),
+                p((name.equals(currentPageName))?strong(name):span(name))
+        ).withHref(href);
+        return result;
+    }
 
 }

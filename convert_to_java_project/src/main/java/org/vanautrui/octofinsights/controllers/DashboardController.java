@@ -25,7 +25,7 @@ public class DashboardController extends VaquitaController {
             html(
                 HeadUtil.makeHead(),
                 body(
-                    NavigationUtil.createNavbar(request.session().get().get("username")),
+                    NavigationUtil.createNavbar(request.session().get().get("username"),"Dashboard"),
                     div(attrs(".container-fluid"),
                         div(attrs("#main-content"),
                             h1("Dashboard"),

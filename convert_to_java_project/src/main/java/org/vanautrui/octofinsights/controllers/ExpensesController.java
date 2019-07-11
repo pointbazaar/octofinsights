@@ -47,16 +47,27 @@ public class ExpensesController extends VaquitaController {
                     html(
                             HeadUtil.makeHead(),
                             body(
-                                    NavigationUtil.createNavbar(request.session().get().get("username")),
+                                    NavigationUtil.createNavbar(request.session().get().get("username"),"Expenses"),
                                     div(attrs(".container"),
                                             div(attrs("#main-content"),
-                                                    h1("EXPENSES"),
+                                                    h1("Expenses"),
                                                     form(
-                                                            input().withName("expense_name").withPlaceholder("expense_name").withType("text"),
-                                                            input().withName("expense_date").withPlaceholder("expense_date").withType("date"),
-                                                            input().withName("expense_value").withPlaceholder("expense_value").withType("number"),
-                                                            button(attrs(".btn .btn-outline-success"),"Insert").withType("submit")
-                                                    ).withAction("/expenses?action=insert").withMethod("post"),
+                                                            div(
+                                                                label("Expense Name"),
+                                                                input().withName("expense_name").withType("text").withClasses("form-control")
+                                                            ),
+                                                            div(
+                                                                label("Expense Date"),
+                                                                input().withName("expense_date").withType("date").withClasses("form-control")
+                                                            ),
+                                                            div(
+                                                                label("Expense Value"),
+                                                                input().withName("expense_value").withType("number").withClasses("form-control").attr("max","0")
+                                                            ),
+                                                            div(
+                                                                button(attrs(".btn .btn-outline-info"),"Insert").withType("submit")
+                                                            ).withClasses("form-group")
+                                                    ).withAction("/expenses?action=insert").withMethod("post").withClasses("form-inline"),
                                                     table(
                                                             attrs(".table"),
                                                             thead(

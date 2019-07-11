@@ -23,6 +23,9 @@ import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.tables.Leads.LEADS;
@@ -37,6 +40,14 @@ public class LeadsController extends VaquitaController {
         ){
 
             int user_id = Integer.parseInt(request.session().get().get("user_id"));
+
+            Optional<String> searchQuery;
+            try{
+                searchQuery=Optional.of(request.getQueryParameter("search"));
+            }catch (Exception e){
+                searchQuery=Optional.empty();
+            }
+
 
             Connection conn= DBUtils.makeDBConnection();
             DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -57,14 +68,29 @@ public class LeadsController extends VaquitaController {
                 }
             });
 
+            List<Record> filtered_records;
+            if(searchQuery.isPresent()) {
+                final String my_query = searchQuery.get().toLowerCase();
+                filtered_records = records
+                        .stream()
+                        .filter(record -> record.getValue(LEADS.LEAD_NAME).toLowerCase().contains(my_query) || record.getValue(LEADS.WHAT_THE_LEAD_WANTS).toLowerCase().contains(my_query))
+                        .collect(Collectors.toList());
+            }else{
+                filtered_records = records;
+            }
+
             String page=
                     html(
                             HeadUtil.makeHead(),
                             body(
-                                    NavigationUtil.createNavbar(request.session().get().get("username")),
+                                    NavigationUtil.createNavbar(request.session().get().get("username"),"Leads"),
                                     div(attrs(".container"),
                                             div(attrs("#main-content"),
                                                     h1("Leads"),
+                                                    form(
+                                                            input().withName("search").withPlaceholder("search").withType("text"),
+                                                            button(attrs(".btn .btn-outline-info"),"Search").withType("submit")
+                                                    ).withAction("/leads").withMethod("get"),
                                                     form(
                                                             input().withName("name").withPlaceholder("name"),
                                                             input().withName("what_the_lead_wants").withPlaceholder("what the lead wants"),
@@ -81,7 +107,7 @@ public class LeadsController extends VaquitaController {
                                                             ),
                                                             tbody(
                                                                     each(
-                                                                            records,
+                                                                            filtered_records,
                                                                             record ->
                                                                                     tr(
                                                                                             td(record.get(LEADS.ID).toString()),

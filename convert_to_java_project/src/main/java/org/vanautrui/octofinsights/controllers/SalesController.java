@@ -82,13 +82,13 @@ public class SalesController extends VaquitaController {
                     html(
                             HeadUtil.makeHead(),
                             body(
-                                    NavigationUtil.createNavbar(request.session().get().get("username")),
+                                    NavigationUtil.createNavbar(request.session().get().get("username"),"Sales"),
                                     div(attrs(".container"),
                                             div(attrs("#main-content"),
                                                     h1("Sales"),
                                                     form(
                                                             input().withName("customer_name").withPlaceholder("customer_name").withType("text"),
-                                                            input().withName("price_of_sale").withPlaceholder("price_of_sale").withType("number"),
+                                                            input().withName("price_of_sale").withPlaceholder("price_of_sale").withType("number").attr("min","0"),
                                                             input().withName("product_or_service").withPlaceholder("product_or_service").withType("text"),
                                                             input().withName("time_of_sale").withPlaceholder("time of sale").withType("date"),
 

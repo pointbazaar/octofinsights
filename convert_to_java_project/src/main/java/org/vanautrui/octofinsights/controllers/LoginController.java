@@ -39,11 +39,11 @@ public class LoginController extends VaquitaController {
                                                 form(
                                                         div(
                                                             label("Email"),
-                                                            input().withName("username").withPlaceholder("username").withValue("test").withType("text").withClasses("form-control")
+                                                            input().withName("username").withPlaceholder("username").withType("text").withClasses("form-control")
                                                         ).withClasses("form-group"),
                                                         div(
                                                             label("Password"),
-                                                            input().withName("password").withPlaceholder("password").withValue("test").withType("password").withClasses("form-control")
+                                                            input().withName("password").withPlaceholder("password").withType("password").withClasses("form-control")
                                                         ).withClasses("form-group"),
                                                         button(attrs(".btn .btn-primary .col-md-12"),"Login").withType("submit")
                                                 ).withAction("/login").withMethod("post")
