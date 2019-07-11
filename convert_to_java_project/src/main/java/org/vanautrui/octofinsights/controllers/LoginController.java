@@ -33,14 +33,22 @@ public class LoginController extends VaquitaController {
                         body(
                                 div(
                                         attrs(".container"),
-                                        h1("Login"),
-                                        form(
-                                                label("Email"),
-                                                input().withName("username").withPlaceholder("username").withValue("test").withType("text"),
-                                                label("Password"),
-                                                input().withName("password").withPlaceholder("password").withValue("test").withType("password"),
-                                                button(attrs(".btn .btn-primary"),"Login").withType("submit")
-                                        ).withAction("/login").withMethod("post")
+                                        div(
+                                            div(
+                                                h1("Octofinsights Login").withClasses("text-center"),
+                                                form(
+                                                        div(
+                                                            label("Email"),
+                                                            input().withName("username").withPlaceholder("username").withValue("test").withType("text").withClasses("form-control")
+                                                        ).withClasses("form-group"),
+                                                        div(
+                                                            label("Password"),
+                                                            input().withName("password").withPlaceholder("password").withValue("test").withType("password").withClasses("form-control")
+                                                        ).withClasses("form-group"),
+                                                        button(attrs(".btn .btn-primary .col-md-12"),"Login").withType("submit")
+                                                ).withAction("/login").withMethod("post")
+                                            )
+                                        ).withClasses("row justify-content-center")
                                 )
                         )
                 );
