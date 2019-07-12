@@ -50,7 +50,6 @@ public class ExpensesController extends VaquitaController {
                                     NavigationUtil.createNavbar(request.session().get().get("username"),"Expenses"),
                                     div(attrs(".container"),
                                             div(attrs("#main-content"),
-                                                    h1("Expenses"),
                                                     form(
                                                             div(
                                                                 label("Expense Name"),

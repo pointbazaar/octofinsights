@@ -85,7 +85,6 @@ public class SalesController extends VaquitaController {
                                     NavigationUtil.createNavbar(request.session().get().get("username"),"Sales"),
                                     div(attrs(".container"),
                                             div(attrs("#main-content"),
-                                                    h1("Sales"),
                                                     form(
                                                             input().withName("customer_name").withPlaceholder("customer_name").withType("text"),
                                                             input().withName("price_of_sale").withPlaceholder("price_of_sale").withType("number").attr("min","0"),

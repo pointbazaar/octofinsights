@@ -28,7 +28,6 @@ public class DashboardController extends VaquitaController {
                     NavigationUtil.createNavbar(request.session().get().get("username"),"Dashboard"),
                     div(attrs(".container-fluid"),
                         div(attrs("#main-content"),
-                            h1("Dashboard"),
                             div(
                                     div(canvas(attrs("#myChart"))).withClass("col-md-6"),
                                     div(canvas(attrs("#myChartBusinessValue"))).withClass("col-md-6")

@@ -16,7 +16,8 @@ public class NavigationUtil {
                 new String[]{"/","Dashboard"},
                 new String[]{"/sales","Sales"},
                 new String[]{"/leads","Leads"},
-                new String[]{"/expenses","Expenses"}
+                new String[]{"/expenses","Expenses"},
+                new String[]{"/projects","Projects (Planned Feature,TODO)"}
         };
 
         ContainerTag navbar=

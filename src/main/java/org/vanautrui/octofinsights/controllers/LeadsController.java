@@ -86,7 +86,6 @@ public class LeadsController extends VaquitaController {
                                     NavigationUtil.createNavbar(request.session().get().get("username"),"Leads"),
                                     div(attrs(".container"),
                                             div(attrs("#main-content"),
-                                                    h1("Leads"),
                                                     form(
                                                             input().withName("search").withPlaceholder("search").withType("text"),
                                                             button(attrs(".btn .btn-outline-info"),"Search").withType("submit")
