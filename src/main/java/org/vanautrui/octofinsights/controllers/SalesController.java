@@ -11,6 +11,7 @@ import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
+import org.vanautrui.octofinsights.services.SalesService;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
@@ -23,6 +24,7 @@ import java.sql.Connection;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.tables.Sales.SALES;
@@ -37,13 +39,7 @@ public class SalesController extends VaquitaController {
         ){
             int user_id = Integer.parseInt(request.session().get().get("user_id"));
 
-            Connection conn= DBUtils.makeDBConnection();
-            DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-            ObjectMapper mapper = new ObjectMapper();
-            ArrayNode node =  mapper.createArrayNode();
-
-            //Result<Record> records = create.select(LEADS.asterisk()).from(LEADS).fetch().sortAsc(LEADS.LEAD_STATUS.startsWith("open"));
-            Result<Record> records = create.select(SALES.asterisk()).from(SALES).where(SALES.USER_ID.eq(user_id)).fetch().sortDesc(SALES.TIME_OF_SALE);
+            List<Record> records = SalesService.getSales(user_id);
 
             ContainerTag mytable = table(
                     attrs(".table"),
@@ -102,7 +98,7 @@ public class SalesController extends VaquitaController {
                     ).render();
 
 
-            conn.close();
+            //conn.close();
             return new VaquitaHTMLResponse(200,page);
 
         }else {
