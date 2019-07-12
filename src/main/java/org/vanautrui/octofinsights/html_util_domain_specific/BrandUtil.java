@@ -15,9 +15,9 @@ public class BrandUtil {
 
         ContainerTag brand=
                                 div(
-                                        attrs(".row .align-items-center. justify-content-center"),
-                                        img().withSrc("https://image.flaticon.com/icons/svg/1197/1197854.svg").withStyle("height: 14vw; max-height:2cm; min-height:0.5cm;").withClasses("m-3"),
-                                        h2("Octofinsights").withStyle("color: "+ App.octofinsights_primary_color+"")
+                                        attrs(".row .align-items-center. justify-content-center .mr-3"),
+                                        img().withSrc("https://vanautrui.org/pics/logo.svg").withStyle("height: 9vh;").withClasses("m-3"),
+                                        h3("Octofinsights").withStyle("color: "+ App.octofinsights_primary_color+"")
                                 );
 
         return brand;

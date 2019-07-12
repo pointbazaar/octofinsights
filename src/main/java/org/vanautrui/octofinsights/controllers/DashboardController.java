@@ -29,9 +29,6 @@ public class DashboardController extends VaquitaController {
                     div(attrs(".container-fluid"),
                         div(attrs("#main-content"),
                             h1("Dashboard"),
-                            p(request.session().get().get("username")),
-                            p("you have logged in correctly"),
-                            /*img().withSrc("/img/hello.png"),*/
                             div(
                                     div(canvas(attrs("#myChart"))).withClass("col-md-6"),
                                     div(canvas(attrs("#myChartBusinessValue"))).withClass("col-md-6")
