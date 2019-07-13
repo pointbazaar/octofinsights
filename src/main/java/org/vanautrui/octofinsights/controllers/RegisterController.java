@@ -39,12 +39,20 @@ public class RegisterController extends VaquitaController {
                                                         h1("Octofinsights Register Form").withClasses("text-center"),
                                                         form(
                                                                 div(
-                                                                        label("Email"),
+                                                                        label("Username"),
                                                                         input().withName("username").withPlaceholder("username").withType("text").withClasses("form-control")
+                                                                ).withClasses("form-group"),
+                                                                div(
+                                                                        label("Email"),
+                                                                        input().withName("email").withPlaceholder("email").withType("email").withClasses("form-control")
                                                                 ).withClasses("form-group"),
                                                                 div(
                                                                         label("Password"),
                                                                         input().withName("password").withPlaceholder("password").withType("password").withClasses("form-control")
+                                                                ).withClasses("form-group"),
+                                                                div(
+                                                                        label("Complete the Challenge: what is (2*4) + 1  "),
+                                                                        input().withName("challenge").withType("text").withClasses("form-control")
                                                                 ).withClasses("form-group"),
                                                                 button(attrs(".btn .btn-primary .col-md-12"),"Register").withType("submit")
                                                         ).withAction("/register").withMethod("post")
@@ -63,7 +71,14 @@ public class RegisterController extends VaquitaController {
         Map<String,String> params= vaquitaHTTPEntityEnclosingRequest.getPostParameters();
 
         String username = params.get("username");
+        String email = params.get("email");
         String password = params.get("password");
+
+        Integer challenge_solution = Integer.parseInt(params.get("challenge"));
+
+        if(challenge_solution!=9){
+            throw new Exception("form submission did not solve challenge. could be a bot.");
+        }
 
         //insert new user into the database
 
@@ -71,12 +86,12 @@ public class RegisterController extends VaquitaController {
 
         DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 
-        Result<Record1<Integer>> fetch = create.select(USERS.ID).from(USERS).where(USERS.USERNAME.eq(username)).fetch();
+        Result<Record1<Integer>> fetch = create.select(USERS.ID).from(USERS).where(USERS.USERNAME.eq(username).or(USERS.EMAIL.eq(email))).fetch();
 
         if(fetch.size()==0) {
-            create.insertInto(USERS).columns(USERS.USERNAME, USERS.PASSWORD).values(username, password).execute();
+            create.insertInto(USERS).columns(USERS.USERNAME, USERS.PASSWORD, USERS.EMAIL).values(username, password, email).execute();
         }else{
-            System.out.println("\t user with this username already exists");
+            System.out.println("\t user with this username or email already exists");
         }
 
         conn.close();

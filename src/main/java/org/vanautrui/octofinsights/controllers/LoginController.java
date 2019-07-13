@@ -38,8 +38,8 @@ public class LoginController extends VaquitaController {
                                                 h1("Octofinsights Login").withClasses("text-center"),
                                                 form(
                                                         div(
-                                                            label("Email"),
-                                                            input().withName("username").withPlaceholder("username").withType("text").withClasses("form-control")
+                                                            label("Username"),
+                                                            input().withName("username").withType("text").withClasses("form-control")
                                                         ).withClasses("form-group"),
                                                         div(
                                                             label("Password"),
