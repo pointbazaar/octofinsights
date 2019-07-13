@@ -1,2 +1,13 @@
-# vaquitapi-starter
-a starter repo which you can fork to create a skeleton project with vaquitapi,jooq,bootstrap
+# Octofinsights 
+
+
+Basic web application which allows for the 
+Tracking of Sales, Leads, Expenses
+
+
+
+Further Features are planned.
+Feedback is welcome.
+
+You can self host this web app easily.
+
