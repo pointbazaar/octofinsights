@@ -81,7 +81,13 @@ public class IndexController extends VaquitaController {
 
                                     h3("Track Leads"),
                                     p("New Opportunities for Business and Learning arise often. Track your Leads."),
-                                    p("Planned Feature: Track Leads with source, date, and what they probably want, also track if they were closed and if they were converted")
+                                    p("Planned Feature: Track Leads with source, date, and what they probably want, also track if they were closed and if they were converted"),
+
+                                    hr(),
+                                    h3("Can i just test the software?"),
+                                    p("Login with username and password:"),
+                                    p("username: test3"),
+                                    p("password: test3")
 
 
                                 ).withClasses("m-3")
