@@ -88,6 +88,9 @@ function entervalue(e){
     var product_or_service = document.getElementById("product_or_service").value;
     var price = document.getElementById("price").value;
 
+    document.getElementById("product_or_service").value="";
+    document.getElementById("price").value="";
+
     if(product_or_service=="" || price == ""){
         //do not operate on empty values
         return;
