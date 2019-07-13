@@ -19,10 +19,6 @@ function printPDF(){
     pdf.save();
 }
 
-function add_list_item(name, price){
-
-}
-
 function update(){
     //clear the list
     var list = document.getElementById("invoice-list");
@@ -31,11 +27,11 @@ function update(){
     //add all the items
     list_items.forEach(function(item){
 
-        update_one(item.product_or_service,item.price);
+        update_one(item.product_or_service,item.price,item.id);
     });
 }
 
-function update_one(product_or_service,price){
+function update_one(product_or_service,price,id){
     var list = document.getElementById("invoice-list");
 
     var item_price=document.createElement("p");
@@ -48,7 +44,9 @@ function update_one(product_or_service,price){
 
     var item_delete_button = document.createElement("button");
     item_delete_button.className="btn btn-outline-danger col-md-1";
-    item_delete_button.innerHTML="X"
+    item_delete_button.onclick=delete_item;
+    item_delete_button.innerHTML="X";
+    item_delete_button.id=id+"";
 
     var item = document.createElement("li");
     item.className="list-group-item";
@@ -68,12 +66,24 @@ function update_one(product_or_service,price){
 function make_item(product_or_service,price){
     return {
         product_or_service: product_or_service,
-        price:price
+        price:price,
+        id:Math.floor((Math.random()*1000000))+""
     };
 }
 
-function entervalue(){
+function delete_item(e){
+    console.log("try to delete an item");
+    var delete_id = e.target.id;
+    list_items=list_items.filter(function(item){
+        return (item.id != delete_id)
+    });
+
+    update();
+}
+
+function entervalue(e){
     //alert("enter value");
+    console.log(e);
 
     var product_or_service = document.getElementById("product_or_service").value;
     var price = document.getElementById("price").value;
