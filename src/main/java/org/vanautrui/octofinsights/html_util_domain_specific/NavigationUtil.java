@@ -16,7 +16,8 @@ public class NavigationUtil {
                 new String[]{"/","Dashboard"},
                 new String[]{"/sales","Sales"},
                 new String[]{"/leads","Leads"},
-                new String[]{"/expenses","Expenses"}/*,
+                new String[]{"/expenses","Expenses"},
+                new String[]{"/invoices","Invoices"}/*,
                 new String[]{"/projects","Projects (Planned Feature,TODO)"}*/
         };
 

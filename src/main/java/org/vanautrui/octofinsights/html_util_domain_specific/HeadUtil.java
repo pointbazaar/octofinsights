@@ -3,11 +3,17 @@ package org.vanautrui.octofinsights.html_util_domain_specific;
 import j2html.attributes.Attr;
 import j2html.tags.ContainerTag;
 
+import java.util.Arrays;
+
 import static j2html.TagCreator.*;
 
 public class HeadUtil {
 
     public static ContainerTag makeHead(){
+        return makeHead(new ContainerTag[]{});
+    }
+
+    public static ContainerTag makeHead(ContainerTag... otherchildren){
 
         ContainerTag head = head(
                 head(
@@ -21,9 +27,14 @@ public class HeadUtil {
                         script().withSrc("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"),
                         script().withSrc("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"),
 
-                        script().withSrc("mygoogleanalyticsscript.js")
+                        script().withSrc("mygoogleanalyticsscript.js"),
+                        div(
+                            otherchildren
+                        )
                 )
         );
+
+
 
         return head;
     }

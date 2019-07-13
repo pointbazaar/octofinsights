@@ -27,6 +27,8 @@ public class App
 
         routes.put("/expenses",new ExpensesController());
 
+        routes.put("/invoices",new InvoicesController());
+
         routes.put("/login",new LoginController());
         routes.put("/logout",new LogoutController());
 
