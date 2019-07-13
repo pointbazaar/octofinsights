@@ -19,7 +19,7 @@ public class HeadUtil {
                 head(
                         script().withSrc("https://www.googletagmanager.com/gtag/js?id=UA-38415314-2").attr(Attr.ASYNC,"true"),
 
-
+                        meta().attr("charset","UTF-8"),
 
                         title("Octofinsights"),
                         link().withRel("stylesheet").withHref("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"),

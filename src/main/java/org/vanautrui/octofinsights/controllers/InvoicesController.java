@@ -50,6 +50,37 @@ public class InvoicesController extends VaquitaController {
                                             div(attrs("#main-content"),
                                                     p("TODO: make feature to generate invoices"),
 
+                                                    div(
+                                                            div(
+                                                                    label("Service/Product Provided"),
+                                                                    input()
+                                                                            .withName("service_or_product")
+                                                                            .withType("text")
+                                                                            .withClasses("form-control")
+                                                                            .withId("product_or_service")
+                                                            ).withClasses("form-group col-md-8"),
+                                                            div(
+                                                                    label("Price"),
+                                                                    input()
+                                                                            .withName("price")
+                                                                            .withType("number")
+                                                                            .withClasses("form-control")
+                                                                            .withId("price")
+                                                            ).withClasses("form-group").withClasses("col-md-2"),
+                                                            div(
+                                                                button(attrs(".btn .btn-primary .m-2 .p-3"),"Enter ")
+                                                                        .withId("enterButton")
+                                                                        .withType("submit")
+                                                                        .attr("onclick","entervalue")
+                                                            ).withClasses("col-md-2")
+                                                    ).withClasses("row"),
+
+                                                    ul(
+
+                                                    ).withId("invoice-list")
+                                                    .withClasses("list-group"),
+
+                                                    hr(),
                                                     button("Generate PDF")
                                                             .withId("generateButton")
                                                             .withClasses("btn btn-primary")
