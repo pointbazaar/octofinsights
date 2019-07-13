@@ -1,4 +1,9 @@
+var list_items=[];
+
 const pdf=new jsPDF();
+
+
+
 
 let button = document.getElementById('generateButton');
 
@@ -8,13 +13,31 @@ let mybutton = document.getElementById('enterButton');
 
 mybutton.addEventListener('click',entervalue);
 
-var list_items=[];
 
 function printPDF(){
     //alert("print pdf");
 
     //left offset, top offset, text
-    pdf.text(10,10,"Yay PDF");
+    pdf.text(20,10,"Invoice");
+
+    var offset_y=40;
+
+    var offset_x_name=20;
+    var offset_x_price=180;
+
+    var i=0;
+    list_items.forEach(function(item){
+        pdf.text(offset_x_name,i*10+offset_y,item.product_or_service);
+        pdf.text(offset_x_price,i*10+offset_y,item.price);
+        i++;
+    });
+
+    pdf.text(offset_x_name,i*10+offset_y+30,"Sum: ");
+    pdf.text(
+        offset_x_price,
+        i*10+offset_y+30,
+        list_items.map(myitem => myitem.price).reduce((a,b)=>a+b)
+    );
 
     pdf.save();
 }
