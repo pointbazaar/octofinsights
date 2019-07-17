@@ -1,6 +1,7 @@
 var list_items=[];
 
 const pdf=new jsPDF();
+//http://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html#addPage
 
 
 
@@ -20,24 +21,55 @@ function printPDF(){
     //left offset, top offset, text
     pdf.text(20,10,"Invoice");
 
-    var offset_y=40;
+    var euro="€";
+
+
 
     var offset_x_name=20;
     var offset_x_price=180;
 
+    var mid_width=170;
+
+    var y0=20;
+
+    pdf.line(offset_x_name,y0,offset_x_name+mid_width,y0);
+
+    var offset_y=y0+10;
+
     var i=0;
     list_items.forEach(function(item){
         pdf.text(offset_x_name,i*10+offset_y,item.product_or_service);
-        pdf.text(offset_x_price,i*10+offset_y,item.price);
+        pdf.text(
+            offset_x_price,
+            i*10+offset_y,
+            (item.price+euro).padStart(10," ")
+        );
         i++;
     });
 
-    pdf.text(offset_x_name,i*10+offset_y+30,"Sum: ");
+    var y1=i*10+offset_y+20;
+
+    pdf.line(offset_x_name,y1,offset_x_name+mid_width,y1);
+
+    var y2=y1+10;
+
+    var sum_string = list_items.map(myitem => myitem.price).reduce((a,b)=>a+b)+euro;
+
+    pdf.text(offset_x_name,y2,"Sum: ");
     pdf.text(
         offset_x_price,
         i*10+offset_y+30,
-        list_items.map(myitem => myitem.price).reduce((a,b)=>a+b)
+        sum_string.padStart(10," ")
     );
+
+    var y3 = 280;
+
+    pdf.text(offset_x_name,y3,"(TODO) Company Name");
+    pdf.text(offset_x_name,y3+10,"(TODO) Company Address");
+
+    pdf.text(offset_x_name+(mid_width/2),y3,"(TODO) Company Website Link");
+    pdf.text(offset_x_name+(mid_width/2),y3+7,"(TODO) Company Email");
+    pdf.text(offset_x_name+(mid_width/2),y3+14,"(TODO) Company Telephone");
 
     pdf.save();
 }
