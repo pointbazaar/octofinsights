@@ -60,8 +60,8 @@ public class ExpensesController extends VaquitaController {
                                                                 input().withName("expense_date").withType("date").withClasses("form-control")
                                                             ),
                                                             div(
-                                                                label("Expense Value"),
-                                                                input().withName("expense_value").withType("number").withClasses("form-control").attr("max","0")
+                                                                label("Expense Value (enter a positive integer)"),
+                                                                input().withName("expense_value").withType("number").withClasses("form-control").attr("min","1")
                                                             ),
                                                             div(
                                                                 button(attrs(".btn .btn-outline-info"),"Insert").withType("submit")
@@ -150,6 +150,12 @@ public class ExpensesController extends VaquitaController {
                 Timestamp expense_date_timestamp = new Timestamp(expenseDate.getTime());
 
                 int expense_value= Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("expense_value"));
+
+                if(expense_value<=0){
+                    throw new Exception("should have entered a positive expense value");
+                }
+
+                expense_value*=(-1);
 
                 Connection conn= DBUtils.makeDBConnection();
 
