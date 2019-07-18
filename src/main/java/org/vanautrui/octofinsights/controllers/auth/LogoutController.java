@@ -1,4 +1,4 @@
-package org.vanautrui.octofinsights.controllers;
+package org.vanautrui.octofinsights.controllers.auth;
 
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;

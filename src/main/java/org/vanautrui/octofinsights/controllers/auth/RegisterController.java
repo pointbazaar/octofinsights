@@ -1,4 +1,4 @@
-package org.vanautrui.octofinsights.controllers;
+package org.vanautrui.octofinsights.controllers.auth;
 
 import j2html.tags.ContainerTag;
 import org.jooq.DSLContext;

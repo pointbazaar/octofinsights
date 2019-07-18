@@ -1,4 +1,4 @@
-package org.vanautrui.octofinsights.controllers;
+package org.vanautrui.octofinsights.controllers.other.expenses;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -23,6 +23,7 @@ import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import static j2html.TagCreator.*;
@@ -80,7 +81,7 @@ public class ExpensesController extends VaquitaController {
                                                                                     tr(
                                                                                             //td(record.get(EXPENSES.ID).toString()),
                                                                                             td(record.get(EXPENSES.EXPENSE_NAME)),
-                                                                                            td(record.get(EXPENSES.EXPENSE_DATE).toString()),
+                                                                                            td(record.get(EXPENSES.EXPENSE_DATE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
                                                                                             td(record.get(EXPENSES.EXPENSE_VALUE).toString()),
                                                                                             td(
                                                                                                 div(attrs(".row"),

@@ -1,4 +1,4 @@
-package org.vanautrui.octofinsights.controllers;
+package org.vanautrui.octofinsights.controllers.other.leads;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;

@@ -1,4 +1,4 @@
-package org.vanautrui.octofinsights.controllers;
+package org.vanautrui.octofinsights.controllers.other.sales;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -24,6 +24,7 @@ import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class SalesController extends VaquitaController {
                                                     td(record.get(SALES.CUSTOMER_NAME)),
                                                     td(record.get(SALES.PRICE_OF_SALE).toString()),
                                                     td(record.get(SALES.PRODUCT_OR_SERVICE)),
-                                                    td(record.get(SALES.TIME_OF_SALE).toString()),
+                                                    td(record.get(SALES.TIME_OF_SALE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
                                                     td(
                                                             div(attrs(".row"),
                                                                     form(
@@ -72,7 +73,7 @@ public class SalesController extends VaquitaController {
                                                                     form(
                                                                             input().withName("id").isHidden().withValue(record.get(SALES.ID).toString()),
                                                                             RecordEditIconUtils.updateButton()
-                                                                    ).withAction("/sales?action=edit").withMethod("post")
+                                                                    ).withAction("/sales/edit").withMethod("get")
                                                             )
                                                     )
                                             )
