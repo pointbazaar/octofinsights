@@ -12,6 +12,7 @@ import org.vanautrui.octofinsights.generated.tables.Expenses;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.RecordEditIconUtils;
+import org.vanautrui.octofinsights.services.ExpensesService;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
@@ -36,13 +37,8 @@ public class ExpensesController extends VaquitaController {
                 && request.session().get().containsKey("user_id")
         ){
             int user_id = Integer.parseInt(request.session().get().get("user_id"));
-
-            Connection conn= DBUtils.makeDBConnection();
-            DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-            ObjectMapper mapper = new ObjectMapper();
-            ArrayNode node =  mapper.createArrayNode();
             
-            Result<Record> records = create.select(EXPENSES.asterisk()).from(EXPENSES).where(EXPENSES.USER_ID.eq(user_id)).fetch().sortDesc(EXPENSES.EXPENSE_DATE);
+            Result<Record> records = ExpensesService.getExpenses(user_id);
 
             String page=
                     html(
@@ -103,7 +99,6 @@ public class ExpensesController extends VaquitaController {
                             )
                     ).render();
 
-            conn.close();
             return new VaquitaHTMLResponse(200,page);
 
         }else {
@@ -128,13 +123,7 @@ public class ExpensesController extends VaquitaController {
                 System.out.println("step 2");
                 int id = Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("id"));
 
-                //delete the lead with that id
-                Connection conn= DBUtils.makeDBConnection();
-
-                DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-                create.deleteFrom(EXPENSES).where( (EXPENSES.ID).eq(id).and((EXPENSES.USER_ID).eq(user_id)) ).execute();
-
-                conn.close();
+                ExpensesService.delete(id,user_id);
             }
 
             if(action.equals("insert")
@@ -158,15 +147,7 @@ public class ExpensesController extends VaquitaController {
 
                 expense_value*=(-1);
 
-                Connection conn= DBUtils.makeDBConnection();
-
-                DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-                create
-                        .insertInto(EXPENSES)
-                        .columns(EXPENSES.EXPENSE_NAME,EXPENSES.EXPENSE_DATE,EXPENSES.EXPENSE_VALUE, EXPENSES.USER_ID)
-                        .values(expense_name,expense_date_timestamp,expense_value,user_id).execute();
-
-                conn.close();
+                ExpensesService.insert(expense_name,expense_date_timestamp,expense_value,user_id);
             }
 
             return new VaquitaRedirectToGETResponse("/expenses",request);
