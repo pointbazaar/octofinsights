@@ -5,6 +5,7 @@ import org.vanautrui.octofinsights.App;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.services.ExpensesService;
+import org.vanautrui.octofinsights.services.LeadsService;
 import org.vanautrui.octofinsights.services.SalesService;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
@@ -25,6 +26,14 @@ public class DashboardController extends VaquitaController {
 
             int user_id = Integer.parseInt(request.session().get().get("user_id"));
 
+            long balance = (SalesService.getTotal(user_id)+ ExpensesService.getTotal(user_id));
+
+            long lead_count = LeadsService.getOpenLeadsCount(user_id);
+
+            String classes_balance = (balance>=0)?"text-success":"text-danger";
+
+            String classes_leads = (lead_count>0)?"text-success":"text-info";
+
             String page=
             html(
                 HeadUtil.makeHead(),
@@ -38,10 +47,10 @@ public class DashboardController extends VaquitaController {
                             ).withClasses("row justify-content-center"),
 
                             div(
-                                    makeDashboardCard("Balance",(SalesService.getTotal(user_id)+ ExpensesService.getTotal(user_id))+" €"),
-                                    makeDashboardCard("TODO: open leads","4"),
-                                    makeDashboardCard("TODO: Business Health","Good"),
-                                    makeDashboardCard("TODO: lifeline","4 Weeks")
+                                    makeDashboardCard("Balance",balance+" €","",classes_balance),
+                                    makeDashboardCard("Open Leads",""+ lead_count,"",classes_leads)
+                                    //makeDashboardCard("TODO: Business Health","Good","",""),
+                                    //makeDashboardCard("TODO: lifeline","4 Weeks","","")
                             ).withClasses("row align-items-center justify-content-center")
                         )
                     ),
@@ -58,16 +67,16 @@ public class DashboardController extends VaquitaController {
         }
     }
 
-    private static ContainerTag makeDashboardCard(String text,String text2){
+    private static ContainerTag makeDashboardCard(String text,String text2,String classes1, String classes2){
         return
 
         div(
                 div(
                         text
-                ).withClasses("text-success text-center mt-2"),
+                ).withClasses(" text-center mt-2 "+classes1),
                 div(
                         text2
-                ).withClasses("text-success text-center mt-4").withStyle("font-size: 1.8em;")
+                ).withClasses("text-center mt-4 "+classes2).withStyle("font-size: 1.8em;")
         //).withClasses("card border-info mx-sm-1 p-1 m-2")
         ).withClasses("card shadow mx-sm-1 p-1 m-2")
         .withStyle("height: 10rem; width: 10rem;");

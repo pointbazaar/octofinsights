@@ -56,4 +56,13 @@ public class LeadsService {
 
         return filtered_records;
     }
+
+    public static List<Record> getOpenLeads(int user_id)throws Exception{
+
+        return getLeads(user_id,Optional.empty()).stream().filter(lead->lead.get(LEADS.LEAD_STATUS).startsWith("open")).collect(Collectors.toList());
+    }
+
+    public static int getOpenLeadsCount(int user_id) throws Exception{
+        return getOpenLeads(user_id).size();
+    }
 }
