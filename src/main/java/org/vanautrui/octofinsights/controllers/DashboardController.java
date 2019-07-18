@@ -1,8 +1,10 @@
 package org.vanautrui.octofinsights.controllers;
 
 import j2html.tags.ContainerTag;
+import org.vanautrui.octofinsights.App;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
+import org.vanautrui.octofinsights.services.ExpensesService;
 import org.vanautrui.octofinsights.services.SalesService;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
@@ -36,6 +38,7 @@ public class DashboardController extends VaquitaController {
                             ).withClasses("row justify-content-center"),
 
                             div(
+                                    makeDashboardCard("Balance",(SalesService.getTotal(user_id)+ ExpensesService.getTotal(user_id))+" €"),
                                     makeDashboardCard("TODO: open leads","4"),
                                     makeDashboardCard("TODO: Business Health","Good"),
                                     makeDashboardCard("TODO: lifeline","4 Weeks")
