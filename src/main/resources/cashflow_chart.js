@@ -16,13 +16,14 @@ function draw_sales(values){
     myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: values.map(x=>x.label),
+            labels: values.map(x=>x.label).map(x=>""),
             datasets: [{
                 label: 'Sales and Expenses',
                 data: values.map(x=>x.value)
             }]
         },
         options: {
+            responsive:true,
             scales: {
                 yAxes: [{
                     ticks: {
@@ -50,13 +51,14 @@ function draw_sales(values){
     myChart2 = new Chart(ctx2, {
         type: 'line',
         data: {
-            labels: values.map(x=>x.label),
+            labels: values.map(x=>x.label).map(x=>""),
             datasets: [{
                 label: 'Total Business Value over Time',
                 data: partial_sums
             }]
         },
         options: {
+            responsive:true,
             scales: {
                 yAxes: [{
                     ticks: {
