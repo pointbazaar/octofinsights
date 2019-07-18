@@ -27,4 +27,8 @@ public class SalesService {
 
         return records;
     }
+
+    public static long getTotal(int user_id) throws Exception{
+        return getSales(user_id).stream().map(sale->sale.get(SALES.PRICE_OF_SALE).longValue()).reduce(Long::sum).orElse(0L);
+    }
 }

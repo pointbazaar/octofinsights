@@ -1,7 +1,9 @@
 package org.vanautrui.octofinsights.controllers;
 
+import j2html.tags.ContainerTag;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
+import org.vanautrui.octofinsights.services.SalesService;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
@@ -19,7 +21,7 @@ public class DashboardController extends VaquitaController {
 
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true") ){
 
-
+            int user_id = Integer.parseInt(request.session().get().get("user_id"));
 
             String page=
             html(
@@ -31,7 +33,13 @@ public class DashboardController extends VaquitaController {
                             div(
                                     div(canvas(attrs("#myChart"))).withClass("col-md-6"),
                                     div(canvas(attrs("#myChartBusinessValue"))).withClass("col-md-6")
-                            ).withClasses("row justify-content-center")
+                            ).withClasses("row justify-content-center"),
+
+                            div(
+                                    makeDashboardCard("TODO: open leads","4"),
+                                    makeDashboardCard("TODO: Business Health","Good"),
+                                    makeDashboardCard("TODO: lifeline","4 Weeks")
+                            ).withClasses("row align-items-center justify-content-center")
                         )
                     ),
                     script().withSrc("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"),
@@ -45,6 +53,21 @@ public class DashboardController extends VaquitaController {
         }else {
             return new VaquitaRedirectToGETResponse("/login", request);
         }
+    }
+
+    private static ContainerTag makeDashboardCard(String text,String text2){
+        return
+
+        div(
+                div(
+                        text
+                ).withClasses("text-success text-center mt-2"),
+                div(
+                        text2
+                ).withClasses("text-success text-center mt-4").withStyle("font-size: 1.8em;")
+        //).withClasses("card border-info mx-sm-1 p-1 m-2")
+        ).withClasses("card shadow mx-sm-1 p-1 m-2")
+        .withStyle("height: 10rem; width: 10rem;");
     }
 
 
