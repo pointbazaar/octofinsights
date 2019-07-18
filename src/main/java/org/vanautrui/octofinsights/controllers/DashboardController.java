@@ -74,13 +74,13 @@ public class DashboardController extends VaquitaController {
         div(
                 div(
                         text
-                ).withClasses(" text-center mt-2 "+classes1),
+                ).withClasses(" text-center mt-1 "+classes1),
                 div(
                         text2
-                ).withClasses("text-center mt-4 "+classes2).withStyle("font-size: 1.8em;")
+                ).withClasses("text-center m-3 "+classes2).withStyle("font-size: 1.8em;")
 
         ).withClasses("card shadow  p-1 m-3")
-        .withStyle("height: 10rem; width: 10rem;");
+        .withStyle("height: 10rem; width: 13rem;");
     }
 
 

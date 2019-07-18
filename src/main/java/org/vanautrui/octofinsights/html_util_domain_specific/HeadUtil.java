@@ -23,6 +23,7 @@ public class HeadUtil {
 
                         title("Octofinsights"),
                         link().withRel("stylesheet").withHref("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"),
+                        link().withRel("stylesheet").withHref("style.css"),
 
                         //link().withRel("stylesheet").withHref("https://cdn.jsdelivr.net/gh/coliff/bootstrap-rfs/bootstrap-rfs.css"),
 
