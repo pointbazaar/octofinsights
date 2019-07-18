@@ -48,7 +48,8 @@ public class DashboardController extends VaquitaController {
 
                             div(
                                     makeDashboardCard("Balance",balance+" €","",classes_balance),
-                                    makeDashboardCard("Open Leads",""+ lead_count,"",classes_leads)
+                                    makeDashboardCard("Open Leads",""+ lead_count,"",classes_leads),
+                                    makeDashboardCard("Sales this Month",SalesService.getTotalForThisMonth(user_id)+" €","","")
                                     //makeDashboardCard("TODO: Business Health","Good","",""),
                                     //makeDashboardCard("TODO: lifeline","4 Weeks","","")
                             ).withClasses("row align-items-center justify-content-center")
@@ -77,8 +78,8 @@ public class DashboardController extends VaquitaController {
                 div(
                         text2
                 ).withClasses("text-center mt-4 "+classes2).withStyle("font-size: 1.8em;")
-        //).withClasses("card border-info mx-sm-1 p-1 m-2")
-        ).withClasses("card shadow mx-sm-1 p-1 m-2")
+
+        ).withClasses("card shadow  p-1 m-3")
         .withStyle("height: 10rem; width: 10rem;");
     }
 
