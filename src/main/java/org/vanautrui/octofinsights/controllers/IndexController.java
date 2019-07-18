@@ -97,7 +97,8 @@ public class IndexController extends VaquitaController {
                                 //        .withSrc("https://images.unsplash.com/photo-1512511025430-7c4c3300e186")
                                 //img().withSrc("https://images.unsplash.com/photo-1512511025430-7c4c3300e186").withClasses("img-fluid")
 
-                            )
+                            ),
+                            script().withSrc("target/org/vanautrui/octofinsights/frontend/FrontendApp.js")
                     )
             );
 
