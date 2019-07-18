@@ -11,6 +11,7 @@ import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
+import org.vanautrui.octofinsights.html_util_domain_specific.RecordEditIconUtils;
 import org.vanautrui.octofinsights.services.SalesService;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
@@ -44,7 +45,7 @@ public class SalesController extends VaquitaController {
             ContainerTag mytable = table(
                     attrs(".table"),
                     thead(
-                            th("ID").attr("scope","col"),
+                            //th("ID").attr("scope","col"),
                             th("Customer ").attr("scope","col"),
                             th("Price").attr("scope","col"),
                             th("Product or Service").attr("scope","col"),
@@ -56,7 +57,7 @@ public class SalesController extends VaquitaController {
                                     records,
                                     record ->
                                             tr(
-                                                    td(record.get(SALES.ID).toString()),
+                                                    //td(record.get(SALES.ID).toString()),
                                                     td(record.get(SALES.CUSTOMER_NAME)),
                                                     td(record.get(SALES.PRICE_OF_SALE).toString()),
                                                     td(record.get(SALES.PRODUCT_OR_SERVICE)),
@@ -65,8 +66,13 @@ public class SalesController extends VaquitaController {
                                                             div(attrs(".row"),
                                                                     form(
                                                                             input().withName("id").isHidden().withValue(record.get(SALES.ID).toString()),
-                                                                            button(attrs(".btn .btn-outline-danger"),"delete").withType("submit")
-                                                                    ).withAction("/sales?action=delete").withMethod("post")
+                                                                            RecordEditIconUtils.deleteButton()
+                                                                    ).withAction("/sales?action=delete").withMethod("post"),
+
+                                                                    form(
+                                                                            input().withName("id").isHidden().withValue(record.get(SALES.ID).toString()),
+                                                                            RecordEditIconUtils.updateButton()
+                                                                    ).withAction("/sales?action=edit").withMethod("post")
                                                             )
                                                     )
                                             )

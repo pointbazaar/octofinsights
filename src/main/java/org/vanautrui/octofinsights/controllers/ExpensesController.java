@@ -11,6 +11,7 @@ import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.octofinsights.generated.tables.Expenses;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
+import org.vanautrui.octofinsights.html_util_domain_specific.RecordEditIconUtils;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
@@ -70,7 +71,7 @@ public class ExpensesController extends VaquitaController {
                                                     table(
                                                             attrs(".table"),
                                                             thead(
-                                                                    th("ID").attr("scope","col"),
+                                                                    //th("ID").attr("scope","col"),
                                                                     th("Expense Name").attr("scope","col"),
                                                                     th("Expense Date").attr("scope","col"),
                                                                     th("Expense Value").attr("scope","col"),
@@ -81,7 +82,7 @@ public class ExpensesController extends VaquitaController {
                                                                             records,
                                                                             record ->
                                                                                     tr(
-                                                                                            td(record.get(EXPENSES.ID).toString()),
+                                                                                            //td(record.get(EXPENSES.ID).toString()),
                                                                                             td(record.get(EXPENSES.EXPENSE_NAME)),
                                                                                             td(record.get(EXPENSES.EXPENSE_DATE).toString()),
                                                                                             td(record.get(EXPENSES.EXPENSE_VALUE).toString()),
@@ -89,7 +90,7 @@ public class ExpensesController extends VaquitaController {
                                                                                                 div(attrs(".row"),
                                                                                                         form(
                                                                                                                 input().withName("id").isHidden().withValue(record.get(EXPENSES.ID).toString()),
-                                                                                                                button(attrs(".btn .btn-outline-danger"),"delete").withType("submit")
+                                                                                                                RecordEditIconUtils.deleteButton()
                                                                                                         ).withAction("/expenses?action=delete").withMethod("post")
                                                                                                 )
                                                                                             )

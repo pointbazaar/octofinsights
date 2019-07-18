@@ -87,7 +87,11 @@ public class IndexController extends VaquitaController {
                                     h3("Can i just test the software?"),
                                     p("Login with username and password:"),
                                     p("username: test3"),
-                                    p("password: test3")
+                                    p("password: test3"),
+
+                                    hr(),
+                                    h3("Credits for Images, Vector Graphics, ..."),
+                                    p("Icons made by Kiranshastry from flaticon.com")
 
 
                                 ).withClasses("m-3")

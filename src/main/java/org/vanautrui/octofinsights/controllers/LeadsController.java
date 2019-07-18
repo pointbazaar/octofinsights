@@ -11,6 +11,7 @@ import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.octofinsights.generated.tables.Leads;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
+import org.vanautrui.octofinsights.html_util_domain_specific.RecordEditIconUtils;
 import org.vanautrui.octofinsights.services.LeadsService;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
@@ -73,7 +74,7 @@ public class LeadsController extends VaquitaController {
                                                     table(
                                                             attrs(".table"),
                                                             thead(
-                                                                    th("ID").attr("scope","col"),
+                                                                    //th("ID").attr("scope","col"),
                                                                     th("Lead Name").attr("scope","col"),
                                                                     th("Lead Status").attr("scope","col"),
                                                                     th("What the Lead wants").attr("scope","col"),
@@ -84,7 +85,7 @@ public class LeadsController extends VaquitaController {
                                                                             filtered_records,
                                                                             record ->
                                                                                     tr(
-                                                                                            td(record.get(LEADS.ID).toString()),
+                                                                                            //td(record.get(LEADS.ID).toString()),
                                                                                             td(record.get(LEADS.LEAD_NAME)),
                                                                                             td(record.get(LEADS.LEAD_STATUS)),
                                                                                             td(record.get(LEADS.WHAT_THE_LEAD_WANTS)),
@@ -92,7 +93,7 @@ public class LeadsController extends VaquitaController {
                                                                                                 div(attrs(".row"),
                                                                                                         form(
                                                                                                                 input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                                button(attrs(".btn .btn-outline-danger"),"delete").withType("submit")
+                                                                                                                RecordEditIconUtils.deleteButton()
                                                                                                         ).withAction("/leads?action=delete").withMethod("post"),
 
                                                                                                         /*Open the lead again, after it has been closed.
