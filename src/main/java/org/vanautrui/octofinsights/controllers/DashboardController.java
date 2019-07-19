@@ -66,11 +66,13 @@ public class DashboardController extends VaquitaController {
                                     makeDashboardCard("Profit this Month",delta_this_month+" €","",classes_month)
                                     //makeDashboardCard("TODO: Business Health","Good","",""),
                                     //makeDashboardCard("TODO: lifeline","4 Weeks","","")
-                            ).withClasses("row align-items-center justify-content-center")
+                            ).withClasses("row align-items-center justify-content-center"),
+                            div().withId("test")
                         )
                     ),
                     script().withSrc("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"),
-                    script().withSrc("/cashflow_chart.js")
+                    script().withSrc("/cashflow_chart.js"),
+                    script().withSrc("target/org/vanautrui/octofinsights/frontend/DashboardApp.js")
 
                 )
             ).render();
