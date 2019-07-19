@@ -21,12 +21,10 @@ import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.Timestamp;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static j2html.TagCreator.*;
@@ -104,10 +102,17 @@ public class LeadsController extends VaquitaController {
                                                                                                                 record.get(LEADS.LEAD_STATUS).startsWith("closed"),
                                                                                                                 form(
                                                                                                                         input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                                        button(attrs(".btn .btn-outline-danger"),"open").withType("submit")
+                                                                                                                        button(attrs(".btn .btn-outline-info"),"open").withType("submit")
                                                                                                                 ).withAction("/leads?action=open").withMethod("post")
                                                                                                         ),
 
+                                                                                                        iff(
+                                                                                                                record.get(LEADS.LEAD_STATUS).startsWith("open"),
+                                                                                                                form(
+                                                                                                                        input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
+                                                                                                                        button(attrs(".btn .btn-outline-info"),"convert").withType("submit")
+                                                                                                                ).withAction("/leads?action=convert").withMethod("post")
+                                                                                                        ),
 
                                                                                                         /*close the lead. either they accepted to become a client, or not,
                                                                                                          * the important thing is that we no longer worry about the lead
@@ -116,7 +121,7 @@ public class LeadsController extends VaquitaController {
                                                                                                             record.get(LEADS.LEAD_STATUS).startsWith("open"),
                                                                                                             form(
                                                                                                                     input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                                    button(attrs(".btn .btn-outline-danger"),"close").withType("submit")
+                                                                                                                    button(attrs(".btn .btn-outline-info"),"close").withType("submit")
                                                                                                             ).withAction("/leads?action=close").withMethod("post")
                                                                                                         )
                                                                                                 )
@@ -174,27 +179,33 @@ public class LeadsController extends VaquitaController {
                     && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("what_the_lead_wants")
             ){
 
-                String name = vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("name");
-                String what_the_lead_wants = vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("what_the_lead_wants");
+                Map<String,String> post_parameters =vaquitaHTTPEntityEnclosingRequest.getPostParameters();
+
+                String name = URLDecoder.decode(post_parameters.get("name"));
+                String what_the_lead_wants = URLDecoder.decode(post_parameters.get("what_the_lead_wants"));
 
                 Connection conn= DBUtils.makeDBConnection();
 
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
                 create.insertInto(LEADS).columns(LEADS.LEAD_NAME, LEADS.LEAD_STATUS, LEADS.DATE_OF_LEAD_ENTRY, LEADS.WHAT_THE_LEAD_WANTS,LEADS.USER_ID)
-                        .values(name,"open_contacted",new Timestamp(new Date().getTime()),what_the_lead_wants,user_id).execute();
+                        .values(name,"open",new Timestamp(new Date().getTime()),what_the_lead_wants,user_id).execute();
 
                 conn.close();
             }
 
             if(
-                    (action.equals("open") || action.equals("close")) && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("id")
+                    (action.equals("open") || action.equals("close") || action.equals("convert")) && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("id")
             ){
 
                 int id = Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("id"));
 
                 Connection conn= DBUtils.makeDBConnection();
 
-                String new_status = (action.equals("open"))?"open_contacted":"closed_not_converted";
+                String new_status = (action.equals("open"))?"open":"closed";
+
+                if(action.equals("convert")){
+                    new_status="converted";
+                }
 
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
                 create.update(LEADS).set(LEADS.LEAD_STATUS,new_status).where(LEADS.ID.eq(id).and(LEADS.USER_ID.eq(user_id))).execute();
