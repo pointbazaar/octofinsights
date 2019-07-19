@@ -13,6 +13,7 @@ import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
 
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.util.Map;
 import java.util.Optional;
@@ -62,6 +63,9 @@ public class LoginController extends VaquitaController {
 
         Map<String,String> parameters= vaquitaHTTPEntityEnclosingRequest.getPostParameters();
 
+        String username = URLDecoder.decode(parameters.get("username"));
+        String password = URLDecoder.decode(parameters.get("password"));
+
         Connection conn = DBUtils.makeDBConnection();
 
         DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
@@ -70,8 +74,8 @@ public class LoginController extends VaquitaController {
                 .select(USERS.ID)
                 .from(USERS)
                 .where(
-                        USERS.USERNAME.eq(parameters.get("username"))
-                        .and(USERS.PASSWORD.eq(parameters.get("password")))
+                        USERS.USERNAME.eq(username)
+                        .and(USERS.PASSWORD.eq(password))
                 )
                 .fetch();
         Optional<Integer> id = Optional.empty();

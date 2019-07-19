@@ -15,6 +15,7 @@ import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.util.Map;
 
@@ -23,10 +24,12 @@ import static org.vanautrui.octofinsights.generated.tables.Users.USERS;
 
 public class RegisterController extends VaquitaController {
 
-
+    public static String regex_alphanumeric = "^[a-zA-Z0-9]+$";
 
     @Override
     public VaquitaHTTPResponse handleGET(VaquitaHTTPRequest vaquitaHTTPRequest) throws Exception {
+
+
 
         ContainerTag page =
                 html(
@@ -40,22 +43,44 @@ public class RegisterController extends VaquitaController {
                                                         form(
                                                                 div(
                                                                         label("Username"),
-                                                                        input().withName("username").withPlaceholder("username").withType("text").withClasses("form-control")
+                                                                        input()
+                                                                                .withName("username")
+                                                                                .withPlaceholder("username")
+                                                                                .withType("text")
+                                                                                .attr("pattern",regex_alphanumeric)
+                                                                                .attr("required")
+                                                                                .withClasses("form-control")
+
                                                                 ).withClasses("form-group"),
                                                                 div(
                                                                         label("Email"),
-                                                                        input().withName("email").withPlaceholder("email").withType("email").withClasses("form-control")
+                                                                        input()
+                                                                                .withName("email")
+                                                                                .withPlaceholder("email")
+                                                                                .withType("email")
+                                                                                .attr("required")
+                                                                                .withClasses("form-control")
+
                                                                 ).withClasses("form-group"),
                                                                 div(
                                                                         label("Password"),
-                                                                        input().withName("password").withPlaceholder("password").withType("password").withClasses("form-control")
+                                                                        input()
+                                                                                .withName("password")
+                                                                                .withPlaceholder("password")
+                                                                                .withType("password")
+                                                                                .attr("pattern",regex_alphanumeric)
+                                                                                .attr("required")
+                                                                                .withClasses("form-control")
                                                                 ).withClasses("form-group"),
                                                                 div(
                                                                         label("Complete the Challenge: what is (2*4) + 1  "),
-                                                                        input().withName("challenge").withType("text").withClasses("form-control")
+                                                                        input().withName("challenge").withType("text").withClasses("form-control").attr("required")
                                                                 ).withClasses("form-group"),
                                                                 button(attrs(".btn .btn-primary .col-md-12"),"Register").withType("submit")
-                                                        ).withAction("/register").withMethod("post")
+                                                        )
+                                                                .withAction("/register")
+                                                                .withMethod("post")
+                                                                .attr("autocomplete","off")
                                                 )
                                         ).withClasses("row justify-content-center")
                                 )
@@ -70,14 +95,18 @@ public class RegisterController extends VaquitaController {
 
         Map<String,String> params= vaquitaHTTPEntityEnclosingRequest.getPostParameters();
 
-        String username = params.get("username");
-        String email = params.get("email");
-        String password = params.get("password");
+        String username = URLDecoder.decode(params.get("username"));
+        String email = URLDecoder.decode(params.get("email"));
+        String password = URLDecoder.decode(params.get("password"));
 
         Integer challenge_solution = Integer.parseInt(params.get("challenge"));
 
         if(challenge_solution!=9){
             throw new Exception("form submission did not solve challenge. could be a bot.");
+        }
+
+        if(!username.matches(regex_alphanumeric) || !password.matches(regex_alphanumeric)){
+            throw new Exception("username or password do not match requested format");
         }
 
         //insert new user into the database
