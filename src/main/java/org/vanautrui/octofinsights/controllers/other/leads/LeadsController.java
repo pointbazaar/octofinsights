@@ -2,6 +2,7 @@ package org.vanautrui.octofinsights.controllers.other.leads;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import j2html.tags.ContainerTag;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -31,6 +32,28 @@ import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.tables.Leads.LEADS;
 
 public class LeadsController extends VaquitaController {
+
+    private static ContainerTag makeLeadBadge(String lead_status){
+
+        String status_sensitive="";
+
+        switch (lead_status){
+            case "converted":
+                status_sensitive="badge-light";
+                break;
+            case "open":
+                status_sensitive="badge-primary";
+                break;
+            case "closed":
+                status_sensitive="badge-secondary";
+                break;
+        }
+
+        return
+        div(
+                lead_status
+        ).withClasses("badge "+status_sensitive);
+    }
 
     @Override
     public VaquitaHTTPResponse handleGET(VaquitaHTTPRequest request) throws Exception {
@@ -85,10 +108,10 @@ public class LeadsController extends VaquitaController {
                                                                                     tr(
                                                                                             //td(record.get(LEADS.ID).toString()),
                                                                                             td(record.get(LEADS.LEAD_NAME)),
-                                                                                            td(record.get(LEADS.LEAD_STATUS)),
+                                                                                            td(makeLeadBadge(record.get(LEADS.LEAD_STATUS))),
                                                                                             td(record.get(LEADS.WHAT_THE_LEAD_WANTS)),
                                                                                             td(
-                                                                                                div(attrs(".row"),
+                                                                                                div(attrs(".row .align-items-center"),
                                                                                                         form(
                                                                                                                 input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
                                                                                                                 RecordEditIconUtils.deleteButton()
@@ -102,7 +125,7 @@ public class LeadsController extends VaquitaController {
                                                                                                                 record.get(LEADS.LEAD_STATUS).startsWith("closed"),
                                                                                                                 form(
                                                                                                                         input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                                        button(attrs(".btn .btn-outline-info"),"open").withType("submit")
+                                                                                                                        button(attrs(".btn .btn-outline-info .p-2 .m-1"),"open").withType("submit")
                                                                                                                 ).withAction("/leads?action=open").withMethod("post")
                                                                                                         ),
 
@@ -110,7 +133,7 @@ public class LeadsController extends VaquitaController {
                                                                                                                 record.get(LEADS.LEAD_STATUS).startsWith("open"),
                                                                                                                 form(
                                                                                                                         input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                                        button(attrs(".btn .btn-outline-info"),"convert").withType("submit")
+                                                                                                                        button(attrs(".btn .btn-outline-info .p-2 .m-1"),"convert").withType("submit")
                                                                                                                 ).withAction("/leads?action=convert").withMethod("post")
                                                                                                         ),
 
@@ -121,7 +144,7 @@ public class LeadsController extends VaquitaController {
                                                                                                             record.get(LEADS.LEAD_STATUS).startsWith("open"),
                                                                                                             form(
                                                                                                                     input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                                    button(attrs(".btn .btn-outline-info"),"close").withType("submit")
+                                                                                                                    button(attrs(".btn .btn-outline-info .p-2 .m-1"),"close").withType("submit")
                                                                                                             ).withAction("/leads?action=close").withMethod("post")
                                                                                                         )
                                                                                                 )
