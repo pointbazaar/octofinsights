@@ -1,2 +1,2 @@
-mvn install && mvn exec:java
+mvn install -T 1C && mvn exec:java
 
