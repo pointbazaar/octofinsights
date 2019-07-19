@@ -1,6 +1,7 @@
 package org.vanautrui.octofinsights;
 
 import org.vanautrui.octofinsights.controllers.*;
+import org.vanautrui.octofinsights.controllers.api.BalanceEndpoint;
 import org.vanautrui.octofinsights.controllers.api.CashFlowEndpoint;
 import org.vanautrui.octofinsights.controllers.auth.LoginController;
 import org.vanautrui.octofinsights.controllers.auth.LogoutController;
@@ -47,7 +48,10 @@ public class App
 
         routes.put("/register",new RegisterController());
 
+
+
         routes.put("/api/cashflow",new CashFlowEndpoint());
+        routes.put("/api/balance",new BalanceEndpoint());
 
         try {
             VaquitaApp app = new VaquitaApp(9377, routes, false);

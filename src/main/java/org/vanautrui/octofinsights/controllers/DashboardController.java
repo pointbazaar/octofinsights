@@ -59,11 +59,11 @@ public class DashboardController extends VaquitaController {
                             //business situation
 
                             div(
-                                    makeDashboardCard("Balance",balance+" €","",classes_balance),
-                                    makeDashboardCard("Open Leads",""+ lead_count,"",classes_leads),
-                                    makeDashboardCard("Sales this Month",sales_this_month+" €","","text-success"),
-                                    iff(expenses_this_month>0,makeDashboardCard("Loss this Month",((-1)*expenses_this_month)+" €","","text-warning")),
-                                    makeDashboardCard("Profit this Month",delta_this_month+" €","",classes_month)
+                                    makeDashboardCard("Balance",balance+" €","",classes_balance,"balance"),
+                                    makeDashboardCard("Open Leads",""+ lead_count,"",classes_leads,""),
+                                    makeDashboardCard("Sales this Month",sales_this_month+" €","","text-success",""),
+                                    iff(expenses_this_month>0,makeDashboardCard("Loss this Month",((-1)*expenses_this_month)+" €","","text-warning","")),
+                                    makeDashboardCard("Profit this Month",delta_this_month+" €","",classes_month,"")
                                     //makeDashboardCard("TODO: Business Health","Good","",""),
                                     //makeDashboardCard("TODO: lifeline","4 Weeks","","")
                             ).withClasses("row align-items-center justify-content-center"),
@@ -84,7 +84,7 @@ public class DashboardController extends VaquitaController {
         }
     }
 
-    private static ContainerTag makeDashboardCard(String text,String text2,String classes1, String classes2){
+    private static ContainerTag makeDashboardCard(String text,String text2,String classes1, String classes2, String id2){
         return
 
         div(
@@ -93,7 +93,7 @@ public class DashboardController extends VaquitaController {
                 ).withClasses(" text-center mt-1 "+classes1),
                 div(
                         text2
-                ).withClasses("text-center m-3 "+classes2).withStyle("font-size: 1.8em;")
+                ).withClasses("text-center m-3 "+classes2).withStyle("font-size: 1.8em;").withId(id2)
 
         ).withClasses("card shadow  p-1 m-3")
         .withStyle("height: 10rem; width: 13rem;");

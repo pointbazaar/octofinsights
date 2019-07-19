@@ -36,5 +36,26 @@ public class DashboardApp {
 
         test.textContent="hi frontend apps in java !";
 
+        main2();
+
+    }
+
+    public static void main2(){
+        XMLHttpRequest Http = new XMLHttpRequest();
+
+        Http.open("GET","/api/balance");
+        Http.send();
+
+        Http.onloadend=new Function<ProgressEvent, Object>() {
+            @Override
+            public Object apply(ProgressEvent progressEvent) {
+                BalanceObject parse = (BalanceObject) JSON.parse(Http.responseText);
+
+                console.log(parse.balance);
+
+                $("#balance").get()[0].textContent=parse.balance+" :)";
+                return null;
+            }
+        };
     }
 }
