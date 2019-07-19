@@ -1,5 +1,13 @@
 package org.vanautrui.octofinsights.frontend;
 
+import def.dom.HTMLElement;
+import def.dom.ProgressEvent;
+import def.dom.XMLHttpRequest;
+import def.js.JSON;
+import org.jooq.tools.json.JSONObject;
+
+import java.util.function.Function;
+
 import static def.dom.Globals.console;
 import static def.jquery.Globals.$;
 
@@ -7,6 +15,26 @@ public class DashboardApp {
     public static void main(String[] args) {
         console.log("Dashboard Frontend App Running");
 
-        $("#test").get()[0].textContent="hi frontend apps in java !";
+        HTMLElement test = $("#test").get()[0];
+
+        XMLHttpRequest Http = new XMLHttpRequest();
+
+        Http.open("GET","/api/cashflow");
+        Http.send();
+
+        Http.onloadend=new Function<ProgressEvent, Object>() {
+            @Override
+            public Object apply(ProgressEvent progressEvent) {
+                CashFlowObject[] parse = (CashFlowObject[]) JSON.parse(Http.responseText);
+
+                console.log(parse[0]);
+
+                console.log(parse);
+                return null;
+            }
+        };
+
+        test.textContent="hi frontend apps in java !";
+
     }
 }
