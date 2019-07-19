@@ -34,6 +34,15 @@ public class DashboardController extends VaquitaController {
 
             String classes_leads = (lead_count>0)?"text-success":"text-info";
 
+
+
+            long sales_this_month = SalesService.getTotalForThisMonth(user_id);
+            long expenses_this_month =ExpensesService.getTotalForThisMonth(user_id);
+
+            long delta_this_month = sales_this_month+expenses_this_month;
+
+            String classes_month = (delta_this_month>=0)?"text-success":"text-danger";
+
             String page=
             html(
                 HeadUtil.makeHead(),
@@ -46,10 +55,15 @@ public class DashboardController extends VaquitaController {
                                     div(canvas(attrs("#myChartBusinessValue"))).withClass("col-md-6")
                             ).withClasses("row justify-content-center"),
 
+                            //some tiles on the dashboard are only shown conditionally. the dashboard adapts to the current
+                            //business situation
+
                             div(
                                     makeDashboardCard("Balance",balance+" €","",classes_balance),
                                     makeDashboardCard("Open Leads",""+ lead_count,"",classes_leads),
-                                    makeDashboardCard("Sales this Month",SalesService.getTotalForThisMonth(user_id)+" €","","")
+                                    makeDashboardCard("Sales this Month",sales_this_month+" €","","text-success"),
+                                    iff(expenses_this_month>0,makeDashboardCard("Loss this Month",((-1)*expenses_this_month)+" €","","text-warning")),
+                                    makeDashboardCard("Delta this Month",delta_this_month+" €","",classes_month)
                                     //makeDashboardCard("TODO: Business Health","Good","",""),
                                     //makeDashboardCard("TODO: lifeline","4 Weeks","","")
                             ).withClasses("row align-items-center justify-content-center")

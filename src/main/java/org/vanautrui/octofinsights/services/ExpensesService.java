@@ -12,6 +12,7 @@ import org.vanautrui.octofinsights.generated.tables.Expenses;
 
 import java.sql.Connection;
 import java.sql.Timestamp;
+import java.time.YearMonth;
 import java.util.Date;
 
 import static org.vanautrui.octofinsights.generated.Tables.EXPENSES;
@@ -56,4 +57,24 @@ public class ExpensesService {
 
         conn.close();
     }
+
+    public static Result<Record> getExpensesThisMonth(int user_id)throws Exception{
+
+        Timestamp date1 = Timestamp.valueOf(YearMonth.now().atDay(1).atStartOfDay());
+
+        Timestamp date2 = Timestamp.valueOf(YearMonth.now().atEndOfMonth().plusDays(1).atStartOfDay());
+
+        Connection conn= DBUtils.makeDBConnection();
+        DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+
+        Result<Record> records = create.select(EXPENSES.asterisk()).from(EXPENSES).where(EXPENSES.USER_ID.eq(user_id).and(EXPENSES.EXPENSE_DATE.between(date1,date2))).fetch().sortDesc(EXPENSES.EXPENSE_DATE);
+        conn.close();
+
+        return records;
+    }
+
+    public static long getTotalForThisMonth(int user_id)throws Exception{
+        return getExpensesThisMonth(user_id).stream().map(sale->sale.get(EXPENSES.EXPENSE_VALUE).longValue()).reduce(Long::sum).orElse(0L);
+    }
+
 }
