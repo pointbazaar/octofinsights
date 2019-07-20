@@ -1,6 +1,6 @@
 var list_items=[];
 
-const pdf=new jsPDF();
+var pdf=new jsPDF();
 //http://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html#addPage
 
 
@@ -26,7 +26,7 @@ function printPDF(){
 
 
     var offset_x_name=20;
-    var offset_x_price=180;
+    var offset_x_price=160;
 
     var mid_width=170;
 
@@ -47,7 +47,7 @@ function printPDF(){
         i++;
     });
 
-    var y1=i*10+offset_y+20;
+    var y1=i*10+offset_y+8;
 
     pdf.line(offset_x_name,y1,offset_x_name+mid_width,y1);
 
@@ -58,7 +58,8 @@ function printPDF(){
     pdf.text(offset_x_name,y2,"Sum: ");
     pdf.text(
         offset_x_price,
-        i*10+offset_y+30,
+        //i*10+offset_y+30,
+        y2,
         sum_string.padStart(10," ")
     );
 
@@ -72,6 +73,8 @@ function printPDF(){
     pdf.text(offset_x_name+(mid_width/2),y3+14,"(TODO) Company Telephone");
 
     pdf.save();
+
+    pdf=new jsPDF();
 }
 
 function update(){
@@ -90,7 +93,7 @@ function update_one(product_or_service,price,id){
     var list = document.getElementById("invoice-list");
 
     var item_price=document.createElement("p");
-    item_price.innerHTML=price+"";
+    item_price.innerHTML=price+" €";
     item_price.className="col-md-3";
 
     var item_name=document.createElement("p");
