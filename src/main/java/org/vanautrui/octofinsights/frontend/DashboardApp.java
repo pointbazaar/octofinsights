@@ -26,9 +26,9 @@ public class DashboardApp {
             public Object apply(ProgressEvent progressEvent) {
                 StringIntPair[] parse = (StringIntPair[]) JSON.parse(Http.responseText);
 
-                console.log(parse[0]);
+                //console.log(parse[0]);
 
-                console.log(parse);
+                //console.log(parse);
                 return null;
             }
         };
@@ -80,7 +80,13 @@ public class DashboardApp {
 
                 //console.log(parse.value);
 
-                $("#salesthismonth").get()[0].textContent=parse.value+" €";
+                HTMLElement sales = $("#salesthismonth").get()[0];
+                sales.textContent=parse.value+" €";
+
+                if(parse.value>0){
+                    sales.classList.add("text-success");
+                }
+                
                 return null;
             }
         };
