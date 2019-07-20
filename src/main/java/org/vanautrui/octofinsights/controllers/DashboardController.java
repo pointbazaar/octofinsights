@@ -26,11 +26,11 @@ public class DashboardController extends VaquitaController {
 
             int user_id = Integer.parseInt(request.session().get().get("user_id"));
 
-            long balance = (SalesService.getTotal(user_id)+ ExpensesService.getTotal(user_id));
+            //long balance = (SalesService.getTotal(user_id)+ ExpensesService.getTotal(user_id));
 
             long lead_count = LeadsService.getOpenLeadsCount(user_id);
 
-            String classes_balance = (balance>=0)?"text-success":"text-danger";
+            //String classes_balance = (balance>=0)?"text-success":"text-danger";
 
             String classes_leads = (lead_count>0)?"text-success":"text-info";
 
@@ -59,7 +59,7 @@ public class DashboardController extends VaquitaController {
                             //business situation
 
                             div(
-                                    makeDashboardCard("Balance",balance+" €","",classes_balance,"balance"),
+                                    makeDashboardCard("Balance","~","","","balance"),
                                     makeDashboardCard("Open Leads",""+ lead_count,"",classes_leads,""),
                                     makeDashboardCard("Sales this Month",sales_this_month+" €","","text-success",""),
                                     iff(expenses_this_month>0,makeDashboardCard("Loss this Month",((-1)*expenses_this_month)+" €","","text-warning","")),

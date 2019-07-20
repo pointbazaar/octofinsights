@@ -53,7 +53,7 @@ public class DashboardApp {
 
                 console.log(parse.balance);
 
-                $("#balance").get()[0].textContent=parse.balance+" :)";
+                $("#balance").get()[0].textContent=parse.balance+" €";
                 return null;
             }
         };
