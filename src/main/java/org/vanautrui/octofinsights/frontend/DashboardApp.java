@@ -152,6 +152,11 @@ public class DashboardApp {
 
                 $("#expensesthismonth").get()[0].textContent=((-1)*parse.value)+" €";
                 //expensesdiv.get()[0].style.opacity="1.0";
+
+                if(parse.value==0){
+                    expensesdiv.remove();
+                }
+
                 fullOpacity(expensesdiv);
                 return null;
             }
