@@ -59,12 +59,12 @@ public class DashboardController extends VaquitaController {
                             //business situation
 
                             div(
-                                    makeDashboardCard("Balance","~","","","balance"),
-                                    makeDashboardCard("Open Leads",""+ lead_count,"",classes_leads,""),
-                                    makeDashboardCard("Sales this Month","~","","","salesthismonth"),
+                                    makeDashboardCard("Balance","~","","","balance","balancediv"),
+                                    makeDashboardCard("Open Leads",""+ lead_count,"",classes_leads,"","leadsdiv"),
+                                    makeDashboardCard("Sales this Month","~","","","salesthismonth","salesdiv"),
 
-                                    makeDashboardCard("Loss this Month","~","","","expensesthismonth"),
-                                    makeDashboardCard("Profit this Month","~","","","profit")
+                                    makeDashboardCard("Loss this Month","~","","","expensesthismonth","expensesdiv"),
+                                    makeDashboardCard("Profit this Month","~","","","profit","profitdiv")
                                     //makeDashboardCard("TODO: Business Health","Good","",""),
                                     //makeDashboardCard("TODO: lifeline","4 Weeks","","")
                             ).withClasses("row align-items-center justify-content-center"),
@@ -85,7 +85,7 @@ public class DashboardController extends VaquitaController {
         }
     }
 
-    private static ContainerTag makeDashboardCard(String text,String text2,String classes1, String classes2, String id2){
+    private static ContainerTag makeDashboardCard(String text,String text2,String classes1, String classes2, String id2,String id3){
         return
 
         div(
@@ -97,7 +97,8 @@ public class DashboardController extends VaquitaController {
                 ).withClasses("text-center m-3 "+classes2).withStyle("font-size: 1.8em;").withId(id2)
 
         ).withClasses("card shadow  p-1 m-3")
-        .withStyle("height: 10rem; width: 13rem;");
+        .withStyle("height: 10rem; width: 13rem;")
+        .withId(id3);
     }
 
 

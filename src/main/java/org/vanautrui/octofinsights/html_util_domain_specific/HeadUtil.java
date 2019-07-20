@@ -27,7 +27,7 @@ public class HeadUtil {
 
                         //link().withRel("stylesheet").withHref("https://cdn.jsdelivr.net/gh/coliff/bootstrap-rfs/bootstrap-rfs.css"),
 
-                        script().withSrc("https://code.jquery.com/jquery-3.3.1.slim.min.js"),
+                        script().withSrc("https://code.jquery.com/jquery-3.4.1.js"),
                         script().withSrc("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"),
                         script().withSrc("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"),
 
