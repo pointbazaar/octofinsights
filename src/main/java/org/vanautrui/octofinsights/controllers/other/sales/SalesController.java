@@ -60,7 +60,7 @@ public class SalesController extends VaquitaController {
                                             tr(
                                                     //td(record.get(SALES.ID).toString()),
                                                     td(record.get(SALES.CUSTOMER_NAME)),
-                                                    td(record.get(SALES.PRICE_OF_SALE).toString()),
+                                                    td(record.get(SALES.PRICE_OF_SALE).toString()+" €"),
                                                     td(record.get(SALES.PRODUCT_OR_SERVICE)),
                                                     td(record.get(SALES.TIME_OF_SALE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
                                                     td(

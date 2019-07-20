@@ -83,7 +83,7 @@ public class ExpensesController extends VaquitaController {
                                                                                             //td(record.get(EXPENSES.ID).toString()),
                                                                                             td(record.get(EXPENSES.EXPENSE_NAME)),
                                                                                             td(record.get(EXPENSES.EXPENSE_DATE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
-                                                                                            td(record.get(EXPENSES.EXPENSE_VALUE).toString()),
+                                                                                            td(record.get(EXPENSES.EXPENSE_VALUE).toString()+" €"),
                                                                                             td(
                                                                                                 div(attrs(".row"),
                                                                                                         form(
