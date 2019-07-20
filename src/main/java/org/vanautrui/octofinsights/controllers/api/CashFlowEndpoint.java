@@ -13,9 +13,12 @@ import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaJSONResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
+import static org.jooq.impl.DSL.*;
 import static org.vanautrui.octofinsights.generated.Tables.*;
 
 
@@ -38,28 +41,38 @@ public class CashFlowEndpoint extends VaquitaController {
         ).from(SALES,EXPENSES).fetch();
          */
 
+            int current_year = LocalDateTime.now().getYear();
 
-            Result<Record3<Integer, String, Timestamp>> result =
-                    create.select(
-                            (SALES.PRICE_OF_SALE).as("value"),
-                            (SALES.PRODUCT_OR_SERVICE).as("label"),
-                            (SALES.TIME_OF_SALE).as("time")
-                    )
-                            .from(SALES).where(SALES.USER_ID.eq(user_id)).orderBy(SALES.TIME_OF_SALE)
-                            .union(create.select(
-                                    (EXPENSES.EXPENSE_VALUE).as("value"),
-                                    (EXPENSES.EXPENSE_NAME).as("label"),
-                                    (EXPENSES.EXPENSE_DATE).as("time")
+
+            //Result<Record3<Integer, String, Timestamp>> result =
+            SelectLimitStep<Record2<BigDecimal, Integer>> record3s = create.select(
+                    sum((SALES.PRICE_OF_SALE)).as("value"),
+                    month(SALES.TIME_OF_SALE).as("month")
+            )
+                    .from(SALES).where(SALES.USER_ID.eq(user_id).and(year(SALES.TIME_OF_SALE).eq(current_year))).groupBy(year(SALES.TIME_OF_SALE),month(SALES.TIME_OF_SALE))
+
+                    .union(
+                            create.select(
+                                sum((EXPENSES.EXPENSE_VALUE)).as("value"),
+                                month(EXPENSES.EXPENSE_DATE).as("month")
                             )
-                                    .from(EXPENSES).where(EXPENSES.USER_ID.eq(user_id))).orderBy(3)
-                            .fetch();
+                            .from(EXPENSES).where(EXPENSES.USER_ID.eq(user_id).and(year(EXPENSES.EXPENSE_DATE).eq(current_year))).groupBy(year(EXPENSES.EXPENSE_DATE),month(EXPENSES.EXPENSE_DATE))
+                    )
+                    .orderBy(2);
+            //.fetch();
+
+            Result<Record2<BigDecimal, Integer>> result =record3s.fetch();
 
             //List<Integer> sales_list = new ArrayList<>();
 
-            for(Record3<Integer, String, Timestamp> r : result){
+            for(Record2<BigDecimal, Integer> r : result){
                 ObjectNode objectNode = mapper.createObjectNode();
                 objectNode.put("value",r.value1());
-                objectNode.put("label",r.value2().substring(0,Math.min(r.value2().length(),25)));
+
+                String month_str = LocalDateTime.of(current_year,r.value2(),1,1,1).getMonth().toString();
+
+                objectNode.put("label",month_str+" "+current_year);
+                //objectNode.put("label",r.value2().substring(0,Math.min(r.value2().length(),25)));
 
                 node.add(objectNode);
             }

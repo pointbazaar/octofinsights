@@ -16,7 +16,7 @@ function draw_sales(values){
     myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: values.map(x=>x.label).map(x=>""),
+            labels: values.map(x=>x.label),
             datasets: [{
                 label: 'Sales and Expenses',
                 data: values.map(x=>x.value)
@@ -54,7 +54,8 @@ function draw_sales(values){
             labels: values.map(x=>x.label).map(x=>""),
             datasets: [{
                 label: 'Total Business Value over Time',
-                data: partial_sums
+                data: partial_sums,
+                fill:false
             }]
         },
         options: {
@@ -65,6 +66,11 @@ function draw_sales(values){
                         beginAtZero: true
                     }
                 }]
+            },
+            elements:{
+                line:{
+                    tension:0
+                }
             }
         }
     });
