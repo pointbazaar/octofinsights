@@ -54,7 +54,13 @@ public class DashboardApp {
 
                 //console.log(parse.value);
 
-                $("#balance").get()[0].textContent=parse.value +" €";
+                HTMLElement balance = $("#balance").get()[0];
+                balance.textContent=parse.value +" €";
+                if(parse.value>=0) {
+                    balance.classList.add("text-success");
+                }else {
+                    balance.classList.add("text-danger");
+                }
                 return null;
             }
         };
