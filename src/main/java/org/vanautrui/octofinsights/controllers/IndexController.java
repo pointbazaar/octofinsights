@@ -73,7 +73,7 @@ public class IndexController extends VaquitaController {
 
                                     h3("For Freelancers"),
                                     p("For many Freelancers, their personal account is their business account for Reasons of Practicality"),
-                                    p("Planned Feature: apply an 'offset' to octofinsights and assume that this is your current balance. octofinsights can then make a more accurate representation of your financial history"),
+                                    p("Planned Feature: apply an 'offset' to octofinsights and assume that this is your current value. octofinsights can then make a more accurate representation of your financial history"),
 
                                     h3("Track Expenses"),
                                     p("Servers, Rent, Equipment, ..."),

@@ -26,22 +26,22 @@ public class DashboardController extends VaquitaController {
 
             int user_id = Integer.parseInt(request.session().get().get("user_id"));
 
-            //long balance = (SalesService.getTotal(user_id)+ ExpensesService.getTotal(user_id));
+            //long value = (SalesService.getTotal(user_id)+ ExpensesService.getTotal(user_id));
 
             long lead_count = LeadsService.getOpenLeadsCount(user_id);
 
-            //String classes_balance = (balance>=0)?"text-success":"text-danger";
+            //String classes_balance = (value>=0)?"text-success":"text-danger";
 
             String classes_leads = (lead_count>0)?"text-success":"text-info";
 
 
 
-            long sales_this_month = SalesService.getTotalForThisMonth(user_id);
+            //long sales_this_month = SalesService.getTotalForThisMonth(user_id);
             long expenses_this_month =ExpensesService.getTotalForThisMonth(user_id);
 
-            long delta_this_month = sales_this_month+expenses_this_month;
+            //long delta_this_month = sales_this_month+expenses_this_month;
 
-            String classes_month = (delta_this_month>=0)?"text-success":"text-danger";
+            //String classes_month = (delta_this_month>=0)?"text-success":"text-danger";
 
             String page=
             html(
@@ -61,9 +61,10 @@ public class DashboardController extends VaquitaController {
                             div(
                                     makeDashboardCard("Balance","~","","","balance"),
                                     makeDashboardCard("Open Leads",""+ lead_count,"",classes_leads,""),
-                                    makeDashboardCard("Sales this Month",sales_this_month+" €","","text-success",""),
-                                    iff(expenses_this_month>0,makeDashboardCard("Loss this Month",((-1)*expenses_this_month)+" €","","text-warning","")),
-                                    makeDashboardCard("Profit this Month",delta_this_month+" €","",classes_month,"")
+                                    makeDashboardCard("Sales this Month","~","","","salesthismonth"),
+
+                                    iff(expenses_this_month<0,makeDashboardCard("Loss this Month",((-1)*expenses_this_month)+" €","","text-warning","")),
+                                    makeDashboardCard("Profit this Month","~","","","profit")
                                     //makeDashboardCard("TODO: Business Health","Good","",""),
                                     //makeDashboardCard("TODO: lifeline","4 Weeks","","")
                             ).withClasses("row align-items-center justify-content-center"),

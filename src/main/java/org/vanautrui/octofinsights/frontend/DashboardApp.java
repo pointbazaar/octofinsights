@@ -4,7 +4,6 @@ import def.dom.HTMLElement;
 import def.dom.ProgressEvent;
 import def.dom.XMLHttpRequest;
 import def.js.JSON;
-import org.jooq.tools.json.JSONObject;
 
 import java.util.function.Function;
 
@@ -25,7 +24,7 @@ public class DashboardApp {
         Http.onloadend=new Function<ProgressEvent, Object>() {
             @Override
             public Object apply(ProgressEvent progressEvent) {
-                CashFlowObject[] parse = (CashFlowObject[]) JSON.parse(Http.responseText);
+                StringIntPair[] parse = (StringIntPair[]) JSON.parse(Http.responseText);
 
                 console.log(parse[0]);
 
@@ -37,23 +36,61 @@ public class DashboardApp {
         test.textContent="hi frontend apps in java !";
 
         main2();
-
+        main3();
+        main4();
     }
 
     public static void main2(){
         XMLHttpRequest Http = new XMLHttpRequest();
 
-        Http.open("GET","/api/balance");
+        Http.open("GET","/api/value");
         Http.send();
 
         Http.onloadend=new Function<ProgressEvent, Object>() {
             @Override
             public Object apply(ProgressEvent progressEvent) {
-                BalanceObject parse = (BalanceObject) JSON.parse(Http.responseText);
+                IntObject parse = (IntObject) JSON.parse(Http.responseText);
 
-                console.log(parse.balance);
+                //console.log(parse.value);
 
-                $("#balance").get()[0].textContent=parse.balance+" €";
+                $("#balance").get()[0].textContent=parse.value +" €";
+                return null;
+            }
+        };
+    }
+
+    public static void main3(){
+        XMLHttpRequest Http = new XMLHttpRequest();
+
+        Http.open("GET","/api/salesthismonth");
+        Http.send();
+
+        Http.onloadend=new Function<ProgressEvent, Object>() {
+            @Override
+            public Object apply(ProgressEvent progressEvent) {
+                IntObject parse = (IntObject) JSON.parse(Http.responseText);
+
+                //console.log(parse.value);
+
+                $("#salesthismonth").get()[0].textContent=parse.value+" €";
+                return null;
+            }
+        };
+    }
+
+
+    public static void main4(){
+        XMLHttpRequest Http = new XMLHttpRequest();
+
+        Http.open("GET","/api/profit");
+        Http.send();
+
+        Http.onloadend=new Function<ProgressEvent, Object>() {
+            @Override
+            public Object apply(ProgressEvent progressEvent) {
+                IntObject parse = (IntObject) JSON.parse(Http.responseText);
+
+                $("#profit").get()[0].textContent=parse.value+" €";
                 return null;
             }
         };

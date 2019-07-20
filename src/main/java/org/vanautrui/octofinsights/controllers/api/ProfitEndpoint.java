@@ -1,16 +1,7 @@
 package org.vanautrui.octofinsights.controllers.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import javafx.util.Pair;
-import org.jooq.DSLContext;
-import org.jooq.Record3;
-import org.jooq.Result;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
-import org.slf4j.ILoggerFactory;
-import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.octofinsights.services.ExpensesService;
 import org.vanautrui.octofinsights.services.SalesService;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
@@ -20,14 +11,8 @@ import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaJSONResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
 
-import java.sql.Connection;
-import java.sql.Timestamp;
 
-import static org.vanautrui.octofinsights.generated.Tables.EXPENSES;
-import static org.vanautrui.octofinsights.generated.Tables.SALES;
-
-
-public class BalanceEndpoint extends VaquitaController {
+public class ProfitEndpoint extends VaquitaController {
     @Override
     public VaquitaHTTPResponse handleGET(VaquitaHTTPRequest req) throws Exception {
 
@@ -35,7 +20,7 @@ public class BalanceEndpoint extends VaquitaController {
             int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
 
-            long balance = SalesService.getTotal(user_id)+ ExpensesService.getTotal(user_id);
+            long balance = SalesService.getTotalForThisMonth(user_id)+ ExpensesService.getTotalForThisMonth(user_id);
 
             ObjectNode node = (new ObjectMapper()).createObjectNode();
 
