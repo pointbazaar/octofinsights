@@ -3,6 +3,7 @@ var ctx2 = document.getElementById('myChartBusinessValue').getContext('2d');
 
 
 fetch("/api/cashflow").then(data=>data.json()).then(data=>{draw_sales(data);});
+fetch("/api/businessvaluehistory").then(data=>data.json()).then(data=>{draw_business_value_history(data);});
 
 
 //to be able to manipulate in browser
@@ -11,7 +12,7 @@ var myChart2;
 
 function draw_sales(values){
 
-    console.log(values);
+    //console.log(values);
 
     myChart = new Chart(ctx, {
         type: 'bar',
@@ -34,6 +35,14 @@ function draw_sales(values){
         }
     });
 
+
+
+}
+
+function draw_business_value_history(values){
+
+    //console.log(values);
+
     var partial_sums=[];
 
     for(var i=1;i<=values.length;i++){
@@ -45,15 +54,14 @@ function draw_sales(values){
         );
     }
 
-    console.log("partial_sums:");
-    console.log(partial_sums);
 
     myChart2 = new Chart(ctx2, {
         type: 'line',
         data: {
-            labels: values.map(x=>x.label).map(x=>""),
+            labels: values.map(x=>x.label),
             datasets: [{
                 label: 'Total Business Value over Time',
+                //data: values.map(x=>x.value),
                 data: partial_sums,
                 fill:false
             }]
@@ -74,5 +82,4 @@ function draw_sales(values){
             }
         }
     });
-
 }

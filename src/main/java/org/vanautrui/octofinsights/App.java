@@ -52,6 +52,8 @@ public class App
 
 
         routes.put("/api/cashflow",new CashFlowEndpoint());
+        routes.put("/api/businessvaluehistory",new BusinessValueHistoryEndpoint());
+
         routes.put("/api/value",new BalanceEndpoint());
         routes.put("/api/salesthismonth",new SalesThisMonthEndpoint());
         routes.put("/api/expensesthismonth",new ExpensesThisMonthEndpoint());
