@@ -37,7 +37,7 @@ public class DashboardController extends VaquitaController {
 
 
             //long sales_this_month = SalesService.getTotalForThisMonth(user_id);
-            long expenses_this_month =ExpensesService.getTotalForThisMonth(user_id);
+            //long expenses_this_month =ExpensesService.getTotalForThisMonth(user_id);
 
             //long delta_this_month = sales_this_month+expenses_this_month;
 
@@ -63,7 +63,7 @@ public class DashboardController extends VaquitaController {
                                     makeDashboardCard("Open Leads",""+ lead_count,"",classes_leads,""),
                                     makeDashboardCard("Sales this Month","~","","","salesthismonth"),
 
-                                    iff(expenses_this_month<0,makeDashboardCard("Loss this Month",((-1)*expenses_this_month)+" €","","text-warning","")),
+                                    makeDashboardCard("Loss this Month","~","","","expensesthismonth"),
                                     makeDashboardCard("Profit this Month","~","","","profit")
                                     //makeDashboardCard("TODO: Business Health","Good","",""),
                                     //makeDashboardCard("TODO: lifeline","4 Weeks","","")

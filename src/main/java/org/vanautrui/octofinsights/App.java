@@ -1,10 +1,7 @@
 package org.vanautrui.octofinsights;
 
 import org.vanautrui.octofinsights.controllers.*;
-import org.vanautrui.octofinsights.controllers.api.BalanceEndpoint;
-import org.vanautrui.octofinsights.controllers.api.CashFlowEndpoint;
-import org.vanautrui.octofinsights.controllers.api.ProfitEndpoint;
-import org.vanautrui.octofinsights.controllers.api.SalesThisMonthEndpoint;
+import org.vanautrui.octofinsights.controllers.api.*;
 import org.vanautrui.octofinsights.controllers.auth.LoginController;
 import org.vanautrui.octofinsights.controllers.auth.LogoutController;
 import org.vanautrui.octofinsights.controllers.auth.RegisterController;
@@ -55,6 +52,7 @@ public class App
         routes.put("/api/cashflow",new CashFlowEndpoint());
         routes.put("/api/value",new BalanceEndpoint());
         routes.put("/api/salesthismonth",new SalesThisMonthEndpoint());
+        routes.put("/api/expensesthismonth",new ExpensesThisMonthEndpoint());
         routes.put("/api/profit",new ProfitEndpoint());
 
         try {

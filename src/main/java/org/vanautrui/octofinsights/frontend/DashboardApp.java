@@ -18,7 +18,7 @@ public class DashboardApp {
 
         XMLHttpRequest Http = new XMLHttpRequest();
 
-        Http.open("GET","/api/cashflow");
+        Http.open("GET","/api/cashflow",true);
         Http.send();
 
         Http.onloadend=new Function<ProgressEvent, Object>() {
@@ -33,18 +33,19 @@ public class DashboardApp {
             }
         };
 
-        test.textContent="hi frontend apps in java !";
+        //test.textContent="hi frontend apps in java !";
 
         main2();
         main3();
         main4();
+        main5();
     }
 
     public static void main2(){
         XMLHttpRequest Http = new XMLHttpRequest();
 
-        Http.open("GET","/api/value");
-        Http.send();
+        Http.open("GET","/api/value",true);
+
 
         Http.onloadend=new Function<ProgressEvent, Object>() {
             @Override
@@ -57,13 +58,14 @@ public class DashboardApp {
                 return null;
             }
         };
+        Http.send();
     }
 
     public static void main3(){
         XMLHttpRequest Http = new XMLHttpRequest();
 
-        Http.open("GET","/api/salesthismonth");
-        Http.send();
+        Http.open("GET","/api/salesthismonth",true);
+
 
         Http.onloadend=new Function<ProgressEvent, Object>() {
             @Override
@@ -76,14 +78,16 @@ public class DashboardApp {
                 return null;
             }
         };
+
+        Http.send();
     }
 
 
     public static void main4(){
         XMLHttpRequest Http = new XMLHttpRequest();
 
-        Http.open("GET","/api/profit");
-        Http.send();
+        Http.open("GET","/api/profit",true);
+
 
         Http.onloadend=new Function<ProgressEvent, Object>() {
             @Override
@@ -94,5 +98,26 @@ public class DashboardApp {
                 return null;
             }
         };
+
+        Http.send();
+    }
+
+    public static void main5(){
+        XMLHttpRequest Http = new XMLHttpRequest();
+
+        Http.open("GET","/api/expensesthismonth",true);
+
+
+        Http.onloadend=new Function<ProgressEvent, Object>() {
+            @Override
+            public Object apply(ProgressEvent progressEvent) {
+                IntObject parse = (IntObject) JSON.parse(Http.responseText);
+
+                $("#expensesthismonth").get()[0].textContent=((-1)*parse.value)+" €";
+                return null;
+            }
+        };
+
+        Http.send();
     }
 }
