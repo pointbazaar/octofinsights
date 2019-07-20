@@ -28,6 +28,7 @@ import java.util.Date;
 
 import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.tables.Expenses.EXPENSES;
+import static org.vanautrui.octofinsights.generated.tables.Sales.SALES;
 
 public class ExpensesController extends VaquitaController {
 
@@ -88,7 +89,12 @@ public class ExpensesController extends VaquitaController {
                                                                                                         form(
                                                                                                                 input().withName("id").isHidden().withValue(record.get(EXPENSES.ID).toString()),
                                                                                                                 RecordEditIconUtils.deleteButton()
-                                                                                                        ).withAction("/expenses?action=delete").withMethod("post")
+                                                                                                        ).withAction("/expenses?action=delete").withMethod("post"),
+
+                                                                                                        form(
+                                                                                                                input().withName("id").isHidden().withValue(record.get(EXPENSES.ID).toString()),
+                                                                                                                RecordEditIconUtils.updateButton()
+                                                                                                        ).withAction("/expenses/edit").withMethod("get")
                                                                                                 )
                                                                                             )
                                                                                     )

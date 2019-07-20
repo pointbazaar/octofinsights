@@ -6,6 +6,7 @@ import org.vanautrui.octofinsights.controllers.auth.LoginController;
 import org.vanautrui.octofinsights.controllers.auth.LogoutController;
 import org.vanautrui.octofinsights.controllers.auth.RegisterController;
 import org.vanautrui.octofinsights.controllers.other.expenses.ExpensesController;
+import org.vanautrui.octofinsights.controllers.other.expenses.ExpensesEditController;
 import org.vanautrui.octofinsights.controllers.other.leads.LeadsController;
 import org.vanautrui.octofinsights.controllers.other.sales.SalesController;
 import org.vanautrui.octofinsights.controllers.other.sales.SalesEditController;
@@ -39,6 +40,7 @@ public class App
 
 
         routes.put("/expenses",new ExpensesController());
+        routes.put("/expenses/edit",new ExpensesEditController());
 
         routes.put("/invoices",new InvoicesController());
 

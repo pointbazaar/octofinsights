@@ -77,4 +77,28 @@ public class ExpensesService {
         return getExpensesThisMonth(user_id).stream().map(sale->sale.get(EXPENSES.EXPENSE_VALUE).longValue()).reduce(Long::sum).orElse(0L);
     }
 
+    public static Record getById(int user_id, int expense_id) throws Exception{
+        Connection conn= DBUtils.makeDBConnection();
+        DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+
+        Record record = create.select(EXPENSES.asterisk()).from(EXPENSES).where(EXPENSES.USER_ID.eq(user_id).and(EXPENSES.ID.eq(expense_id))).fetchOne();
+        conn.close();
+
+        return record;
+    }
+
+    public static void updateById(int user_id, int expense_id, String expense_name, int price, Timestamp expense_date_timestamp) throws Exception{
+
+        Connection conn= DBUtils.makeDBConnection();
+        DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+
+        create
+                .update(EXPENSES)
+                .set(EXPENSES.EXPENSE_NAME,expense_name)
+                .set(EXPENSES.EXPENSE_VALUE,price)
+                .set(EXPENSES.EXPENSE_DATE,expense_date_timestamp)
+
+                .where(EXPENSES.USER_ID.eq(user_id).and(EXPENSES.ID.eq(expense_id))).execute();
+        conn.close();
+    }
 }
