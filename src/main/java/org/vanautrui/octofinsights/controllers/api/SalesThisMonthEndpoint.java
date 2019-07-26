@@ -2,7 +2,6 @@ package org.vanautrui.octofinsights.controllers.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.vanautrui.octofinsights.services.ExpensesService;
 import org.vanautrui.octofinsights.services.SalesService;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;

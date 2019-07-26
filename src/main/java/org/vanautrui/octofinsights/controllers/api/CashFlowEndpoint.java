@@ -15,11 +15,11 @@ import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import static org.jooq.impl.DSL.*;
-import static org.vanautrui.octofinsights.generated.Tables.*;
+import static org.vanautrui.octofinsights.generated.Tables.EXPENSES;
+import static org.vanautrui.octofinsights.generated.Tables.SALES;
 
 
 public class CashFlowEndpoint extends VaquitaController {
