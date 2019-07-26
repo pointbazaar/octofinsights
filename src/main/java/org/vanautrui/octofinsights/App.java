@@ -44,6 +44,8 @@ public class App
 
         routes.put("/invoices",new InvoicesController());
 
+        routes.put("/profile",new ProfileController());
+
         routes.put("/login",new LoginController());
         routes.put("/logout",new LogoutController());
 
