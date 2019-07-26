@@ -186,6 +186,7 @@
                     <targetVersion>ES6</targetVersion>
                     <module>none</module>
                     <moduleResolution>classic</moduleResolution>
+                    <encoding>UTF-8</encoding>
                 </configuration>
                 <executions>
                     <execution>
