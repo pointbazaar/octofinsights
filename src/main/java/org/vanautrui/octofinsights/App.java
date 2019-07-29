@@ -1,6 +1,9 @@
 package org.vanautrui.octofinsights;
 
-import org.vanautrui.octofinsights.controllers.*;
+import org.vanautrui.octofinsights.controllers.DashboardController;
+import org.vanautrui.octofinsights.controllers.IndexController;
+import org.vanautrui.octofinsights.controllers.InvoicesController;
+import org.vanautrui.octofinsights.controllers.ProfileController;
 import org.vanautrui.octofinsights.controllers.api.*;
 import org.vanautrui.octofinsights.controllers.auth.*;
 import org.vanautrui.octofinsights.controllers.other.expenses.ExpensesController;
@@ -11,7 +14,10 @@ import org.vanautrui.octofinsights.controllers.other.sales.SalesEditController;
 import org.vanautrui.vaquitamvc.VaquitaApp;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class App
@@ -19,9 +25,24 @@ public class App
 
     public static String octofinsights_primary_color = "#ffc143";
 
+    public static String yandex_api_key;
+    public static String yandex_translate_base_url ="https://translate.yandex.net/api/v1.5/tr.json/translate";
+
+    private static void setup_translation_configuration() throws Exception{
+
+        List<String> lines= Files.readAllLines(Paths.get("yandex-translate-key.txt"));
+        yandex_api_key=lines.get(0);
+    }
+
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        System.out.println( "Octofinsights starting ... " );
+
+        try {
+            setup_translation_configuration();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         Map<String, VaquitaController> routes=new HashMap<String, VaquitaController>();
 

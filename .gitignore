@@ -1,5 +1,6 @@
 .credentials
 client_id.json
+yandex-translate-key.txt
 .jsweet
 
 .idea/
