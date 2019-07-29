@@ -64,6 +64,7 @@ public class App
 
         try {
             VaquitaApp app = new VaquitaApp(9377, routes);
+            app.startServer();
         }catch (Exception e){
             e.printStackTrace();
         }
