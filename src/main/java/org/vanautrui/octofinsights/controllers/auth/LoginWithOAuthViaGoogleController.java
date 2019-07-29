@@ -90,6 +90,7 @@ public class LoginWithOAuthViaGoogleController extends VaquitaController {
         location+="&scope="+"https://www.googleapis.com/auth/calendar.events.readonly";
         location+="&access_type=online";
         location+="&response_type=code";
+        location+="&redirect_uri=https://octofinsights.vanautrui.org";
 
         System.out.println("GET Request going to be made to :");
         System.out.println(location);
