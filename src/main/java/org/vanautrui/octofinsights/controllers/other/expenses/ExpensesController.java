@@ -1,26 +1,20 @@
 package org.vanautrui.octofinsights.controllers.other.expenses;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
-import org.vanautrui.octofinsights.db_utils.DBUtils;
-import org.vanautrui.octofinsights.generated.tables.Expenses;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.RecordEditIconUtils;
 import org.vanautrui.octofinsights.services.ExpensesService;
+import org.vanautrui.vaquitamvc.VaquitaApp;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
+import org.vanautrui.vaquitamvc.requests.IVaquitaHTTPRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
+import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 
-import java.sql.Connection;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -28,12 +22,11 @@ import java.util.Date;
 
 import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.tables.Expenses.EXPENSES;
-import static org.vanautrui.octofinsights.generated.tables.Sales.SALES;
 
 public class ExpensesController extends VaquitaController {
 
     @Override
-    public VaquitaHTTPResponse handleGET(VaquitaHTTPRequest request) throws Exception {
+    public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest request, VaquitaApp app) throws Exception {
 
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
@@ -114,9 +107,9 @@ public class ExpensesController extends VaquitaController {
     }
 
     @Override
-    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest) throws Exception {
+    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest,VaquitaApp app) throws Exception {
 
-        VaquitaHTTPRequest request = vaquitaHTTPEntityEnclosingRequest;
+        IVaquitaHTTPRequest request = vaquitaHTTPEntityEnclosingRequest;
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ) {

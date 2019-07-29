@@ -6,9 +6,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
+import org.vanautrui.vaquitamvc.VaquitaApp;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
+import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaJSONResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
@@ -24,7 +25,7 @@ import static org.vanautrui.octofinsights.generated.Tables.SALES;
 
 public class BusinessValueHistoryEndpoint extends VaquitaController {
     @Override
-    public VaquitaHTTPResponse handleGET(VaquitaHTTPRequest req) throws Exception {
+    public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest req, VaquitaApp app) throws Exception {
 
         if(req.session().isPresent() && req.session().get().containsKey("user_id")){
             int user_id = Integer.parseInt(req.session().get().get("user_id"));
@@ -84,7 +85,7 @@ public class BusinessValueHistoryEndpoint extends VaquitaController {
     }
 
     @Override
-    public VaquitaJSONResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest) throws Exception {
+    public VaquitaJSONResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest,VaquitaApp app) throws Exception {
         return null;
     }
 }

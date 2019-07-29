@@ -5,28 +5,20 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import j2html.tags.ContainerTag;
-import org.jooq.*;
-import org.jooq.impl.DSL;
-import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
+import org.vanautrui.vaquitamvc.VaquitaApp;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
+import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
+import org.vanautrui.vaquitamvc.responses.VaquitaAbsoluteRedirectResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Connection;
-import java.util.Map;
-import java.util.Optional;
 
 import static j2html.TagCreator.*;
-import static org.vanautrui.octofinsights.generated.tables.Users.USERS;
 
 public class LoginWithOAuthViaGoogleController extends VaquitaController {
 
@@ -77,7 +69,7 @@ public class LoginWithOAuthViaGoogleController extends VaquitaController {
     }
 
     @Override
-    public VaquitaHTTPResponse handleGET(VaquitaHTTPRequest vaquitaHTTPRequest) throws Exception {
+    public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest req, VaquitaApp app) throws Exception {
 
 
 
@@ -104,54 +96,11 @@ public class LoginWithOAuthViaGoogleController extends VaquitaController {
         System.out.println(location);
 
         //URL url = new URL(location);
-        return new VaquitaRedirectToGETResponse(location,vaquitaHTTPRequest);
+        return new VaquitaAbsoluteRedirectResponse(location,app);
     }
 
     @Override
-    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest) throws Exception {
-        //verify login credentials and set cookie
-
-        Map<String,String> parameters= vaquitaHTTPEntityEnclosingRequest.getPostParameters();
-
-        String username = URLDecoder.decode(parameters.get("username"));
-        String password = URLDecoder.decode(parameters.get("password"));
-
-        Connection conn = DBUtils.makeDBConnection();
-
-        DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-
-        Result<Record1<Integer>> does_it_login= create
-                .select(USERS.ID)
-                .from(USERS)
-                .where(
-                        USERS.USERNAME.eq(username)
-                        .and(USERS.PASSWORD.eq(password))
-                )
-                .fetch();
-        Optional<Integer> id = Optional.empty();
-
-        if(does_it_login.size()>0){
-            for(Record r : does_it_login){
-                id=Optional.of(r.getValue(USERS.ID));
-            }
-        }
-
-        conn.close();
-
-        if(vaquitaHTTPEntityEnclosingRequest.session().isPresent()){
-
-            if(id.isPresent()) {
-
-                vaquitaHTTPEntityEnclosingRequest.session().get().put("authenticated", "true");
-                vaquitaHTTPEntityEnclosingRequest.session().get().put("username", parameters.get("username"));
-                vaquitaHTTPEntityEnclosingRequest.session().get().put("user_id", id.get().toString());
-
-                return new VaquitaRedirectToGETResponse("/",vaquitaHTTPEntityEnclosingRequest);
-            }else {
-                return new VaquitaTextResponse(500,"user seems not to exist");
-            }
-        }else{
-            return new VaquitaTextResponse(500,"something went wrong with the sessions");
-        }
+    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest,VaquitaApp app) throws Exception {
+        return null;
     }
 }

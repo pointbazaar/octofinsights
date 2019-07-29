@@ -1,16 +1,17 @@
 package org.vanautrui.octofinsights.controllers;
 
 import j2html.tags.ContainerTag;
-import org.vanautrui.octofinsights.App;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
-import org.vanautrui.octofinsights.services.ExpensesService;
 import org.vanautrui.octofinsights.services.LeadsService;
-import org.vanautrui.octofinsights.services.SalesService;
+import org.vanautrui.vaquitamvc.VaquitaApp;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
-import org.vanautrui.vaquitamvc.responses.*;
+import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
+import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
+import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
+import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
+import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
 
 import static j2html.TagCreator.*;
 
@@ -18,7 +19,7 @@ import static j2html.TagCreator.*;
 public class DashboardController extends VaquitaController {
 
     @Override
-    public VaquitaHTTPResponse handleGET(VaquitaHTTPRequest request) throws Exception {
+    public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest request, VaquitaApp app) throws Exception {
 
 
 
@@ -104,7 +105,7 @@ public class DashboardController extends VaquitaController {
 
 
     @Override
-    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest) throws Exception {
+    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest,VaquitaApp app) throws Exception {
         return new VaquitaTextResponse(404,"not implemented");
     }
 }

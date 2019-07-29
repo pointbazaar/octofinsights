@@ -1,35 +1,29 @@
 package org.vanautrui.octofinsights.controllers.other.sales;
 
-import j2html.tags.ContainerTag;
 import org.jooq.Record;
-import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
-import org.vanautrui.octofinsights.html_util_domain_specific.RecordEditIconUtils;
 import org.vanautrui.octofinsights.services.SalesService;
+import org.vanautrui.vaquitamvc.VaquitaApp;
+import org.vanautrui.vaquitamvc.requests.IVaquitaHTTPRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
+import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 
 import java.net.URLDecoder;
-import java.sql.Connection;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import static j2html.TagCreator.*;
-import static j2html.TagCreator.attrs;
 import static org.vanautrui.octofinsights.generated.tables.Sales.SALES;
 
 public class SalesEditController extends org.vanautrui.vaquitamvc.controller.VaquitaController {
     @Override
-    public VaquitaHTTPResponse handleGET(VaquitaHTTPRequest request) throws Exception {
+    public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest request, VaquitaApp app) throws Exception {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ){
@@ -92,8 +86,8 @@ public class SalesEditController extends org.vanautrui.vaquitamvc.controller.Vaq
     }
 
     @Override
-    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest) throws Exception {
-        VaquitaHTTPRequest request = vaquitaHTTPEntityEnclosingRequest;
+    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest,VaquitaApp app) throws Exception {
+        IVaquitaHTTPRequest request = vaquitaHTTPEntityEnclosingRequest;
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ) {

@@ -1,29 +1,23 @@
 package org.vanautrui.octofinsights.controllers;
 
-import org.jooq.Record;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
-import org.vanautrui.octofinsights.services.LeadsService;
+import org.vanautrui.vaquitamvc.VaquitaApp;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPRequest;
+import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 
-import java.util.List;
-import java.util.Optional;
-
 import static j2html.TagCreator.*;
-import static j2html.TagCreator.attrs;
-import static org.vanautrui.octofinsights.generated.tables.Leads.LEADS;
 
 public class InvoicesController extends VaquitaController {
 
     //https://codeburst.io/generate-pdf-invoices-with-javascript-c8dbbfb56361
 
     @Override
-    public VaquitaHTTPResponse handleGET(VaquitaHTTPRequest request) throws Exception {
+    public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest request, VaquitaApp app) throws Exception {
 
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
@@ -98,7 +92,7 @@ public class InvoicesController extends VaquitaController {
     }
 
     @Override
-    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest) throws Exception {
+    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest,VaquitaApp app) throws Exception {
         return null;
     }
 }

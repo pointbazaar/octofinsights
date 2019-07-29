@@ -63,7 +63,7 @@ public class App
         routes.put("/api/profit",new ProfitEndpoint());
 
         try {
-            VaquitaApp app = new VaquitaApp(9377, routes, false);
+            VaquitaApp app = new VaquitaApp(9377, routes);
         }catch (Exception e){
             e.printStackTrace();
         }
