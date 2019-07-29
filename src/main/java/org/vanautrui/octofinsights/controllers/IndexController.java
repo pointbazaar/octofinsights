@@ -46,6 +46,12 @@ public class IndexController extends VaquitaController {
 
                                                 div(
                                                         a(
+                                                                button(strong("Login with OAuth via Google ")).withClasses("btn btn-primary col-md-4 m-1 p-1")
+                                                        ).withHref("/oauth_login").withClasses("row")
+                                                ).withClasses(""),
+
+                                                div(
+                                                        a(
                                                             button(strong("Register")).withClasses("btn btn-secondary col-md-4 m-1 p-1")
                                                         ).withHref("/register").withClasses("row")
                                                 ).withClasses("")
