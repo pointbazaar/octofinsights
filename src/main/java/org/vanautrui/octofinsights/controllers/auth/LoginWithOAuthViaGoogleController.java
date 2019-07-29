@@ -5,7 +5,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import j2html.tags.ContainerTag;
-import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.vaquitamvc.VaquitaApp;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
@@ -75,7 +74,6 @@ public class LoginWithOAuthViaGoogleController extends VaquitaController {
 
         ContainerTag page =
                 html(
-                        HeadUtil.makeHead(),
                         body(
                                 div(
                                         attrs(".container"),
