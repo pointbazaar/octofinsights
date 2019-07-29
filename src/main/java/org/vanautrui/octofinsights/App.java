@@ -2,10 +2,7 @@ package org.vanautrui.octofinsights;
 
 import org.vanautrui.octofinsights.controllers.*;
 import org.vanautrui.octofinsights.controllers.api.*;
-import org.vanautrui.octofinsights.controllers.auth.LoginController;
-import org.vanautrui.octofinsights.controllers.auth.LogoutController;
-import org.vanautrui.octofinsights.controllers.auth.OAuthResponseController;
-import org.vanautrui.octofinsights.controllers.auth.RegisterController;
+import org.vanautrui.octofinsights.controllers.auth.*;
 import org.vanautrui.octofinsights.controllers.other.expenses.ExpensesController;
 import org.vanautrui.octofinsights.controllers.other.expenses.ExpensesEditController;
 import org.vanautrui.octofinsights.controllers.other.leads.LeadsController;
@@ -50,7 +47,7 @@ public class App
         routes.put("/login",new LoginController());
         routes.put("/logout",new LogoutController());
 
-        routes.put("/oauth_login",new LoginController());
+        routes.put("/oauth_login",new LoginWithOAuthViaGoogleController());
         routes.put("/auth",new OAuthResponseController());
 
         routes.put("/register",new RegisterController());
