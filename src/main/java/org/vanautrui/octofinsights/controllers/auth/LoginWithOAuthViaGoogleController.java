@@ -34,7 +34,9 @@ public class LoginWithOAuthViaGoogleController extends VaquitaController {
 
     private static GoogleClientSecrets getClientSecrets()throws Exception{
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
-                new InputStreamReader(LoginWithOAuthViaGoogleController.class.getResourceAsStream("client_secret.json")));
+                new InputStreamReader(LoginWithOAuthViaGoogleController.class.getResourceAsStream("client_id.json")));
+
+
         return clientSecrets;
     }
 
