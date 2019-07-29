@@ -89,6 +89,7 @@ public class LoginWithOAuthViaGoogleController extends VaquitaController {
         location+="client_id="+clientSecrets.getDetails().getClientId();
         location+="&scope="+"https://www.googleapis.com/auth/calendar.events.readonly";
         location+="&access_type=online";
+        location+="&response_type=code";
 
         System.out.println("GET Request going to be made to :");
         System.out.println(location);
