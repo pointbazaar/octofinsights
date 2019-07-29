@@ -16,9 +16,11 @@ import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
 
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.Map;
 import java.util.Optional;
@@ -33,15 +35,23 @@ public class LoginWithOAuthViaGoogleController extends VaquitaController {
     //static HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
 
     private static GoogleClientSecrets getClientSecrets()throws Exception{
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
-                new InputStreamReader(LoginWithOAuthViaGoogleController.class.getResourceAsStream("client_id.json")));
+        //GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
+        //        new InputStreamReader(LoginWithOAuthViaGoogleController.class.getResourceAsStream("client_id.json")));
 
+        InputStream in = Files.newInputStream(Paths.get("client_id.json"));
+        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
+                new InputStreamReader(in));
 
         return clientSecrets;
     }
 
     private static Credential authorize() throws Exception{
-        GoogleClientSecrets clientSecrets = getClientSecrets();
+
+
+
+        //InputStream resourceAsStream = LoginWithOAuthViaGoogleController.class.getClassLoader().getResourceAsStream("client_id.json");
+
+        //GoogleClientSecrets clientSecrets = getClientSecrets();
 
         //TODO
         /*
@@ -86,11 +96,15 @@ public class LoginWithOAuthViaGoogleController extends VaquitaController {
         //return new VaquitaHTMLResponse(200,page.render());
         String base="https://accounts.google.com/o/oauth2/v2/auth";
         String location=base+"?";
-        base+="client_id="+clientSecrets.getDetails().getClientId();
-        base+="&scope="+"https://www.googleapis.com/auth/calendar.events.readonly";
-        base+="&access_type=online";
-        URL url = new URL(base);
-        return new VaquitaRedirectToGETResponse(url.toString(),vaquitaHTTPRequest);
+        location+="client_id="+clientSecrets.getDetails().getClientId();
+        location+="&scope="+"https://www.googleapis.com/auth/calendar.events.readonly";
+        location+="&access_type=online";
+
+        System.out.println("GET Request going to be made to :");
+        System.out.println(location);
+
+        //URL url = new URL(location);
+        return new VaquitaRedirectToGETResponse(location,vaquitaHTTPRequest);
     }
 
     @Override
