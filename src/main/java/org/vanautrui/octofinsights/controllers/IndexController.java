@@ -30,7 +30,7 @@ public class IndexController extends VaquitaController {
 
             String lang="ru";
             try {
-                VaquitaLogger.info_special("LANG PARAMETER");
+                VaquitaLogger.info("LANG PARAMETER");
                 lang = request.getQueryParameter("lang");
                 System.out.println("QUERRY PARAMETERS");
                 System.out.println(request.getQueryParameters());

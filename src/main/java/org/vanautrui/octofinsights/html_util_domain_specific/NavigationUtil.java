@@ -1,7 +1,6 @@
 package org.vanautrui.octofinsights.html_util_domain_specific;
 
 import j2html.tags.ContainerTag;
-import org.vanautrui.octofinsights.App;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -17,6 +16,7 @@ public class NavigationUtil {
                 new String[]{"/sales","Sales"},
                 new String[]{"/leads","Leads"},
                 new String[]{"/expenses","Expenses"},
+                new String[]{"/projects","Projects"},
                 new String[]{"/invoices","Invoices"},
                 new String[]{"/profile","Profile"}/*,
                 new String[]{"/projects","Projects (Planned Feature,TODO)"}*/
