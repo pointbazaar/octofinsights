@@ -32,6 +32,7 @@ You can self host this web app easily.
 - clone this repository to your server
 - [optional] setup a reverse proxy and subdomains for octofinsights.yourdomain.tld
 - create the 'octofinsights' database on your mysql server by running `setup_tables.sql`
+    - https://stackoverflow.com/questions/11407349/how-to-export-and-import-a-sql-file-from-command-line-with-options
 - create a file `credentials.txt`
     - on the first line, your db username
     - on the second line, your db password
@@ -43,5 +44,7 @@ You can self host this web app easily.
     - this builds the project
 - `./serverScriptDeploy.sh`
     - this starts the server
+
+### Other Stuff
 
 https://console.developers.google.com/apis/dashboard?project=octofinsights&supportedpurview=project
