@@ -34,9 +34,11 @@ public class ProjectsController extends VaquitaController {
                                 NavigationUtil.createNavbar(request.session().get().get("username"),"Projects"),
                                 div(
                                         div(
-                                            button(
+                                            a(
+                                              button(
                                                     "ADD PROJECT"
-                                            ).withClasses("btn","btn-outline-primary","col-md-12"),
+                                              ).withClasses("btn","btn-outline-primary","col-md-12")
+                                            ).withHref("/projects/add"),
                                             h5("ACTIVE PROJECTS").withClasses("m-2"),
                                             ul(
                                                 makeProjectDiv("Project 1"),
@@ -63,7 +65,7 @@ public class ProjectsController extends VaquitaController {
                                 div(
                                         div(
                                                 "UNARCHIVE"
-                                        ).withClasses("btn","btn-outline-primary","m-2"),
+                                        ).withClasses("btn","btn-outline-secondary","m-2"),
                                         div(
                                                 "DELETE"
                                         ).withClasses("btn","btn-outline-danger","m-2")
