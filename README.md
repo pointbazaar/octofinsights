@@ -9,10 +9,10 @@ Tracking of Sales, Leads, Expenses and Projects
 - [x] Track Sales
 - [x] Track Expenses
 - [ ] Track Projects
-- [x] Dashboard
+- [x] Dashboard Widgets
     - [x] Monthly Profits Graph
-    - [x] Widgets
-    - [x] Business Value over time
+    - [x] Open Leads Widget
+    - [x] Business Value over time Graph
 - [ ] use Google Calendar API to track work on Projects
 - [ ] Login with OAuth via Google
 
@@ -28,8 +28,10 @@ alex23667@gmail.com
 
 You can self host this web app easily.
 
-- clone this repository
+- packages you should install on your server: `jdk>=1.8` , `maven`, `mysql` 
+- clone this repository to your server
 - [optional] setup a reverse proxy and subdomains for octofinsights.yourdomain.tld
+- create the 'octofinsights' database on your mysql server by running `setup_tables.sql`
 - create a file `credentials.txt`
     - on the first line, your db username
     - on the second line, your db password
