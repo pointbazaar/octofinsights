@@ -39,7 +39,19 @@ public class ProjectsController extends VaquitaController {
                                             h5("ACTIVE PROJECTS").withClasses("m-2"),
                                             ul(
                                                 li(
-                                                        "Project 1"
+                                                    div(
+                                                        div(
+                                                            "Project 1"
+                                                        ).withClasses("col-md-6"),
+                                                        div(
+                                                                div(
+                                                                    "EDIT"
+                                                                ).withClasses("btn","btn-outline-primary","m-2"),
+                                                                div(
+                                                                    "ARCHIVE"
+                                                                ).withClasses("btn","btn-outline-secondary","m-2")
+                                                        ).withClasses("col-md-6","row","justify-content-end")
+                                                    ).withClasses("row")
                                                 ).withClasses("list-group-item")
                                             ).withClasses("list-group"),
                                             h5("INACTIVE PROJECTS").withClasses("m-2"),
