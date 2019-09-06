@@ -19,10 +19,9 @@
 -- Table structure for table `employees`
 --
 
-DROP TABLE IF EXISTS `employees`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `employees` (
+CREATE TABLE IF NOT EXISTS `employees` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `employee_name` varchar(32) DEFAULT NULL,
   `employee_role` varchar(32) DEFAULT NULL,
@@ -36,10 +35,9 @@ CREATE TABLE `employees` (
 -- Table structure for table `expenses`
 --
 
-DROP TABLE IF EXISTS `expenses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `expenses` (
+CREATE TABLE IF NOT EXISTS `expenses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `expense_name` varchar(64) DEFAULT NULL,
   `expense_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -53,10 +51,10 @@ CREATE TABLE `expenses` (
 -- Table structure for table `inventory`
 --
 
-DROP TABLE IF EXISTS `inventory`;
+
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `inventory` (
+CREATE TABLE IF NOT EXISTS `inventory` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `item_name` varchar(128) NOT NULL,
   `item_price` int(11) NOT NULL,
@@ -69,10 +67,10 @@ CREATE TABLE `inventory` (
 -- Table structure for table `leads`
 --
 
-DROP TABLE IF EXISTS `leads`;
+
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `leads` (
+CREATE TABLE IF NOT EXISTS `leads` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `lead_name` varchar(64) DEFAULT NULL,
   `lead_status` varchar(32) DEFAULT NULL,
@@ -87,10 +85,9 @@ CREATE TABLE `leads` (
 -- Table structure for table `sales`
 --
 
-DROP TABLE IF EXISTS `sales`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sales` (
+CREATE TABLE IF NOT EXISTS `sales` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_name` varchar(128) DEFAULT NULL,
   `time_of_sale` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -106,10 +103,10 @@ CREATE TABLE `sales` (
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
+
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(80) DEFAULT NULL,
   `password` varchar(500) DEFAULT NULL,
