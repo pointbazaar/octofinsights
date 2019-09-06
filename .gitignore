@@ -1,4 +1,5 @@
 .credentials
+nohup.out
 client_id.json
 yandex-translate-key.txt
 .jsweet
