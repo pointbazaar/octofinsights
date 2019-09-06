@@ -2,16 +2,23 @@ package org.vanautrui.octofinsights.controllers.other.projects;
 
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
+import org.vanautrui.octofinsights.services.ProjectsService;
 import org.vanautrui.vaquitamvc.VaquitaApp;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
+import org.vanautrui.vaquitamvc.requests.IVaquitaHTTPRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
+import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Map;
 
 import static j2html.TagCreator.*;
+import static java.lang.Integer.parseInt;
 
 public class ProjectAddController extends VaquitaController {
 
@@ -22,7 +29,7 @@ public class ProjectAddController extends VaquitaController {
       return new VaquitaRedirectResponse("/login", request, app);
     }
 
-    int user_id = Integer.parseInt(request.session().get().get("user_id"));
+    int user_id = parseInt(request.session().get().get("user_id"));
 
 
     String page =
@@ -37,7 +44,7 @@ public class ProjectAddController extends VaquitaController {
               form(
                 div(
                   label("Project Name"),
-                  input().withType("text").withClasses("form-control").withName("project-name")
+                  input().withType("text").withClasses("form-control").withName("project-name").withPlaceholder("my new project")
                 ).withClasses("form-group"),
                 div(
                   div(
@@ -48,7 +55,7 @@ public class ProjectAddController extends VaquitaController {
                     label("Projected Project End Date"),
                     input().withType("date").withClasses("form-control").withName("project-end-date-estimate")
                   ).withClasses("col")
-                ).withClasses("form-row"),
+                ).withClasses("form-row","mt-3"),
 
                 div(
                   div(
@@ -59,18 +66,20 @@ public class ProjectAddController extends VaquitaController {
                     label("Estimated Project Earnings (in Euros)"),
                     input().withType("number").withClasses("form-control").withName("project-earnings-estimate")
                   ).withClasses("col")
-                ).withClasses("form-row"),
+                ).withClasses("form-row","mt-3"),
 
                 div(
                   label("Project Description"),
                   textarea(
 
-                  ).withClasses("form-control")
-                ).withClasses("form-group")
-              ),
-              button(
-              "ADD PROJECT"
-              ).withClasses("btn", "btn-primary", "col-md-12")
+                  ).withClasses("form-control").withPlaceholder("tasks, goals, stakeholders, technologies, deadlines, links to resources, ...").withName("project-description")
+                ).withClasses("form-group"),
+
+                button(
+                        "ADD PROJECT"
+                ).withClasses("btn", "btn-primary", "col-md-12").withType("submit")
+              ).withAction("/projects/add").withMethod("POST")
+
             ).withClasses("col-md-12")
           ).withClasses("cointainer")
         )
@@ -79,7 +88,37 @@ public class ProjectAddController extends VaquitaController {
   }
 
   @Override
-  public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest, VaquitaApp app) throws Exception {
-    return new VaquitaTextResponse(200, "not yet implemnted");
+  public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest entReq, VaquitaApp app) throws Exception {
+
+    IVaquitaHTTPRequest req = entReq;
+    if( req.session().isPresent() && req.session().get().containsKey("authenticated")
+            && req.session().get().get("authenticated").equals("true")
+            && req.session().get().containsKey("user_id")
+    ){
+      SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+      Map<String, String> params = entReq.getPostParameters();
+
+      int user_id = parseInt(req.session().get().get("user_id"));
+
+      String project_name = params.get("project-name");
+
+      String s1 = params.get("project-start-date");
+      String s2 = params.get("project-end-date-estimate");
+
+      Timestamp project_start_date = new Timestamp(dateFormat.parse(s1).getTime());
+      Timestamp project_end_date_estimate = new Timestamp(dateFormat.parse(s2).getTime());
+
+      int effort_estimate_hours = parseInt(params.get("project-effort-estimate"));
+      int earnings_estimate = parseInt(params.get("project-earnings-estimate"));
+      String project_description = params.get("project-description");
+
+      ProjectsService.insertProject(user_id,project_name,project_start_date,project_end_date_estimate,effort_estimate_hours,earnings_estimate,project_description);
+
+      return new VaquitaRedirectToGETResponse("/projects",req);
+
+    }else {
+      return new VaquitaRedirectToGETResponse("/login",req);
+    }
   }
 }
