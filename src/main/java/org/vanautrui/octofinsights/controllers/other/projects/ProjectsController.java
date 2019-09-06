@@ -1,5 +1,6 @@
 package org.vanautrui.octofinsights.controllers.other.projects;
 
+import j2html.tags.ContainerTag;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.vaquitamvc.VaquitaApp;
@@ -38,33 +39,58 @@ public class ProjectsController extends VaquitaController {
                                             ).withClasses("btn","btn-outline-primary","col-md-12"),
                                             h5("ACTIVE PROJECTS").withClasses("m-2"),
                                             ul(
-                                                li(
-                                                    div(
-                                                        div(
-                                                            "Project 1"
-                                                        ).withClasses("col-md-6"),
-                                                        div(
-                                                                div(
-                                                                    "EDIT"
-                                                                ).withClasses("btn","btn-outline-primary","m-2"),
-                                                                div(
-                                                                    "ARCHIVE"
-                                                                ).withClasses("btn","btn-outline-secondary","m-2")
-                                                        ).withClasses("col-md-6","row","justify-content-end")
-                                                    ).withClasses("row")
-                                                ).withClasses("list-group-item")
+                                                makeProjectDiv("Project 1"),
+                                                makeProjectDiv("Project 2")
                                             ).withClasses("list-group"),
                                             h5("INACTIVE PROJECTS").withClasses("m-2"),
                                             ul(
-                                                li(s(
-                                                        "Project 1")
-                                                ).withClasses("list-group-item")
+                                                makeInactiveProjectDiv("Project 3")
                                             ).withClasses("list-group")
                                         ).withClasses("col-md-12")
                                 ).withClasses("cointainer")
                         )
                 ).render();
         return new VaquitaHTMLResponse(200,page);
+    }
+
+    private ContainerTag makeInactiveProjectDiv(String projectName){
+        ContainerTag res=
+                li(
+                        div(
+                                div(
+                                        s(projectName)
+                                ).withClasses("col-md-6"),
+                                div(
+                                        div(
+                                                "UNARCHIVE"
+                                        ).withClasses("btn","btn-outline-primary","m-2"),
+                                        div(
+                                                "DELETE"
+                                        ).withClasses("btn","btn-outline-danger","m-2")
+                                ).withClasses("col-md-6","row","justify-content-end")
+                        ).withClasses("row")
+                ).withClasses("list-group-item");
+        return res;
+    }
+
+    private ContainerTag makeProjectDiv(String projectName){
+        ContainerTag res=
+                li(
+                    div(
+                        div(
+                            projectName
+                        ).withClasses("col-md-6"),
+                        div(
+                            div(
+                                "EDIT"
+                            ).withClasses("btn","btn-outline-primary","m-2"),
+                            div(
+                                "ARCHIVE"
+                            ).withClasses("btn","btn-outline-secondary","m-2")
+                        ).withClasses("col-md-6","row","justify-content-end")
+                    ).withClasses("row")
+                ).withClasses("list-group-item");
+        return res;
     }
 
     @Override
