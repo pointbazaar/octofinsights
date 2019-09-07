@@ -63,8 +63,9 @@ public class ProjectViewController extends VaquitaController {
                     input().withType("number").withClasses("form-control")
                   ).withClasses("form-group col-md-6")
                 ).withClasses("form-row"),
-                button("ADD TASK").withClasses("btn","btn-primary","col-md-12").withType("submit")
+                button("ADD TASK").withClasses("btn","btn-primary","btn-block").withType("submit")
               ),
+              div().withClasses("mt-4","mb-4"),
               h3("Tasks"),
               ul(
                 makeTask("example task",-1)
@@ -119,14 +120,14 @@ public class ProjectViewController extends VaquitaController {
 
                       button(
                               "DELETE"
-                      ).withClasses("btn","btn-outline-danger","m-2","mr-4"),
+                      ).withClasses("btn","btn-sm","btn-outline-danger","m-2","mr-4"),
 
                       div(
                         "✓"
                       ).withStyle("font-size:2em; color:green;")
 
                     ).withClasses("col-md-4","row","justify-content-end")
-                  ).withClasses("row")
+                  ).withClasses("row","align-items-center")
                 ).withClasses("list-group-item");
         return res;
     }
@@ -138,14 +139,16 @@ public class ProjectViewController extends VaquitaController {
                         div(
                               strong(task)
                         ).withClasses("col-md-6"),
-
+                        div(
+                                makeEffortDisplay(13,3)
+                        ).withClasses("col-md-2"),
                         div(
                             div(
 
                             ).withStyle("width:30px; height:30px; border: 3px solid black; border-radius:4px;")
 
-                        ).withClasses("col-md-6","row","justify-content-end")
-                    ).withClasses("row")
+                        ).withClasses("col-md-4","row","justify-content-end")
+                    ).withClasses("row","align-items-center")
                 ).withClasses("list-group-item");
         return res;
     }
