@@ -8,6 +8,7 @@ import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
+import org.vanautrui.octofinsights.services.TasksService;
 import org.vanautrui.vaquitamvc.VaquitaApp;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
@@ -17,10 +18,13 @@ import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectResponse;
 
 import java.sql.Connection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static j2html.TagCreator.*;
 import static java.lang.Integer.parseInt;
 import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
+import static org.vanautrui.octofinsights.generated.tables.Tasks.TASKS;
 
 public class ProjectViewController extends VaquitaController {
 
@@ -40,6 +44,10 @@ public class ProjectViewController extends VaquitaController {
 
       DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
       Record project = ctx.select(PROJECTS.asterisk()).from(PROJECTS).where(PROJECTS.ID.eq(project_id).and(PROJECTS.USER_ID.eq(user_id))).fetchOne();
+      byte not_complete = 0;
+      byte complete = 1;
+      List<Record> tasks = TasksService.getTasksByUserIdAndProjectId(user_id,project_id).stream().filter(task->task.get(TASKS.ISCOMPLETED)==not_complete).collect(Collectors.toList());
+      List<Record> tasks_complete = TasksService.getTasksByUserIdAndProjectId(user_id,project_id).stream().filter(task->task.get(TASKS.ISCOMPLETED)==complete).collect(Collectors.toList());
 
       String page =
         html(
@@ -56,23 +64,31 @@ public class ProjectViewController extends VaquitaController {
                 div(
                   div(
                     label("Task"),
-                    input().withType("text").withClasses("form-control")
+                    input().withType("text").withClasses("form-control").withName("task_name")
                   ).withClasses("form-group col-md-6"),
                   div(
                     label("Time Estimate (hours)"),
-                    input().withType("number").withClasses("form-control")
+                    input().withType("number").withClasses("form-control").withName("effort_estimate")
                   ).withClasses("form-group col-md-6")
                 ).withClasses("form-row"),
                 button("ADD TASK").withClasses("btn","btn-primary","btn-block").withType("submit")
-              ),
+              ).withAction("/tasks/add?project_id="+project_id+"&redirect="+"/projects/view?id="+project_id).withMethod("POST"),
               div().withClasses("mt-4","mb-4"),
               h3("Tasks"),
               ul(
-                makeTask("example task",-1)
+                each(
+                        tasks,
+                        task->makeTask(
+                                task.get(TASKS.TASK_NAME),task.get(TASKS.ID),task.get(TASKS.INITIAL_EFFORT_ESTIMATE_HOURS),task.get(TASKS.EFFORT_SPENT)
+                        )
+                )
               ).withClasses("list-group"),
               h3("Completed Tasks"),
               ul(
-                makeCompletedTask("example task 2",-1)
+                each(
+                        tasks_complete,
+                        task->makeCompletedTask(task.get(TASKS.TASK_NAME),task.get(TASKS.ID),task.get(TASKS.INITIAL_EFFORT_ESTIMATE_HOURS),task.get(TASKS.EFFORT_SPENT))
+                )
               ).withClasses("list-group")
             ).withClasses("container")
           )
@@ -105,7 +121,7 @@ public class ProjectViewController extends VaquitaController {
       return res;
     }
 
-    private ContainerTag makeCompletedTask(String task_name,int task_id){
+    private ContainerTag makeCompletedTask(String task_name,int task_id,int effort_estimate,int effort_spent){
         //TODO: make that checking or unchecking the checkbox makes a POST request to change the task in the DB
         ContainerTag res=
                 li(
@@ -114,7 +130,7 @@ public class ProjectViewController extends VaquitaController {
                             s(strong(task_name))
                     ).withClasses("col-md-6"),
                     div(
-                            makeEffortDisplay(3,5)
+                            makeEffortDisplay(effort_spent,effort_estimate)
                     ).withClasses("col-md-2"),
                     div(
 
@@ -132,7 +148,7 @@ public class ProjectViewController extends VaquitaController {
         return res;
     }
 
-    private ContainerTag makeTask(String task,int task_id){
+    private ContainerTag makeTask(String task,int task_id,int effort_estimate,int effort_spent){
         ContainerTag res=
                 li(
                     div(
@@ -140,7 +156,7 @@ public class ProjectViewController extends VaquitaController {
                               strong(task)
                         ).withClasses("col-md-6"),
                         div(
-                                makeEffortDisplay(13,3)
+                                makeEffortDisplay(effort_spent,effort_estimate)
                         ).withClasses("col-md-2"),
                         div(
                             div(

@@ -105,3 +105,18 @@ CREATE TABLE IF NOT EXISTS `projects` (
     `project_description` varchar(10000) DEFAULT NULL,
     `isactive` boolean DEFAULT TRUE
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `tasks` (
+    `id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    `user_id` int(11) DEFAULT NULL,
+    `project_id` int(11) DEFAULT NULL,
+
+    `task_start_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `task_complete_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    `initial_effort_estimate_hours` int(11) DEFAULT NULL,
+    `effort_spent` int(11) DEFAULT NULL,
+
+    `task_name` varchar(2000) DEFAULT NULL,
+    `iscompleted` boolean DEFAULT FALSE
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;

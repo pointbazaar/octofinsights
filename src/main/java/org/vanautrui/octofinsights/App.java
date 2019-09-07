@@ -14,6 +14,7 @@ import org.vanautrui.octofinsights.controllers.other.projects.ProjectViewControl
 import org.vanautrui.octofinsights.controllers.other.projects.ProjectsController;
 import org.vanautrui.octofinsights.controllers.other.sales.SalesController;
 import org.vanautrui.octofinsights.controllers.other.sales.SalesEditController;
+import org.vanautrui.octofinsights.controllers.other.tasks.TaskAddController;
 import org.vanautrui.vaquitamvc.VaquitaApp;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 
@@ -67,6 +68,8 @@ public class App
         routes.put("/projects",new ProjectsController());
         routes.put("/projects/add",new ProjectAddController());
         routes.put("/projects/view",new ProjectViewController());
+
+        routes.put("/tasks/add",new TaskAddController());
 
         routes.put("/invoices",new InvoicesController());
 
