@@ -67,15 +67,11 @@ public class ProjectViewController extends VaquitaController {
               ),
               h3("Tasks"),
               ul(
-                li(
-                        "project example"
-                ).withClasses("list-group-item")
+                makeTask("example task",-1)
               ).withClasses("list-group"),
               h3("Completed Tasks"),
               ul(
-                li(
-                        "project example"
-                ).withClasses("list-group-item")
+                makeCompletedTask("example task 2",-1)
               ).withClasses("list-group")
             ).withClasses("container")
           )
@@ -85,7 +81,8 @@ public class ProjectViewController extends VaquitaController {
       return new VaquitaHTMLResponse(200,page);
     }
 
-    private ContainerTag makeCompletedTaske(String task_name,String task_id){
+    private ContainerTag makeCompletedTask(String task_name,int task_id){
+        //TODO: make that checking or unchecking the checkbox makes a POST request to change the task in the DB
         ContainerTag res=
                 li(
                   div(
@@ -93,9 +90,9 @@ public class ProjectViewController extends VaquitaController {
                             s(task_name)
                     ).withClasses("col-md-6"),
                     div(
-                      button(
-                              "UNARCHIVE"
-                      ).withClasses("btn","btn-outline-secondary","m-2"),
+                      div(
+                        img().withSrc("https://image.flaticon.com/icons/png/512/200/200299.png").withStyle("height: 30px; width:30px;")
+                      ).withClasses("row align-items-center mr-3"),
 
                       button(
                               "DELETE"
@@ -113,18 +110,13 @@ public class ProjectViewController extends VaquitaController {
                 li(
                     div(
                         div(
-
                               task
-
                         ).withClasses("col-md-6"),
 
                         div(
+                            div(
 
-                            button(
-                                "COMPLETE"
-                            ).withClasses("btn","btn-outline-primary","m-2")
-
-
+                            ).withStyle("width:30px; height:30px; border: 3px solid black; border-radius:4px;")
                         ).withClasses("col-md-6","row","justify-content-end")
                     ).withClasses("row")
                 ).withClasses("list-group-item");
