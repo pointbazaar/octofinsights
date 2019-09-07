@@ -90,14 +90,14 @@ public class ProjectViewController extends VaquitaController {
                             s(task_name)
                     ).withClasses("col-md-6"),
                     div(
-                      div(
-                        img().withSrc("https://image.flaticon.com/icons/png/512/200/200299.png").withStyle("height: 30px; width:30px;")
-                      ).withClasses("row align-items-center mr-3"),
 
                       button(
                               "DELETE"
-                      ).withClasses("btn","btn-outline-danger","m-2")
+                      ).withClasses("btn","btn-outline-danger","m-2","mr-4"),
 
+                      div(
+                        "✓"
+                      ).withStyle("font-size:2em; color:green;")
 
                     ).withClasses("col-md-6","row","justify-content-end")
                   ).withClasses("row")
@@ -117,6 +117,7 @@ public class ProjectViewController extends VaquitaController {
                             div(
 
                             ).withStyle("width:30px; height:30px; border: 3px solid black; border-radius:4px;")
+
                         ).withClasses("col-md-6","row","justify-content-end")
                     ).withClasses("row")
                 ).withClasses("list-group-item");
