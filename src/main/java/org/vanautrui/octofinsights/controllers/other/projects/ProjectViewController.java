@@ -81,14 +81,40 @@ public class ProjectViewController extends VaquitaController {
       return new VaquitaHTMLResponse(200,page);
     }
 
+    private ContainerTag makeEffortDisplay(int effort_spent,int effort_estimated){
+
+      String color;
+      int d = effort_spent-effort_estimated;
+      if(effort_spent > 2*effort_estimated){
+        color="red";
+      }else if(effort_spent > effort_estimated){
+        color="yellow";
+      }else{
+        color="green";
+      }
+
+      ContainerTag res=
+        div(
+            span(strong(effort_spent+"h ")).withStyle("color: "+color+";"),
+            span("spent").withClasses("ml-1"),
+            span(strong("|")).withClasses("mr-1","ml-1"),
+            span(strong(effort_estimated+"h ")),
+            span("estimate").withClasses("ml-1")
+        ).withClasses("row justify-content-center");
+      return res;
+    }
+
     private ContainerTag makeCompletedTask(String task_name,int task_id){
         //TODO: make that checking or unchecking the checkbox makes a POST request to change the task in the DB
         ContainerTag res=
                 li(
                   div(
                     div(
-                            s(task_name)
+                            s(strong(task_name))
                     ).withClasses("col-md-6"),
+                    div(
+                            makeEffortDisplay(3,5)
+                    ).withClasses("col-md-2"),
                     div(
 
                       button(
@@ -99,7 +125,7 @@ public class ProjectViewController extends VaquitaController {
                         "✓"
                       ).withStyle("font-size:2em; color:green;")
 
-                    ).withClasses("col-md-6","row","justify-content-end")
+                    ).withClasses("col-md-4","row","justify-content-end")
                   ).withClasses("row")
                 ).withClasses("list-group-item");
         return res;
@@ -110,7 +136,7 @@ public class ProjectViewController extends VaquitaController {
                 li(
                     div(
                         div(
-                              task
+                              strong(task)
                         ).withClasses("col-md-6"),
 
                         div(
