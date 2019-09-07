@@ -55,13 +55,13 @@ public class ProjectsController extends VaquitaController {
                                             h5("ACTIVE PROJECTS").withClasses("m-2"),
                                             ul(
 
-                                                each(active_projects,proj->makeProjectDiv(proj.get(PROJECTS.PROJECT_NAME),proj.get(PROJECTS.ID).intValue())),
-                                                makeProjectDiv("Project 1",-234)
+                                                each(active_projects,proj->makeProjectDiv(proj.get(PROJECTS.PROJECT_NAME),proj.get(PROJECTS.ID).intValue()))
+
                                             ).withClasses("list-group"),
                                             h5("INACTIVE PROJECTS").withClasses("m-2"),
                                             ul(
-                                                each(inactive_projects,proj->makeInactiveProjectDiv(proj.get(PROJECTS.PROJECT_NAME),proj.get(PROJECTS.ID).intValue())),
-                                                makeInactiveProjectDiv("Project 3",-234)
+                                                each(inactive_projects,proj->makeInactiveProjectDiv(proj.get(PROJECTS.PROJECT_NAME),proj.get(PROJECTS.ID).intValue()))
+
                                             ).withClasses("list-group")
                                         ).withClasses("col-md-12")
                                 ).withClasses("container")
