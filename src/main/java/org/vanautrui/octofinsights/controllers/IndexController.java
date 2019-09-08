@@ -50,30 +50,19 @@ public class IndexController extends VaquitaController {
                                             div(
                                                 BrandUtil.createBrandLogoAndText()
                                             ).withClasses("col-md-5"),
-                                            div().withClasses("col-md-4"),
+                                            div().withClasses("col-md-3"),
                                             div(
+                                              a(
+                                                button(strong("Login")).withClasses("btn btn-primary btn-block m-3")
+                                              ).withHref("/login").withClasses("row")
+                                            ).withClasses("col-md-2"),
+                                            div(
+                                              a(
+                                                button(strong("Register")).withClasses("btn btn-secondary btn-block m-3")
+                                              ).withHref("/register").withClasses("row")
+                                            ).withClasses("col-md-2")
 
-                                                div(
-                                                        a(
-                                                            button(strong("Login")).withClasses("btn btn-primary col-md-4 m-1 p-1")
-                                                        ).withHref("/login").withClasses("row")
-                                                ).withClasses(""),
-
-                                                div(
-                                                        a(
-                                                                button(strong("Login with OAuth via Google ")).withClasses("btn btn-primary col-md-4 m-1 p-1")
-                                                        ).withHref("/oauth_login").withClasses("row")
-                                                ).withClasses(""),
-
-                                                div(
-                                                        a(
-                                                            button(strong("Register")).withClasses("btn btn-secondary col-md-4 m-1 p-1")
-                                                        ).withHref("/register").withClasses("row")
-                                                ).withClasses("")
-
-                                            ).withClasses("col-md-3")
-
-                                    ).withClasses("row justify-content-center")
+                                    ).withClasses("row justify-content-center align-items-center")
 
                             ),
                             div().withClasses("m-3 p-3"),

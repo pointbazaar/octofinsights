@@ -8,14 +8,12 @@ Tracking of Sales, Leads, Expenses and Projects
 - [x] Track Leads
 - [x] Track Sales
 - [x] Track Expenses
-- [ ] Track Projects
+- [x] Track Projects
 - [x] Dashboard Widgets
     - [x] Monthly Profits Graph
     - [x] Open Leads Widget
     - [x] Business Value over time Graph
 - [ ] use Google Calendar API to track work on Projects
-- [ ] Login with OAuth via Google
-
 
 
 ### Feedback and Feature Requests
