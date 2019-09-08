@@ -87,13 +87,32 @@ public class SalesController extends VaquitaController {
                                     div(attrs(".container"),
                                             div(attrs("#main-content"),
                                                     form(
-                                                            input().withName("customer_name").withPlaceholder("customer_name").withType("text"),
-                                                            input().withName("price_of_sale").withPlaceholder("price_of_sale").withType("number").attr("min","0"),
-                                                            input().withName("product_or_service").withPlaceholder("product_or_service").withType("text"),
-                                                            input().withName("time_of_sale").withPlaceholder("time of sale").withType("date"),
-
-                                                            button(attrs(".btn .btn-outline-success"),"Insert").withType("submit")
-
+                                                      div(
+                                                        div(
+                                                            input().withName("customer_name").withPlaceholder("customer_name").withType("text")
+                                                        ).withClasses("col"),
+                                                        div(
+                                                            input().withName("price_of_sale")
+                                                                    .withPlaceholder("price_of_sale")
+                                                                    .withType("number")
+                                                                    .attr("min","0")
+                                                                    .withClasses("form-control"),
+                                                            div(
+                                                              span("$").withClasses("input-group-text")
+                                                            ).withClasses("input-group-append")
+                                                        ).withClasses("col","input-group"),
+                                                        div(
+                                                            input().withName("product_or_service").withPlaceholder("product_or_service").withType("text")
+                                                        ).withClasses("col"),
+                                                        div(
+                                                            input().withName("time_of_sale").withPlaceholder("time of sale").withType("date")
+                                                        ).withClasses("col"),
+                                                        div(
+                                                          button("Insert")
+                                                                  .withType("submit")
+                                                                  .withClasses("btn","btn-outline-success")
+                                                        ).withClasses("col")
+                                                      ).withClasses("")
                                                     ).withAction("/sales?action=insert").withMethod("post"),
                                                     mytable
                                             )

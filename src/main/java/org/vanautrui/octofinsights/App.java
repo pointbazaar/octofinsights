@@ -43,6 +43,7 @@ public class App
     public static void main( String[] args )
     {
         System.out.println( "Octofinsights starting ... " );
+        //https://www.youtube.com/watch?v=v1olRFug2ZM
 
         try {
             setup_translation_configuration();
