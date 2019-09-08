@@ -99,4 +99,16 @@ public class TasksService {
 
         conn.close();
     }
+
+    public static void spend1hour(int id, int user_id) throws Exception{
+        Connection conn = DBUtils.makeDBConnection();
+        DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+        ctx.update(TASKS)
+                .set(TASKS.EFFORT_SPENT,TASKS.EFFORT_SPENT.add(1))
+                .where(TASKS.ID.eq(id).and(TASKS.USER_ID.eq(user_id)))
+                .execute();
+
+        conn.close();
+    }
 }

@@ -35,8 +35,8 @@ public class TaskActionController extends VaquitaController {
         case "complete":
           TasksService.completeTask(id,user_id);
           break;
-        case "uncomplete":
-          TasksService.uncompleteTask(id,user_id);
+        case "spend1hour":
+          TasksService.spend1hour(id,user_id);
           break;
         case "delete":
           TasksService.deleteTask(id,user_id);

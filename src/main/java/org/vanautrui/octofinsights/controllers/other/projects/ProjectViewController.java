@@ -169,14 +169,20 @@ public class ProjectViewController extends VaquitaController {
                         div(
                                 makeEffortDisplay(effort_spent,effort_estimate)
                         ).withClasses("col-md-2"),
+
                         div(
+                            form(
+                                    button(
+                                      "spend 1h"
+                                    ).withClasses("btn","btn-primary","btn-sm","mr-3").withType("submit")
+                            ).withAction("/tasks/action?id="+task_id+"&action=spend1hour&redirect="+"/projects/view?id="+project_id).withMethod("POST"),
                             form(
                               button(
 
                               ).withStyle("width:30px; height:30px; border: 3px solid black; border-radius:4px;").withType("submit")
                             ).withAction("/tasks/action?id="+task_id+"&action=complete&redirect="+"/projects/view?id="+project_id).withMethod("POST")
-
                         ).withClasses("col-md-4","row","justify-content-end")
+
                     ).withClasses("row","align-items-center")
                 ).withClasses("list-group-item");
         return res;
