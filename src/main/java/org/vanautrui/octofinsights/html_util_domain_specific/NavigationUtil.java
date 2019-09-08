@@ -24,7 +24,7 @@ public class NavigationUtil {
 
         ContainerTag navbar=
                 nav(
-                        attrs(".navbar .navbar-expand-lg .navbar-light .bg-light"),
+                        attrs(".navbar .navbar-expand-xl .navbar-dark "),
                         a(
                                 attrs(".navbar-brand"),
                                 BrandUtil.createBrandLogoAndText()
@@ -54,7 +54,7 @@ public class NavigationUtil {
                                 )
                         ).withId("navbarSupportedContent")
 
-                );
+                ).withStyle("background-color:#014421;");
 
 
 

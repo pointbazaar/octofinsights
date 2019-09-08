@@ -11,9 +11,9 @@ public class BrandUtil {
 
         ContainerTag brand=
                                 div(
-                                        attrs(".row .align-items-center. justify-content-center .mr-3"),
-                                        img().withSrc("https://vanautrui.org/pics/logo.svg").withStyle("height: 9vh;").withClasses("m-3"),
-                                        h5("Octofinsights").withStyle("color: "+ App.octofinsights_primary_color+"")
+                                        attrs(".row .align-items-center. justify-content-center .mr-3 .ml-3"),
+                                        //img().withSrc("https://vanautrui.org/pics/logo.svg").withStyle("height: 3em;").withClasses(""),
+                                        strong("Octofinsights").withStyle("color: "+ App.octofinsights_primary_color+"")
                                 );
 
         return brand;
