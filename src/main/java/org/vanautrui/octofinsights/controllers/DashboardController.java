@@ -65,7 +65,8 @@ public class DashboardController extends VaquitaController {
                                     makeDashboardCard("Sales this Month","~","","","salesthismonth","salesdiv"),
 
                                     makeDashboardCard("Loss this Month","~","","","expensesthismonth","expensesdiv"),
-                                    makeDashboardCard("Profit this Month","~","","","profit","profitdiv")
+                                    makeDashboardCard("Profit this Month","~","","","profit","profitdiv"),
+                                    makeDashboardCard("Active Projects","~","","","activeprojects","activeprojectsdiv")
                                     //makeDashboardCard("TODO: Business Health","Good","",""),
                                     //makeDashboardCard("TODO: lifeline","4 Weeks","","")
                             ).withClasses("row align-items-center justify-content-center"),

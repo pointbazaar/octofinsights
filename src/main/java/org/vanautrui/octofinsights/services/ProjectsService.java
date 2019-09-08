@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.Optional;
 
+import static org.jooq.impl.DSL.count;
 import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
 import static org.vanautrui.octofinsights.generated.tables.Tasks.TASKS;
 
@@ -155,5 +156,14 @@ public class ProjectsService {
         }
 
         conn.close();
+    }
+
+    public static long getActiveProjectsCount(int user_id) throws Exception{
+        Connection conn= DBUtils.makeDBConnection();
+        DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+
+        Record1<Integer> count = create.select(count(PROJECTS)).from(PROJECTS).where(PROJECTS.USER_ID.eq(user_id).and(PROJECTS.ISACTIVE.eq((byte)1))).fetchOne();
+        conn.close();
+        return count.component1().longValue();
     }
 }

@@ -40,6 +40,7 @@ public class DashboardApp {
         main3();
         main4();
         main5();
+        main_active_projects();
     }
 
     public static void main2(){
@@ -66,7 +67,7 @@ public class DashboardApp {
                 }else {
                     balance.classList.add("text-danger");
                 }
-                //balancediv.fadeIn();
+
                 fullOpacity(balancediv);
                 return null;
             }
@@ -99,8 +100,10 @@ public class DashboardApp {
                     sales.classList.add("text-success");
                 }
 
-                //sales_div.slideDown();
-                //sales_div.fadeIn();
+                if(parse.value==0){
+                    sales_div.remove();
+                }
+
                 fullOpacity(sales_div);
 
                 return null;
@@ -126,8 +129,11 @@ public class DashboardApp {
                 IntObject parse = (IntObject) JSON.parse(Http.responseText);
 
                 $("#profit").get()[0].textContent=parse.value+" €";
-                //profitdiv.fadeIn();
-                //profitdiv.get()[0].style.opacity="1.0";
+
+                if(parse.value==0){
+                    profitdiv.remove();
+                }
+
                 fullOpacity(profitdiv);
                 return null;
             }
@@ -158,6 +164,33 @@ public class DashboardApp {
                 }
 
                 fullOpacity(expensesdiv);
+                return null;
+            }
+        };
+
+        Http.send();
+    }
+
+    public static void main_active_projects(){
+        JQuery mydiv = $("#activeprojectsdiv");
+        lowOpacity(mydiv);
+        XMLHttpRequest Http = new XMLHttpRequest();
+
+        Http.open("GET","/api/activeprojects",true);
+
+
+        Http.onloadend=new Function<ProgressEvent, Object>() {
+            @Override
+            public Object apply(ProgressEvent progressEvent) {
+                IntObject parse = (IntObject) JSON.parse(Http.responseText);
+
+                $("#activeprojects").get()[0].textContent=(parse.value)+"";
+
+                if(parse.value==0){
+                    mydiv.remove();
+                }
+
+                fullOpacity(mydiv);
                 return null;
             }
         };

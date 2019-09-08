@@ -96,6 +96,7 @@ public class App
         routes.put("/api/salesthismonth",new SalesThisMonthEndpoint());
         routes.put("/api/expensesthismonth",new ExpensesThisMonthEndpoint());
         routes.put("/api/profit",new ProfitEndpoint());
+        routes.put("/api/activeprojects",new ActiveProjectsEndpoint());
 
         try {
             VaquitaApp app = new VaquitaApp(9377, routes);
