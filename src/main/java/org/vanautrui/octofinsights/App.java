@@ -82,9 +82,6 @@ public class App
         routes.put("/login",new LoginController());
         routes.put("/logout",new LogoutController());
 
-        routes.put("/oauth_login",new LoginWithOAuthViaGoogleController());
-        routes.put("/auth",new OAuthResponseController());
-
         routes.put("/register",new RegisterController());
 
 
