@@ -46,6 +46,7 @@ public class ProjectsController extends VaquitaController {
                         body(
                                 NavigationUtil.createNavbar(request.session().get().get("username"),"Projects"),
                                 div(
+                                        div().withClasses("m-3"),
                                         div(
                                             a(
                                               button(

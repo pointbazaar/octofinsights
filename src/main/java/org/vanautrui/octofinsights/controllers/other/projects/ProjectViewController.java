@@ -58,8 +58,15 @@ public class ProjectViewController extends VaquitaController {
               h3("Project: "+project.get(PROJECTS.PROJECT_NAME)),
               hr(),
               div(
-                      "TODO: project metadata"
+                      h5("Project Metadata"),
+                      p("Project Description: "+project.get(PROJECTS.PROJECT_DESCRIPTION)),
+                      p("Project Start Date: "+project.get(PROJECTS.PROJECT_START)),
+                      p("Project End Date Estimate: "+project.get(PROJECTS.PROJECT_END_ESTIMATE)),
+                      p("Project End Date: "+project.get(PROJECTS.PROJECT_END)),
+                      p("Estimated Earnings: "+project.get(PROJECTS.PROJECT_EARNINGS_ESTIMATE)+" $"),
+                      p("Initial Effort Estimate: "+project.get(PROJECTS.INITIAL_EFFORT_ESTIMATE_HOURS)+" hours")
               ),
+              hr(),
               form(
                 div(
                   div(
