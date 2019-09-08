@@ -16,6 +16,9 @@ import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.tables.Users.USERS;
 
 public class ProfileController extends org.vanautrui.vaquitamvc.controller.VaquitaController {
+
+    //https://www.youtube.com/watch?v=o_1aF54DO60&list=RDEMYGj5tu94_mNz6SrYkDD3_g&start_radio=1
+
     @Override
     public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest request, VaquitaApp app) throws Exception {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true") ) {
