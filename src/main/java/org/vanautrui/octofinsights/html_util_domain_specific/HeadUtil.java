@@ -3,8 +3,6 @@ package org.vanautrui.octofinsights.html_util_domain_specific;
 import j2html.attributes.Attr;
 import j2html.tags.ContainerTag;
 
-import java.util.Arrays;
-
 import static j2html.TagCreator.*;
 
 public class HeadUtil {
@@ -23,7 +21,9 @@ public class HeadUtil {
 
                         title("Octofinsights"),
                         link().withRel("stylesheet").withHref("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"),
+
                         link().withRel("stylesheet").withHref("style.css"),
+                        link().withRel("stylesheet").withHref("../style.css"), //important, when relative path is used, as request could be issued from /projects/file.extension
 
                         //link().withRel("stylesheet").withHref("https://cdn.jsdelivr.net/gh/coliff/bootstrap-rfs/bootstrap-rfs.css"),
 
