@@ -95,7 +95,9 @@ public class ProjectViewController extends VaquitaController {
               ul(
                 each(
                         tasks_complete,
-                        task->makeCompletedTask(task.get(TASKS.TASK_NAME),task.get(TASKS.ID),task.get(TASKS.INITIAL_EFFORT_ESTIMATE_HOURS),task.get(TASKS.EFFORT_SPENT))
+                        task->makeCompletedTask(
+                                task.get(TASKS.TASK_NAME),task.get(TASKS.ID),task.get(TASKS.INITIAL_EFFORT_ESTIMATE_HOURS),task.get(TASKS.EFFORT_SPENT),project_id
+                        )
                 )
               ).withClasses("list-group")
             ).withClasses("container")
@@ -129,7 +131,7 @@ public class ProjectViewController extends VaquitaController {
       return res;
     }
 
-    private ContainerTag makeCompletedTask(String task_name,int task_id,int effort_estimate,int effort_spent){
+    private ContainerTag makeCompletedTask(String task_name,int task_id,int effort_estimate,int effort_spent,int project_id){
         //TODO: make that checking or unchecking the checkbox makes a POST request to change the task in the DB
         ContainerTag res=
                 li(
@@ -141,10 +143,11 @@ public class ProjectViewController extends VaquitaController {
                             makeEffortDisplay(effort_spent,effort_estimate)
                     ).withClasses("col-md-2"),
                     div(
-
-                      button(
-                              "DELETE"
-                      ).withClasses("btn","btn-sm","btn-outline-danger","m-2","mr-4"),
+                      form(
+                        button(
+                                "DELETE"
+                        ).withClasses("btn","btn-sm","btn-outline-danger","m-2","mr-4").withType("submit")
+                      ).withAction("/tasks/action?id="+task_id+"&action=delete&redirect="+"/projects/view?id="+project_id).withMethod("POST"),
 
                       div(
                         "✓"
