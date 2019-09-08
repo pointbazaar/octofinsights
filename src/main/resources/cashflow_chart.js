@@ -63,7 +63,9 @@ function draw_business_value_history(values){
                 label: 'Total Business Value over Time',
                 //data: values.map(x=>x.value),
                 data: partial_sums,
-                fill:false
+                fill:false,
+                backgroundColor:"black",
+                borderColor:"black"
             }]
         },
         options: {

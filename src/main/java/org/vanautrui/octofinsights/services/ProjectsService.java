@@ -159,6 +159,8 @@ public class ProjectsService {
     }
 
     public static long getActiveProjectsCount(int user_id) throws Exception{
+        //https://www.youtube.com/watch?v=BqtiQEZA1Z8
+
         Connection conn= DBUtils.makeDBConnection();
         DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 
