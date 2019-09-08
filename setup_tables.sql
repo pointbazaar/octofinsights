@@ -120,3 +120,13 @@ CREATE TABLE IF NOT EXISTS `tasks` (
     `task_name` varchar(2000) DEFAULT NULL,
     `iscompleted` boolean DEFAULT FALSE
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE IF NOT EXISTS customers (
+    id int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    user_id int(11) DEFAULT NULL,
+    acquisition_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    customer_name varchar(500) DEFAULT NULL,
+    source varchar(500) DEFAULT NULL
+);

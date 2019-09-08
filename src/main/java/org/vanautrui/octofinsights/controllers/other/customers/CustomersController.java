@@ -1,7 +1,9 @@
 package org.vanautrui.octofinsights.controllers.other.customers;
 
+import org.jooq.Record;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
+import org.vanautrui.octofinsights.services.CustomersService;
 import org.vanautrui.vaquitamvc.VaquitaApp;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
 import org.vanautrui.vaquitamvc.requests.IVaquitaHTTPRequest;
@@ -11,9 +13,11 @@ import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static j2html.TagCreator.*;
+import static org.vanautrui.octofinsights.generated.tables.Customers.CUSTOMERS;
 
 public class CustomersController extends VaquitaController {
 
@@ -27,49 +31,51 @@ public class CustomersController extends VaquitaController {
 
             int user_id = Integer.parseInt(request.session().get().get("user_id"));
 
-            ArrayList list = new ArrayList();
-            list.add(new Object());
+            List<Record> list = CustomersService.getCustomers(user_id);
+
 
             String page=
                     html(
                             HeadUtil.makeHead(),
                             body(
                                     NavigationUtil.createNavbar(request.session().get().get("username"),"Customers"),
-                                    div(attrs(".container"),
-                                            div(attrs("#main-content"),
-                                                    form(
-                                                            input().withName("search").withPlaceholder("search").withType("text"),
-                                                            button(attrs(".btn .btn-outline-info"),"Search").withType("submit")
-                                                    ).withAction("/customers").withMethod("get"),
-                                                    h3("Add a Customer"),
-                                                    form(
-                                                            input().withType("text").withName("customer-name").withPlaceholder("name"),
-                                                            input().withType("text").withName("customer-source").withPlaceholder("source"),
-                                                            button(attrs(".btn .btn-outline-success"),"Insert").withType("submit")
-                                                    ).withAction("/leads?action=insert").withMethod("post"),
-                                                    table(
-                                                            attrs(".table"),
-                                                            thead(
-                                                                    //th("ID").attr("scope","col"),
-                                                                    th("Customer Name").attr("scope","col"),
-                                                                    th("has active Project?").attr("scope","col"),
-                                                                    th("Source").attr("scope","col")
-                                                            ),
-                                                            tbody(
-                                                                    each(
-                                                                            list,
-                                                                            record ->
-                                                                                    tr(
-                                                                                            td(),
-                                                                                            td(),
-                                                                                            td(),
-                                                                                            td()
-                                                                                    )
-                                                                    )
+                                    div(
+                                        div(
+                                            h3("Customers"),
+                                            form(
+                                                div(
+                                                    input().withType("text").withName("customer-name").withPlaceholder("name").withClasses("form-control")
+                                                ).withClasses("form-group"),
+                                                div(
+                                                    input().withType("text").withName("customer-source").withPlaceholder("source").withClasses("form-control")
+                                                ).withClasses("form-group"),
+                                                button("Insert Customer")
+                                                        .withType("submit")
+                                                        .withClasses("btn","btn-outline-success")
+                                            ).withAction("/customers?action=insert").withMethod("post"),
+                                            table(
+                                                    attrs(".table"),
+                                                    thead(
+                                                            //th("ID").attr("scope","col"),
+                                                            th("Customer Name").attr("scope","col"),
+                                                            //th("has active Project?").attr("scope","col"),
+                                                            th("Source").attr("scope","col"),
+                                                            th("Acquisition Date").attr("scope","col")
+                                                    ),
+                                                    tbody(
+                                                            each(
+                                                                    list,
+                                                                    record ->
+                                                                            tr(
+                                                                                    td(record.get(CUSTOMERS.CUSTOMER_NAME)),
+                                                                                    td(record.get(CUSTOMERS.SOURCE)),
+                                                                                    td(record.get(CUSTOMERS.ACQUISITION_DATE).toLocalDateTime().toString())
+                                                                            )
                                                             )
                                                     )
                                             )
-                                    )
+                                        ).withId("main-content")
+                                    ).withClasses("container")
 
                             )
                     ).render();
@@ -90,6 +96,20 @@ public class CustomersController extends VaquitaController {
         ){
 
             int user_id = Integer.parseInt(request.session().get().get("user_id"));
+            String action = request.getQueryParameter("action");
+
+          Map<String, String> params = vaquitaHTTPEntityEnclosingRequest.getPostParameters();
+
+          String customer_name=params.get("customer-name");
+          String customer_source=params.get("customer-source");
+
+          switch (action){
+            case "insert":
+              CustomersService.insertCustomer(user_id,customer_name,customer_source);
+              break;
+            case "delete":
+              throw new Exception("not yet supported");
+            }
 
             return new VaquitaRedirectToGETResponse("/customers",request);
         }else {
