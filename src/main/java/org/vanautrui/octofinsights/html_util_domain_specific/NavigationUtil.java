@@ -26,9 +26,8 @@ public class NavigationUtil {
                 nav(
                         attrs(".navbar .navbar-expand-xl .navbar-dark "),
                         a(
-                                attrs(".navbar-brand"),
                                 BrandUtil.createBrandLogoAndText()
-                        ).withHref("/"),
+                        ).withHref("/").withClasses("navbar-brand"),
                         button(
                                 attrs(".navbar-toggler"),
                                 span(attrs(".navbar-toggler-icon"))
@@ -36,7 +35,7 @@ public class NavigationUtil {
                         div(
                                 attrs(".collapse .navbar-collapse"),
                                 ul(
-                                        attrs(".navbar-nav .mr-auto"),
+
                                         each(
                                                 Arrays.stream(sidebar_links).collect(Collectors.toList()),
                                                 link->li(
@@ -46,12 +45,12 @@ public class NavigationUtil {
                                         ),
 
                                         li(
-                                                a(span("Logout")).withClasses("nav-link p-2").withHref("/logout")
+                                                a("Logout").withClasses("nav-link mt-1").withHref("/logout")
                                         ).withClasses("nav-item"),
                                         li(
-                                                p("Logged in as : "+username).withClasses("m-2")
+                                                p("Logged in as : "+username).withClasses("mt-1")
                                         ).withClasses("nav-item")
-                                )
+                                ).withClasses("navbar-nav", "mr-auto")
                         ).withId("navbarSupportedContent")
 
                 ).withStyle("background-color:#014421;");
@@ -63,8 +62,8 @@ public class NavigationUtil {
 
     private static ContainerTag makeLinkCustom(String name,String href, String currentPageName){
         ContainerTag result = a(
-                attrs(".nav-link .p-2"),
-                p((name.equals(currentPageName))?strong(name):span(name))
+                attrs(".nav-link .mt-1"),
+                (name.equals(currentPageName))?strong(name):span(name)
         ).withHref(href);
         return result;
     }
