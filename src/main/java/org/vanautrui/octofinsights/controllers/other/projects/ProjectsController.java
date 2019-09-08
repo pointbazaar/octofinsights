@@ -56,7 +56,12 @@ public class ProjectsController extends VaquitaController {
                                             h5("ACTIVE PROJECTS").withClasses("m-2"),
                                             ul(
 
-                                                each(active_projects,proj->makeProjectDiv(proj.get(PROJECTS.PROJECT_NAME),proj.get(PROJECTS.ID).intValue()))
+                                                each(
+                                                        active_projects,
+                                                        proj->makeProjectDiv(
+                                                                proj.get(PROJECTS.PROJECT_NAME), proj.get(PROJECTS.ID),user_id
+                                                        )
+                                                )
 
                                             ).withClasses("list-group"),
                                             h5("INACTIVE PROJECTS").withClasses("m-2"),
@@ -98,7 +103,7 @@ public class ProjectsController extends VaquitaController {
         return res;
     }
 
-    private ContainerTag makeProjectDiv(String projectName,int project_id){
+    private ContainerTag makeProjectDiv(String projectName,int project_id,int user_id) {
         ContainerTag res=
                 li(
                     div(
@@ -106,7 +111,11 @@ public class ProjectsController extends VaquitaController {
                             a(
                               projectName
                               //TODO: create the controller to view the project
-                            ).withHref("/projects/view?id="+project_id)
+                            ).withHref("/projects/view?id="+project_id),
+
+                            div(
+                              div().withClasses("progress-bar").withRole("progressbar").withStyle("width:"+ProjectsService.getCompletionPercentage(project_id,user_id)+"%;")
+                            ).withClasses("progress","mt-3").withStyle("height:20px;")
                         ).withClasses("col-md-6"),
                         div(
 

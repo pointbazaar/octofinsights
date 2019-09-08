@@ -4,10 +4,13 @@ import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Timestamp;
+import java.util.Optional;
 
 import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
+import static org.vanautrui.octofinsights.generated.tables.Tasks.TASKS;
 
 public class ProjectsService {
 
@@ -20,6 +23,52 @@ public class ProjectsService {
         conn.close();
 
         return myprojects;
+    }
+
+    public static int getCompletionPercentage(int project_id,int user_id){
+        //add up the tasks , their effort estimate (for now, because we do not track real efforts right now)
+        Connection conn;
+        try {
+            conn = DBUtils.makeDBConnection();
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+        DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+        Optional<Record1<BigDecimal>> result1 = ctx
+                .select(TASKS.INITIAL_EFFORT_ESTIMATE_HOURS.sum())
+                .from(TASKS)
+                .where(TASKS.PROJECT_ID.eq(project_id).and(TASKS.USER_ID.eq(user_id)))
+                .fetchOptional();
+
+        if(result1==null || !result1.isPresent()){
+            return 0;
+        }
+
+        BigDecimal total_project_estimate_hours=result1.get().component1();
+
+        //add up the  completed tasks , their effort estimate (for now, because we do not track real efforts right now)
+        Optional<Record1<BigDecimal>> result2 = ctx
+                .select(TASKS.INITIAL_EFFORT_ESTIMATE_HOURS.sum())
+                .from(TASKS)
+                .where(TASKS.PROJECT_ID.eq(project_id).and(TASKS.USER_ID.eq(user_id)).and(TASKS.ISCOMPLETED.eq((byte)1)))
+                .fetchOptional();
+
+        if(result2==null || !result2.isPresent() || result2.get().component1()==null){
+            return 0;
+        }
+
+        BigDecimal total_project_estimate_hours_completed=result2.get().component1();
+
+        //System.out.println(total_project_estimate_hours);
+        //System.out.println(total_project_estimate_hours_completed);
+
+        double total = total_project_estimate_hours.doubleValue();
+        double completed = total_project_estimate_hours_completed.doubleValue();
+
+        double ratio = completed/total;
+        //System.out.println("ratio: "+ratio);
+        return (int)(ratio*100);
     }
 
     public static void insertProject(
