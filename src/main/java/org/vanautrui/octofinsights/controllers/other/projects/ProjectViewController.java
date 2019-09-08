@@ -18,6 +18,7 @@ import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectResponse;
 
 import java.sql.Connection;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,9 +62,9 @@ public class ProjectViewController extends VaquitaController {
                       h4("Project Metadata:"),
                       h5("Description"),
                       p(project.get(PROJECTS.PROJECT_DESCRIPTION)),
-                      p("Project Start Date: "+project.get(PROJECTS.PROJECT_START)),
-                      p("Project End Date Estimate: "+project.get(PROJECTS.PROJECT_END_ESTIMATE)),
-                      p("Project End Date: "+project.get(PROJECTS.PROJECT_END)),
+                      p("Project Start Date: "+project.get(PROJECTS.PROJECT_START).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
+                      p("Project End Date Estimate: "+project.get(PROJECTS.PROJECT_END_ESTIMATE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
+                      p("Project End Date: "+project.get(PROJECTS.PROJECT_END).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
                       p("Estimated Earnings: "+project.get(PROJECTS.PROJECT_EARNINGS_ESTIMATE)+" $"),
                       p("Initial Effort Estimate: "+project.get(PROJECTS.INITIAL_EFFORT_ESTIMATE_HOURS)+" hours")
               ),

@@ -13,6 +13,7 @@ import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +70,7 @@ public class CustomersController extends VaquitaController {
                                                                             tr(
                                                                                     td(record.get(CUSTOMERS.CUSTOMER_NAME)),
                                                                                     td(record.get(CUSTOMERS.SOURCE)),
-                                                                                    td(record.get(CUSTOMERS.ACQUISITION_DATE).toLocalDateTime().toString())
+                                                                                    td(record.get(CUSTOMERS.ACQUISITION_DATE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE))
                                                                             )
                                                             )
                                                     )
