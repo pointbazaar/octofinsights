@@ -58,8 +58,9 @@ public class ProjectViewController extends VaquitaController {
               h3("Project: "+project.get(PROJECTS.PROJECT_NAME)),
               hr(),
               div(
-                      h5("Project Metadata"),
-                      p("Project Description: "+project.get(PROJECTS.PROJECT_DESCRIPTION)),
+                      h4("Project Metadata:"),
+                      h5("Description"),
+                      p(project.get(PROJECTS.PROJECT_DESCRIPTION)),
                       p("Project Start Date: "+project.get(PROJECTS.PROJECT_START)),
                       p("Project End Date Estimate: "+project.get(PROJECTS.PROJECT_END_ESTIMATE)),
                       p("Project End Date: "+project.get(PROJECTS.PROJECT_END)),
@@ -72,11 +73,11 @@ public class ProjectViewController extends VaquitaController {
                   div(
                     label("Task"),
                     input().withType("text").withClasses("form-control").withName("task_name")
-                  ).withClasses("form-group col-md-6"),
+                  ).withClasses("form-group col-md-9"),
                   div(
                     label("Time Estimate (hours)"),
                     input().withType("number").withClasses("form-control").withName("effort_estimate")
-                  ).withClasses("form-group col-md-6")
+                  ).withClasses("form-group col-md-3")
                 ).withClasses("form-row"),
                 button("ADD TASK").withClasses("btn","btn-primary","btn-block").withType("submit")
               ).withAction("/tasks/add?project_id="+project_id+"&redirect="+"/projects/view?id="+project_id).withMethod("POST"),
@@ -86,11 +87,11 @@ public class ProjectViewController extends VaquitaController {
                 each(
                         tasks,
                         task->makeTask(
-                                task.get(TASKS.TASK_NAME),task.get(TASKS.ID),task.get(TASKS.INITIAL_EFFORT_ESTIMATE_HOURS),task.get(TASKS.EFFORT_SPENT)
+                                task.get(TASKS.TASK_NAME),task.get(TASKS.ID),task.get(TASKS.INITIAL_EFFORT_ESTIMATE_HOURS),task.get(TASKS.EFFORT_SPENT),project_id
                         )
                 )
               ).withClasses("list-group"),
-              h3("Completed Tasks"),
+              h3("Completed Tasks").withClasses("mt-3", "mb-1"),
               ul(
                 each(
                         tasks_complete,
@@ -155,7 +156,7 @@ public class ProjectViewController extends VaquitaController {
         return res;
     }
 
-    private ContainerTag makeTask(String task,int task_id,int effort_estimate,int effort_spent){
+    private ContainerTag makeTask(String task,int task_id,int effort_estimate,int effort_spent,int project_id){
         ContainerTag res=
                 li(
                     div(
@@ -166,9 +167,11 @@ public class ProjectViewController extends VaquitaController {
                                 makeEffortDisplay(effort_spent,effort_estimate)
                         ).withClasses("col-md-2"),
                         div(
-                            div(
+                            form(
+                              button(
 
-                            ).withStyle("width:30px; height:30px; border: 3px solid black; border-radius:4px;")
+                              ).withStyle("width:30px; height:30px; border: 3px solid black; border-radius:4px;").withType("submit")
+                            ).withAction("/tasks/action?id="+task_id+"&action=complete&redirect="+"/projects/view?id="+project_id).withMethod("POST")
 
                         ).withClasses("col-md-4","row","justify-content-end")
                     ).withClasses("row","align-items-center")

@@ -65,4 +65,38 @@ public class TasksService {
         conn.close();
     }
 
+    public static void completeTask(int id, int user_id) throws Exception{
+        Connection conn = DBUtils.makeDBConnection();
+        DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+        ctx.update(TASKS)
+                .set(TASKS.ISCOMPLETED,(byte)1)
+                .where(TASKS.ID.eq(id).and(TASKS.USER_ID.eq(user_id)))
+                .execute();
+
+        conn.close();
+    }
+
+    public static void uncompleteTask(int id, int user_id) throws Exception{
+        Connection conn = DBUtils.makeDBConnection();
+        DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+        ctx.update(TASKS)
+                .set(TASKS.ISCOMPLETED,(byte)0)
+                .where(TASKS.ID.eq(id).and(TASKS.USER_ID.eq(user_id)))
+                .execute();
+
+        conn.close();
+    }
+
+    public static void deleteTask(int id, int user_id) throws Exception{
+        Connection conn = DBUtils.makeDBConnection();
+        DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+        ctx.delete(TASKS)
+                .where(TASKS.ID.eq(id).and(TASKS.USER_ID.eq(user_id)))
+                .execute();
+
+        conn.close();
+    }
 }
