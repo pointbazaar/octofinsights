@@ -1,5 +1,6 @@
 package org.vanautrui.octofinsights.controllers.other.projects;
 
+import org.jooq.Record;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.services.ProjectsService;
@@ -13,14 +14,15 @@ import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectResponse;
 import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Map;
+import java.util.Optional;
 
 import static j2html.TagCreator.*;
 import static java.lang.Integer.parseInt;
+import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
 
-public class ProjectAddController extends VaquitaController {
+public class ProjectEditController extends VaquitaController {
 
   @Override
   public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest request, VaquitaApp app) throws Exception {
@@ -30,7 +32,9 @@ public class ProjectAddController extends VaquitaController {
     }
 
     int user_id = parseInt(request.session().get().get("user_id"));
+    int project_id = parseInt(request.getQueryParameter("id"));
 
+    Record project = ProjectsService.getById(user_id,project_id);
 
     String page =
       html(
@@ -38,47 +42,31 @@ public class ProjectAddController extends VaquitaController {
         body(
           NavigationUtil.createNavbar(request.session().get().get("username"), "Projects"),
           div(
-            h3("Create a new Project").withClasses("text-center"),
+            h3("Edit Project").withClasses("text-center"),
             hr(),
             div(
               form(
                 div(
                   label("Project Name"),
-                  input().withType("text").withClasses("form-control").withName("project-name").withPlaceholder("my new project")
+                  input().withType("text").withClasses("form-control")
+                          .withName("project-name").withPlaceholder("my new project")
+                          .withValue(project.get(PROJECTS.PROJECT_NAME))
                 ).withClasses("form-group"),
-                div(
-                  div(
-                    label("Project Start Date"),
-                    input().withType("date").withClasses("form-control").withName("project-start-date")
-                  ).withClasses("col"),
-                  div(
-                    label("Projected Project End Date"),
-                    input().withType("date").withClasses("form-control").withName("project-end-date-estimate")
-                  ).withClasses("col")
-                ).withClasses("form-row","mt-3"),
-
-                div(
-                  div(
-                    label("Estimated Effort (hours)"),
-                    input().withType("number").withClasses("form-control").withName("project-effort-estimate")
-                  ).withClasses("col"),
-                  div(
-                    label("Estimated Project Earnings (in Euros)"),
-                    input().withType("number").withClasses("form-control").withName("project-earnings-estimate")
-                  ).withClasses("col")
-                ).withClasses("form-row","mt-3"),
 
                 div(
                   label("Project Description"),
                   textarea(
-
-                  ).withClasses("form-control").withPlaceholder("tasks, goals, stakeholders, technologies, deadlines, links to resources, ...").withName("project-description")
+                          project.get(PROJECTS.PROJECT_DESCRIPTION)
+                  ).withClasses("form-control")
+                          .withPlaceholder("tasks, goals, stakeholders, technologies, deadlines, links to resources, ...")
+                          .withName("project-description")
                 ).withClasses("form-group"),
 
                 button(
-                        "ADD PROJECT"
-                ).withClasses("btn", "btn-primary", "col-md-12").withType("submit")
-              ).withAction("/projects/add").withMethod("POST")
+                        "Save Project"
+                ).withClasses("btn", "btn-primary", "col-md-12")
+                        .withType("submit")
+              ).withAction("/projects/edit?id="+project_id).withMethod("POST")
 
             ).withClasses("col-md-12")
           ).withClasses("container")
@@ -97,23 +85,25 @@ public class ProjectAddController extends VaquitaController {
     ){
       SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+      //TODO : handle missing parameters
+
       Map<String, String> params = entReq.getPostParameters();
 
+      int id = parseInt(req.getQueryParameter("id"));
       int user_id = parseInt(req.session().get().get("user_id"));
 
-      String project_name = params.get("project-name");
+      Optional<String> project_name=Optional.empty();
+      if(params.containsKey("project-name")) {
+         project_name = Optional.of(params.get("project-name"));
+      }
 
-      String s1 = params.get("project-start-date");
-      String s2 = params.get("project-end-date-estimate");
 
-      Timestamp project_start_date = new Timestamp(dateFormat.parse(s1).getTime());
-      Timestamp project_end_date_estimate = new Timestamp(dateFormat.parse(s2).getTime());
+      Optional<String> project_description = Optional.empty();
+      if(params.containsKey("project-description")){
+        project_description = Optional.of(params.get("project-description"));
+      }
 
-      int effort_estimate_hours = parseInt(params.get("project-effort-estimate"));
-      int earnings_estimate = parseInt(params.get("project-earnings-estimate"));
-      String project_description = params.get("project-description");
-
-      ProjectsService.insertProject(user_id,project_name,project_start_date,project_end_date_estimate,effort_estimate_hours,earnings_estimate,project_description);
+      ProjectsService.updateProject(user_id,id,project_name,project_description);
 
       return new VaquitaRedirectToGETResponse("/projects",req);
 

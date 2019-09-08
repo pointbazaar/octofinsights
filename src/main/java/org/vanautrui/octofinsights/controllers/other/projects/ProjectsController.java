@@ -110,7 +110,6 @@ public class ProjectsController extends VaquitaController {
                         div(
                             a(
                               projectName
-                              //TODO: create the controller to view the project
                             ).withHref("/projects/view?id="+project_id),
 
                             div(
@@ -123,7 +122,6 @@ public class ProjectsController extends VaquitaController {
                               button(
                                   "EDIT"
                               ).withClasses("btn","btn-outline-primary","m-2")
-                              //TODO: create the edit controller (must be different than add controller, because you cannot change initial estimates, title, or start date)
                             ).withHref("/projects/edit?id="+project_id),
 
                             form(

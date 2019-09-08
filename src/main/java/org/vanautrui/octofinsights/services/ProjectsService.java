@@ -109,19 +109,51 @@ public class ProjectsService {
         conn.close();
     }
 
-    public static Record getById(int user_id, int sale_id) throws Exception{
-        //TODO
-        /*
+    public static Record getById(int user_id, int project_id) throws Exception{
+
         Connection conn= DBUtils.makeDBConnection();
         DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 
-        Record record =  create.select(SALES.asterisk()).from(SALES).where(SALES.USER_ID.eq(user_id).and(SALES.ID.eq(sale_id))).fetchOne();
+        Record record = create.select(PROJECTS.asterisk()).from(PROJECTS).where(PROJECTS.ID.eq(project_id).and(PROJECTS.USER_ID.eq(user_id))).fetchOne();
         conn.close();
 
-         */
-
-        //return record;
-        return null;
+        return record;
     }
 
+    public static void updateProject(int user_id, int id, Optional<String> project_name, Optional<String> project_description) throws Exception{
+
+        //https://www.jooq.org/doc/3.12/manual/sql-building/sql-statements/update-statement/
+
+        System.out.println(project_name);
+        System.out.println(project_description);
+
+        Connection conn = DBUtils.makeDBConnection();
+        DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+        if(project_name.isPresent() && project_description.isPresent()) {
+
+            ctx.update(PROJECTS)
+                    .set(PROJECTS.PROJECT_NAME, project_name.get())
+                    .set(PROJECTS.PROJECT_DESCRIPTION, project_description.get())
+                    .where(PROJECTS.ID.eq(id).and(PROJECTS.USER_ID.eq(user_id)))
+                    .execute();
+
+        }else if(project_description.isPresent()){
+
+            ctx.update(PROJECTS)
+                    .set(PROJECTS.PROJECT_DESCRIPTION, project_description.get())
+                    .where(PROJECTS.ID.eq(id).and(PROJECTS.USER_ID.eq(user_id)))
+                    .execute();
+
+        }else if(project_name.isPresent()){
+
+            ctx.update(PROJECTS)
+                    .set(PROJECTS.PROJECT_NAME, project_name.get())
+                    .where(PROJECTS.ID.eq(id).and(PROJECTS.USER_ID.eq(user_id)))
+                    .execute();
+
+        }
+
+        conn.close();
+    }
 }

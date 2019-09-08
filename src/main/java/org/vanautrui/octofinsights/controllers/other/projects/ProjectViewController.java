@@ -67,6 +67,11 @@ public class ProjectViewController extends VaquitaController {
                       p("Estimated Earnings: "+project.get(PROJECTS.PROJECT_EARNINGS_ESTIMATE)+" $"),
                       p("Initial Effort Estimate: "+project.get(PROJECTS.INITIAL_EFFORT_ESTIMATE_HOURS)+" hours")
               ),
+              a(
+                button(
+                  "Edit Project"
+                ).withClasses("btn","btn-outline-secondary")
+              ).withHref("/projects/edit?id="+project_id),
               hr(),
               form(
                 div(
