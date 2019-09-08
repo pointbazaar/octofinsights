@@ -116,12 +116,10 @@ public class DashboardApp {
 
     public static void main4(){
         JQuery profitdiv = $("#profitdiv");
-        //profitdiv.hide();
-        //profitdiv.get()[0].style.opacity="0.1";
+
         lowOpacity(profitdiv);
         XMLHttpRequest Http = new XMLHttpRequest();
         Http.open("GET","/api/profit",true);
-
 
         Http.onloadend=new Function<ProgressEvent, Object>() {
             @Override
@@ -145,7 +143,7 @@ public class DashboardApp {
     public static void main5(){
         JQuery expensesdiv = $("#expensesdiv");
         lowOpacity(expensesdiv);
-        //expensesdiv.get()[0].style.opacity="0.1";
+
         XMLHttpRequest Http = new XMLHttpRequest();
 
         Http.open("GET","/api/expensesthismonth",true);
@@ -157,7 +155,7 @@ public class DashboardApp {
                 IntObject parse = (IntObject) JSON.parse(Http.responseText);
 
                 $("#expensesthismonth").get()[0].textContent=((-1)*parse.value)+" €";
-                //expensesdiv.get()[0].style.opacity="1.0";
+
 
                 if(parse.value==0){
                     expensesdiv.remove();
@@ -182,11 +180,19 @@ public class DashboardApp {
         Http.onloadend=new Function<ProgressEvent, Object>() {
             @Override
             public Object apply(ProgressEvent progressEvent) {
-                IntObject parse = (IntObject) JSON.parse(Http.responseText);
+                IntObject active_project_count = (IntObject) JSON.parse(Http.responseText);
 
-                $("#activeprojects").get()[0].textContent=(parse.value)+"";
+                $("#activeprojects").get()[0].textContent=(active_project_count.value)+"";
 
-                if(parse.value==0){
+                if(active_project_count.value>6){
+                    //too many projects
+                    mydiv.get()[0].classList.add("text-danger");
+                }else if(active_project_count.value>4){
+                    //still too many projects at once
+                    mydiv.get()[0].classList.add("text-warning");
+                }
+
+                if(active_project_count.value==0){
                     mydiv.remove();
                 }
 
