@@ -59,14 +59,17 @@ public class ProjectViewController extends VaquitaController {
               h3("Project: "+project.get(PROJECTS.PROJECT_NAME)),
               hr(),
               div(
-                      h4("Project Metadata:"),
-                      h5("Description"),
-                      p(project.get(PROJECTS.PROJECT_DESCRIPTION)),
-                      p("Project Start Date: "+project.get(PROJECTS.PROJECT_START).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
-                      p("Project End Date Estimate: "+project.get(PROJECTS.PROJECT_END_ESTIMATE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
-                      p("Project End Date: "+project.get(PROJECTS.PROJECT_END).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
-                      p("Estimated Earnings: "+project.get(PROJECTS.PROJECT_EARNINGS_ESTIMATE)+" $"),
-                      p("Initial Effort Estimate: "+project.get(PROJECTS.INITIAL_EFFORT_ESTIMATE_HOURS)+" hours")
+                      div(
+                        h5("Description"),
+                        p(project.get(PROJECTS.PROJECT_DESCRIPTION))
+                      ).withClasses("card","mt-3","mb-3","p-3"),
+                      div(
+                        p("Project Start Date: "+project.get(PROJECTS.PROJECT_START).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
+                        p("Project End Date Estimate: "+project.get(PROJECTS.PROJECT_END_ESTIMATE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
+                        p("Project End Date: "+project.get(PROJECTS.PROJECT_END).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
+                        p("Estimated Earnings: "+project.get(PROJECTS.PROJECT_EARNINGS_ESTIMATE)+" $"),
+                        p("Initial Effort Estimate: "+project.get(PROJECTS.INITIAL_EFFORT_ESTIMATE_HOURS)+" hours")
+                      ).withClasses("card","mt-3","mb-3","p-3")
               ),
               a(
                 button(
@@ -75,16 +78,22 @@ public class ProjectViewController extends VaquitaController {
               ).withHref("/projects/edit?id="+project_id),
               hr(),
               form(
+                strong("Add Task"),
                 div(
                   div(
-                    label("Task"),
-                    input().withType("text").withClasses("form-control").withName("task_name")
-                  ).withClasses("form-group col-md-9"),
+                    div(
+                      //label("Task"),
+                      input().withType("text").withClasses("form-control").withName("task_name").withPlaceholder("Task")
+                    ).withClasses("input-group")
+                  ).withClasses("col-md-9"),
                   div(
-                    label("Time Estimate (hours)"),
-                    input().withType("number").withClasses("form-control").withName("effort_estimate")
-                  ).withClasses("form-group col-md-3")
-                ).withClasses("form-row"),
+                    div(
+                      //label("Time Estimate (hours)"),
+                      input().withType("number").withClasses("form-control").withName("effort_estimate").withPlaceholder("0"),
+                      div(span(" hours ").withClasses("input-group-text")).withClasses("input-group-append")
+                    ).withClasses("input-group")
+                  ).withClasses("col-md-3")
+                ).withClasses("form-row","mt-3","mb-3"),
                 button("ADD TASK").withClasses("btn","btn-primary","btn-block").withType("submit")
               ).withAction("/tasks/add?project_id="+project_id+"&redirect="+"/projects/view?id="+project_id).withMethod("POST"),
               div().withClasses("mt-4","mb-4"),
