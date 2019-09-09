@@ -20,6 +20,7 @@ import java.util.Map;
 
 import static j2html.TagCreator.*;
 import static java.lang.Integer.parseInt;
+import static org.vanautrui.octofinsights.controllers.other.sales.SalesJ2HTMLUtils.makeCustomerSelect;
 import static org.vanautrui.octofinsights.generated.tables.Sales.SALES;
 
 public class SalesEditController extends org.vanautrui.vaquitamvc.controller.VaquitaController {
@@ -45,7 +46,7 @@ public class SalesEditController extends org.vanautrui.vaquitamvc.controller.Vaq
                                                     form(
                                                             input().withName("id").isHidden().withValue(sale.get(SALES.ID).toString()),
                                                             label("Customer:"),
-                                                            SalesController.makeCustomerSelect(user_id),
+                                                            makeCustomerSelect(user_id),
 
                                                             div(
                                                                 input()

@@ -1,5 +1,6 @@
 package org.vanautrui.octofinsights.controllers.other.projects;
 
+import org.vanautrui.octofinsights.controllers.other.sales.SalesJ2HTMLUtils;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.services.ProjectsService;
@@ -31,6 +32,7 @@ public class ProjectAddController extends VaquitaController {
 
     int user_id = parseInt(request.session().get().get("user_id"));
 
+    //TODO: create integrity constrains on the mysql database
 
     String page =
       html(
@@ -38,10 +40,12 @@ public class ProjectAddController extends VaquitaController {
         body(
           NavigationUtil.createNavbar(request.session().get().get("username"), "Projects"),
           div(
-            h3("Create a new Project").withClasses("text-center"),
+            h3("Create a new Project").withClasses("text-center","m-3"),
             hr(),
             div(
               form(
+                p("Project Customer:"),
+                SalesJ2HTMLUtils.makeCustomerSelect(user_id),
                 div(
                   label("Project Name"),
                   input().withType("text").withClasses("form-control").withName("project-name").withPlaceholder("my new project")

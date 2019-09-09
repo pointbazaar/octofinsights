@@ -168,4 +168,16 @@ public class ProjectsService {
         conn.close();
         return count.component1().longValue();
     }
+
+    public static void updateProjectCustomer(int user_id, int id, int customer_id) throws Exception{
+        Connection conn= DBUtils.makeDBConnection();
+        DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+        ctx.update(PROJECTS)
+                .set(PROJECTS.CUSTOMER_ID, customer_id)
+                .where(PROJECTS.ID.eq(id).and(PROJECTS.USER_ID.eq(user_id)))
+                .execute();
+
+        conn.close();
+    }
 }

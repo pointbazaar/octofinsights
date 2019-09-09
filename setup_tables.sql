@@ -103,7 +103,8 @@ CREATE TABLE IF NOT EXISTS `projects` (
     `initial_effort_estimate_hours` int(11) DEFAULT NULL,
     `project_earnings_estimate` int(11) DEFAULT NULL,
     `project_description` varchar(10000) DEFAULT NULL,
-    `isactive` boolean DEFAULT TRUE
+    `isactive` boolean DEFAULT TRUE,
+    `customer_id` int(11) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `tasks` (

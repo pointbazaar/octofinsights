@@ -8,6 +8,7 @@ import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
+import org.vanautrui.octofinsights.services.CustomersService;
 import org.vanautrui.octofinsights.services.TasksService;
 import org.vanautrui.vaquitamvc.VaquitaApp;
 import org.vanautrui.vaquitamvc.controller.VaquitaController;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 
 import static j2html.TagCreator.*;
 import static java.lang.Integer.parseInt;
+import static org.vanautrui.octofinsights.generated.tables.Customers.CUSTOMERS;
 import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
 import static org.vanautrui.octofinsights.generated.tables.Tasks.TASKS;
 
@@ -50,6 +52,8 @@ public class ProjectViewController extends VaquitaController {
       List<Record> tasks = TasksService.getTasksByUserIdAndProjectId(user_id,project_id).stream().filter(task->task.get(TASKS.ISCOMPLETED)==not_complete).collect(Collectors.toList());
       List<Record> tasks_complete = TasksService.getTasksByUserIdAndProjectId(user_id,project_id).stream().filter(task->task.get(TASKS.ISCOMPLETED)==complete).collect(Collectors.toList());
 
+      Record project_customer = CustomersService.getCustomerById(user_id,project.get(PROJECTS.CUSTOMER_ID));
+
       String page =
         html(
           HeadUtil.makeHead(),
@@ -64,6 +68,10 @@ public class ProjectViewController extends VaquitaController {
                         p(project.get(PROJECTS.PROJECT_DESCRIPTION))
                       ).withClasses("card","mt-3","mb-3","p-3"),
                       div(
+                        strong(
+                          span("Customer: "),
+                          a(project_customer.get(CUSTOMERS.CUSTOMER_NAME)).withHref("/customers/view?id="+project_customer.get(CUSTOMERS.ID))
+                        ),
                         p("Project Start Date: "+project.get(PROJECTS.PROJECT_START).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
                         p("Project End Date Estimate: "+project.get(PROJECTS.PROJECT_END_ESTIMATE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
                         p("Project End Date: "+project.get(PROJECTS.PROJECT_END).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),

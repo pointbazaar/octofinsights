@@ -23,8 +23,8 @@ import java.util.List;
 
 import static j2html.TagCreator.*;
 import static java.lang.Integer.parseInt;
+import static org.vanautrui.octofinsights.controllers.other.sales.SalesJ2HTMLUtils.makeSalesInsertWidget;
 import static org.vanautrui.octofinsights.controllers.other.sales.SalesJ2HTMLUtils.makeSalesTable;
-import static org.vanautrui.octofinsights.generated.tables.Customers.CUSTOMERS;
 
 public class SalesController extends VaquitaController {
 
@@ -70,68 +70,9 @@ public class SalesController extends VaquitaController {
         }
     }
 
-    public static ContainerTag makeSalesInsertWidget(int user_id){
-      return
-      div(
-          div("Add a Sale").withClasses("card-header"),
-          div(
-            form(
-                    div(
-                        div(
-                                //input().withName("customer_name").withPlaceholder("customer_name").withType("text"),
-                                div(
-                                  span("Customer:").withClasses("input-group-text")
-                                ).withClasses("input-group-prepend"),
-                                makeCustomerSelect(user_id)
-                        ).withClasses("input-group","col"),
-                        div(
-                                input().withName("price_of_sale")
-                                        .withPlaceholder("price_of_sale")
-                                        .withType("number")
-                                        .attr("min","0")
-                                        .withClasses("form-control"),
-                                div(
-                                        span("$").withClasses("input-group-text")
-                                ).withClasses("input-group-append")
-                        ).withClasses("input-group","col")
-                    ).withClasses("row","mb-3"),
-
-                    div(
-                        div(
-                                div(
-                                        span("Product or Service").withClasses("input-group-text")
-                                ).withClasses("input-group-prepend"),
-                                input().withName("product_or_service").withPlaceholder("product_or_service").withType("text").withClasses("form-control")
-                        ).withClasses("input-group","col"),
-                        div(
-                                input().withName("time_of_sale").withPlaceholder("time of sale").withType("date").withClasses("form-control")
-                        ).withClasses("input-group","col")
-                    ).withClasses("row","mb-3"),
-
-                    button("Insert")
-                            .withType("submit")
-                            .withClasses("btn","btn-outline-success","btn-block")
 
 
-            ).withAction("/sales?action=insert").withMethod("post")
-          ).withClasses("card-body")
-      ).withClasses("m-3","card","mb-4");
-    }
 
-    public static ContainerTag makeCustomerSelect(int user_id){
-
-      return
-      select(
-              each(
-                      CustomersService.getCustomers(user_id),
-                      customer->
-                              option(
-                                      customer.get(CUSTOMERS.CUSTOMER_NAME)
-                              ).withValue(customer.get(CUSTOMERS.ID)+"")
-              )
-      ).withClasses("custom-select").withName("customer_id")
-      ;
-    }
 
     @Override
     public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest entityReq,VaquitaApp app) throws Exception {

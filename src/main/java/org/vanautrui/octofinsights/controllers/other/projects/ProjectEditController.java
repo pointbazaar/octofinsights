@@ -1,6 +1,7 @@
 package org.vanautrui.octofinsights.controllers.other.projects;
 
 import org.jooq.Record;
+import org.vanautrui.octofinsights.controllers.other.sales.SalesJ2HTMLUtils;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.services.ProjectsService;
@@ -46,6 +47,9 @@ public class ProjectEditController extends VaquitaController {
             hr(),
             div(
               form(
+                p("Project Customer:"),
+                SalesJ2HTMLUtils.makeCustomerSelect(user_id),
+
                 div(
                   label("Project Name"),
                   input().withType("text").withClasses("form-control")
@@ -92,6 +96,11 @@ public class ProjectEditController extends VaquitaController {
       int id = parseInt(req.getQueryParameter("id"));
       int user_id = parseInt(req.session().get().get("user_id"));
 
+      Optional<Integer> customer_id_opt=Optional.empty();
+      if(params.containsKey("customer_id")) {
+        customer_id_opt = Optional.of(parseInt(params.get("customer_id")));
+      }
+
       Optional<String> project_name=Optional.empty();
       if(params.containsKey("project-name")) {
          project_name = Optional.of(params.get("project-name"));
@@ -103,6 +112,9 @@ public class ProjectEditController extends VaquitaController {
         project_description = Optional.of(params.get("project-description"));
       }
 
+      if(customer_id_opt.isPresent()) {
+        ProjectsService.updateProjectCustomer(user_id, id, customer_id_opt.get());
+      }
       ProjectsService.updateProject(user_id,id,project_name,project_description);
 
       return new VaquitaRedirectToGETResponse("/projects",req);
