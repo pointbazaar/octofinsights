@@ -39,45 +39,46 @@ public class CustomersController extends VaquitaController {
                     html(
                             HeadUtil.makeHead(),
                             body(
-                                    NavigationUtil.createNavbar(request.session().get().get("username"),"Customers"),
-                                    div(
-                                        div(
-                                            h3("Customers"),
-                                            form(
-                                                div(
-                                                    input().withType("text").withName("customer-name").withPlaceholder("name").withClasses("form-control")
-                                                ).withClasses("form-group"),
-                                                div(
-                                                    input().withType("text").withName("customer-source").withPlaceholder("source").withClasses("form-control")
-                                                ).withClasses("form-group"),
-                                                button("Insert Customer")
-                                                        .withType("submit")
-                                                        .withClasses("btn","btn-outline-success")
-                                            ).withAction("/customers?action=insert").withMethod("post"),
-                                            table(
-                                                    attrs(".table"),
-                                                    thead(
-                                                            //th("ID").attr("scope","col"),
-                                                            th("Customer Name").attr("scope","col"),
-                                                            //th("has active Project?").attr("scope","col"),
-                                                            th("Source").attr("scope","col"),
-                                                            th("Acquisition Date").attr("scope","col")
-                                                    ).withClasses("thead-light"),
-                                                    tbody(
-                                                            each(
-                                                                    list,
-                                                                    record ->
-                                                                            tr(
-                                                                                    td(record.get(CUSTOMERS.CUSTOMER_NAME)),
-                                                                                    td(record.get(CUSTOMERS.SOURCE)),
-                                                                                    td(record.get(CUSTOMERS.ACQUISITION_DATE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE))
-                                                                            )
-                                                            )
-                                                    )
-                                            )
-                                        ).withId("main-content")
-                                    ).withClasses("container")
-
+                              NavigationUtil.createNavbar(request.session().get().get("username"),"Customers"),
+                              div(
+                                  div(
+                                      h3("Customers"),
+                                      form(
+                                          div(
+                                              input().withType("text").withName("customer-name").withPlaceholder("name").withClasses("form-control")
+                                          ).withClasses("form-group"),
+                                          div(
+                                              input().withType("text").withName("customer-source").withPlaceholder("source").withClasses("form-control")
+                                          ).withClasses("form-group"),
+                                          button("Insert Customer")
+                                                  .withType("submit")
+                                                  .withClasses("btn","btn-outline-success")
+                                      ).withAction("/customers?action=insert").withMethod("post"),
+                                      table(
+                                        attrs(".table"),
+                                        thead(
+                                                //th("ID").attr("scope","col"),
+                                                th("Customer Name").attr("scope","col"),
+                                                //th("has active Project?").attr("scope","col"),
+                                                th("Source").attr("scope","col"),
+                                                th("Acquisition Date").attr("scope","col")
+                                        ).withClasses("thead-light"),
+                                        tbody(
+                                          each(
+                                            list,
+                                            record ->
+                                              tr(
+                                                td(
+                                                  a(record.get(CUSTOMERS.CUSTOMER_NAME)).withHref("/customers/view?id="+record.get(CUSTOMERS.ID))
+                                                ),
+                                                td(record.get(CUSTOMERS.SOURCE)),
+                                                td(record.get(CUSTOMERS.ACQUISITION_DATE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE))
+                                              )
+                                          )
+                                        )
+                                      )
+                                  ).withId("main-content")
+                              ).withClasses("container")
                             )
                     ).render();
 

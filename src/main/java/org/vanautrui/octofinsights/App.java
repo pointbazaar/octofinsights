@@ -6,6 +6,7 @@ import org.vanautrui.octofinsights.controllers.InvoicesController;
 import org.vanautrui.octofinsights.controllers.ProfileController;
 import org.vanautrui.octofinsights.controllers.api.*;
 import org.vanautrui.octofinsights.controllers.auth.*;
+import org.vanautrui.octofinsights.controllers.other.customers.CustomerViewController;
 import org.vanautrui.octofinsights.controllers.other.customers.CustomersController;
 import org.vanautrui.octofinsights.controllers.other.expenses.ExpensesController;
 import org.vanautrui.octofinsights.controllers.other.expenses.ExpensesEditController;
@@ -75,6 +76,7 @@ public class App
         routes.put("/projects/view",new ProjectViewController());
 
         routes.put("/customers",new CustomersController());
+        routes.put("/customers/view",new CustomerViewController());
 
         routes.put("/tasks/add",new TaskAddController());
         routes.put("/tasks/action",new TaskActionController());

@@ -18,6 +18,8 @@ import static org.vanautrui.octofinsights.generated.tables.Customers.CUSTOMERS;
 
 public class CustomersService {
 
+    //https://www.youtube.com/watch?v=dlgT8kcAuvk&list=RDEMYGj5tu94_mNz6SrYkDD3_g&index=27
+
     private static Map<Integer,String> customerNameCache=new HashMap<>();
 
     private static synchronized String getCustomerNameForIdCached(int user_id, int customer_id){
@@ -94,4 +96,16 @@ public class CustomersService {
         conn.close();
     }
 
+    public static Record getCustomerById(int user_id,int customer_id) throws Exception{
+        Connection conn= DBUtils.makeDBConnection();
+        DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+        Record customer = ctx.select(CUSTOMERS.asterisk())
+                .from(CUSTOMERS)
+                .where(CUSTOMERS.ID.eq(customer_id).and(CUSTOMERS.USER_ID.eq(user_id)))
+                .fetchOne();
+
+        conn.close();
+        return customer;
+    }
 }
