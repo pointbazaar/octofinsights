@@ -47,7 +47,7 @@ public class SalesController extends VaquitaController {
                             th("Product or Service").attr("scope","col"),
                             th("Date of Sale").attr("scope","col"),
                             th("Actions").attr("scope","col")
-                    ),
+                    ).withClasses("thead-light"),
                     tbody(
                             each(
                                     records,

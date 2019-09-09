@@ -67,7 +67,7 @@ public class ExpensesController extends VaquitaController {
                                                                     th("Expense Date").attr("scope","col"),
                                                                     th("Expense Value").attr("scope","col"),
                                                                     th("Actions").attr("scope","col")
-                                                            ),
+                                                            ).withClasses("thead-light"),
                                                             tbody(
                                                                     each(
                                                                             records,

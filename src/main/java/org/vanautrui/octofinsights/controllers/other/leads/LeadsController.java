@@ -99,7 +99,7 @@ public class LeadsController extends VaquitaController {
                                                                     th("Lead Status").attr("scope","col"),
                                                                     th("What the Lead wants").attr("scope","col"),
                                                                     th("Actions").attr("scope","col")
-                                                            ),
+                                                            ).withClasses("thead-light"),
                                                             tbody(
                                                                     each(
                                                                             filtered_records,
@@ -154,15 +154,10 @@ public class LeadsController extends VaquitaController {
                                                     )
                                             )
                                     )
-                                    /*,
-                                    script().withSrc("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"),
-                                    script().withSrc("/cashflow_chart.js")
-                                     */
 
                             )
                     ).render();
 
-            //conn.close();
             return new VaquitaHTMLResponse(200,page);
 
         }else {

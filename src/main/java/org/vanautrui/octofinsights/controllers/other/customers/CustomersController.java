@@ -62,7 +62,7 @@ public class CustomersController extends VaquitaController {
                                                             //th("has active Project?").attr("scope","col"),
                                                             th("Source").attr("scope","col"),
                                                             th("Acquisition Date").attr("scope","col")
-                                                    ),
+                                                    ).withClasses("thead-light"),
                                                     tbody(
                                                             each(
                                                                     list,
