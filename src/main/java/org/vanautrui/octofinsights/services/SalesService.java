@@ -101,4 +101,15 @@ public class SalesService {
 
         conn.close();
     }
+
+    public static Result<Record> getSalesToCustomerByCustomerId(int user_id,int customer_id)throws Exception{
+
+        Connection conn= DBUtils.makeDBConnection();
+        DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+
+        Result<Record> records = create.select(SALES.asterisk()).from(SALES).where(SALES.USER_ID.eq(user_id).and(SALES.CUSTOMER_ID.eq(customer_id))).fetch();
+        conn.close();
+
+        return records;
+    }
 }
