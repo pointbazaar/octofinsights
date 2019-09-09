@@ -2,7 +2,6 @@ package org.vanautrui.octofinsights.controllers.other.customers;
 
 import org.jooq.Record;
 import org.jooq.Result;
-import org.vanautrui.octofinsights.controllers.other.sales.SalesController;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.services.CustomersService;
@@ -17,6 +16,7 @@ import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
 
 import static j2html.TagCreator.*;
 import static java.lang.Integer.parseInt;
+import static org.vanautrui.octofinsights.controllers.other.sales.SalesJ2HTMLUtils.makeSalesTable;
 import static org.vanautrui.octofinsights.generated.tables.Customers.CUSTOMERS;
 
 public class CustomerViewController extends VaquitaController {
@@ -50,7 +50,7 @@ public class CustomerViewController extends VaquitaController {
                           p("Acquisition Date: "+customer.get(CUSTOMERS.ACQUISITION_DATE)),
                           p("TODO: display info about the customer, the sales related to him, and the projects with him"),
                           h5("Sales to "+customer_name+":"),
-                          SalesController.makeSalesTable(user_id,sales_to_this_customer)
+                          makeSalesTable(user_id,sales_to_this_customer)
                       ).withId("main-content")
                   ).withClasses("container")
                 )
