@@ -1,6 +1,9 @@
 package org.vanautrui.octofinsights.services;
 
-import org.jooq.*;
+import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Result;
+import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
 
@@ -8,28 +11,13 @@ import java.sql.Connection;
 import java.sql.Timestamp;
 import java.time.YearMonth;
 
-import static org.vanautrui.octofinsights.generated.tables.Customers.CUSTOMERS;
 import static org.vanautrui.octofinsights.generated.tables.Sales.SALES;
 
 public class SalesService {
 
     //https://www.youtube.com/watch?v=WOBGQvzBDqI&list=RDEMYGj5tu94_mNz6SrYkDD3_g&index=23
 
-    public static String getCustomerNameForId(int user_id,int customer_id){
 
-        try {
-            Connection conn = DBUtils.makeDBConnection();
-            DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-
-            Record1<String> name = create.select(CUSTOMERS.CUSTOMER_NAME).from(CUSTOMERS).where(CUSTOMERS.USER_ID.eq(user_id).and(CUSTOMERS.ID.eq(customer_id))).fetchOne();
-
-            conn.close();
-            return name.component1();
-        }catch (Exception e){
-            e.printStackTrace();
-            return "customer not known. fatal error";
-        }
-    }
 
     public static Record getById(int user_id, int sale_id) throws Exception{
 
