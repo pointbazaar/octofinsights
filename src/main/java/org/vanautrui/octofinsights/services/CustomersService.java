@@ -7,6 +7,7 @@ import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,21 +15,26 @@ import static org.vanautrui.octofinsights.generated.tables.Customers.CUSTOMERS;
 
 public class CustomersService {
 
-    public static List<Record> getCustomers(int user_id) throws Exception{
-        Connection conn= DBUtils.makeDBConnection();
-        DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+    public static List<Record> getCustomers(int user_id){
+        try {
+            Connection conn = DBUtils.makeDBConnection();
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
 
-        List<Record> list = ctx
-                .select(CUSTOMERS.asterisk())
-                .from(CUSTOMERS)
-                .where(CUSTOMERS.USER_ID.eq(user_id))
-                .fetch()
-                .stream()
-                .collect(Collectors.toList());
+            List<Record> list = ctx
+                    .select(CUSTOMERS.asterisk())
+                    .from(CUSTOMERS)
+                    .where(CUSTOMERS.USER_ID.eq(user_id))
+                    .fetch()
+                    .stream()
+                    .collect(Collectors.toList());
 
-        conn.close();
-
-        return list;
+            conn.close();
+            return list;
+        }catch (Exception e){
+            e.printStackTrace();
+            //fatal error
+            return new ArrayList<>();
+        }
     }
 
     public static void insertCustomer(int user_id, String customer_name, String customer_source)throws Exception{

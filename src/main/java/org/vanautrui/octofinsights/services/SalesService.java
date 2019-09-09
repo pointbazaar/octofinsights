@@ -1,22 +1,35 @@
 package org.vanautrui.octofinsights.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.Result;
-import org.jooq.SQLDialect;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
 
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.time.YearMonth;
-import java.util.Date;
 
+import static org.vanautrui.octofinsights.generated.tables.Customers.CUSTOMERS;
 import static org.vanautrui.octofinsights.generated.tables.Sales.SALES;
 
 public class SalesService {
+
+    //https://www.youtube.com/watch?v=WOBGQvzBDqI&list=RDEMYGj5tu94_mNz6SrYkDD3_g&index=23
+
+    public static String getCustomerNameForId(int user_id,int customer_id){
+
+        try {
+            Connection conn = DBUtils.makeDBConnection();
+            DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+
+            Record1<String> name = create.select(CUSTOMERS.CUSTOMER_NAME).from(CUSTOMERS).where(CUSTOMERS.USER_ID.eq(user_id).and(CUSTOMERS.ID.eq(customer_id))).fetchOne();
+
+            conn.close();
+            return name.component1();
+        }catch (Exception e){
+            e.printStackTrace();
+            return "customer not known. fatal error";
+        }
+    }
 
     public static Record getById(int user_id, int sale_id) throws Exception{
 
@@ -33,7 +46,12 @@ public class SalesService {
         Connection conn= DBUtils.makeDBConnection();
         DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 
-        Result<Record> records = create.select(SALES.asterisk()).from(SALES).where(SALES.USER_ID.eq(user_id)).fetch().sortDesc(SALES.TIME_OF_SALE);
+        Result<Record> records = create
+                .select(SALES.asterisk())
+                .from(SALES)
+                .where(SALES.USER_ID.eq(user_id))
+                .fetch()
+                .sortDesc(SALES.TIME_OF_SALE);
         conn.close();
 
         return records;
@@ -62,17 +80,37 @@ public class SalesService {
         return getSalesThisMonth(user_id).stream().map(sale->sale.get(SALES.PRICE_OF_SALE).longValue()).reduce(Long::sum).orElse(0L);
     }
 
-    public static void updateById(int user_id, int sale_id, String customer_name, int price_of_sale, Timestamp time_of_sale, String product_or_service) throws Exception{
+    public static void updateById(int user_id, int sale_id, int customer_id, int price_of_sale, Timestamp time_of_sale, String product_or_service) throws Exception{
         Connection conn= DBUtils.makeDBConnection();
         DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 
         create
                 .update(SALES)
-                .set(SALES.CUSTOMER_NAME,customer_name)
+                .set(SALES.CUSTOMER_ID,customer_id)
                 .set(SALES.PRICE_OF_SALE,price_of_sale)
                 .set(SALES.TIME_OF_SALE,time_of_sale)
                 .set(SALES.PRODUCT_OR_SERVICE,product_or_service)
                 .where(SALES.USER_ID.eq(user_id).and(SALES.ID.eq(sale_id))).execute();
+        conn.close();
+    }
+
+    public static void deleteById(int id, int user_id) throws Exception{
+        Connection conn= DBUtils.makeDBConnection();
+
+        DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+        create.deleteFrom(SALES).where( (SALES.ID).eq(id).and((SALES.USER_ID).eq(user_id)) ).execute();
+
+        conn.close();
+    }
+
+    public static void insert(int user_id,int customer_id,String product_or_service,int price,Timestamp date_of_sale) throws Exception{
+        Connection conn= DBUtils.makeDBConnection();
+        DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+        ctx
+                .insertInto(SALES)
+                .columns(SALES.CUSTOMER_ID,SALES.PRODUCT_OR_SERVICE,SALES.PRICE_OF_SALE, SALES.USER_ID,SALES.TIME_OF_SALE)
+                .values(customer_id,product_or_service,price,user_id,date_of_sale).execute();
+
         conn.close();
     }
 }

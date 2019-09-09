@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `leads` (
 
 CREATE TABLE IF NOT EXISTS `sales` (
   `id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `customer_name` varchar(128) DEFAULT NULL,
+  `customer_id` int(11) DEFAULT NULL,
   `time_of_sale` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `price_of_sale` int(11) DEFAULT NULL,
   `product_or_service` varchar(128) DEFAULT NULL,

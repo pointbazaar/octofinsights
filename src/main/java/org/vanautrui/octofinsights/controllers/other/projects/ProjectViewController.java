@@ -57,7 +57,7 @@ public class ProjectViewController extends VaquitaController {
             NavigationUtil.createNavbar(request.session().get().get("username"),"Projects"),
             div(
               h3("Project: "+project.get(PROJECTS.PROJECT_NAME)),
-              hr(),
+
               div(
                       div(
                         h5("Description"),

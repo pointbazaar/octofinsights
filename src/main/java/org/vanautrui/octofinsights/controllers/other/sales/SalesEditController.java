@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import static j2html.TagCreator.*;
+import static java.lang.Integer.parseInt;
 import static org.vanautrui.octofinsights.generated.tables.Sales.SALES;
 
 public class SalesEditController extends org.vanautrui.vaquitamvc.controller.VaquitaController {
@@ -27,9 +28,9 @@ public class SalesEditController extends org.vanautrui.vaquitamvc.controller.Vaq
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ){
-            int user_id = Integer.parseInt(request.session().get().get("user_id"));
+            int user_id = parseInt(request.session().get().get("user_id"));
 
-            int sale_id = Integer.parseInt(request.getQueryParameter("id"));
+            int sale_id = parseInt(request.getQueryParameter("id"));
 
             Record sale = SalesService.getById(user_id,sale_id);
 
@@ -43,24 +44,30 @@ public class SalesEditController extends org.vanautrui.vaquitamvc.controller.Vaq
                                                     h1("Edit a Sale"),
                                                     form(
                                                             input().withName("id").isHidden().withValue(sale.get(SALES.ID).toString()),
-                                                            input()
-                                                                    .withName("customer_name")
-                                                                    .withPlaceholder("customer_name")
-                                                                    .withType("text")
-                                                                    .withValue(sale.get(SALES.CUSTOMER_NAME)),
+                                                            label("Customer:"),
+                                                            SalesController.makeCustomerSelect(user_id),
 
-                                                            input()
+                                                            div(
+                                                                input()
                                                                     .withName("price_of_sale")
                                                                     .withPlaceholder("price_of_sale")
                                                                     .withType("number")
                                                                     .withValue(sale.get(SALES.PRICE_OF_SALE) +"")
-                                                                    .attr("min","0"),
+                                                                    .attr("min","0")
+                                                                    .withClasses("form-control"),
+                                                                div(
+                                                                    span("$").withClasses("input-group-text")
+                                                                ).withClasses("input-group-append")
+                                                            ).withClasses("input-group"),
 
-                                                            input()
+                                                            div(
+                                                                input()
                                                                     .withName("product_or_service")
                                                                     .withPlaceholder("product_or_service")
                                                                     .withType("text")
-                                                                    .withValue(sale.get(SALES.PRODUCT_OR_SERVICE)),
+                                                                    .withValue(sale.get(SALES.PRODUCT_OR_SERVICE))
+                                                                    .withClasses("form-control")
+                                                            ).withClasses("input-group"),
 
                                                             input()
                                                                     .withName("time_of_sale")
@@ -92,20 +99,20 @@ public class SalesEditController extends org.vanautrui.vaquitamvc.controller.Vaq
                 && request.session().get().containsKey("user_id")
         ) {
 
-            int user_id = Integer.parseInt(request.session().get().get("user_id"));
+            int user_id = parseInt(request.session().get().get("user_id"));
 
             Map<String,String> params = vaquitaHTTPEntityEnclosingRequest.getPostParameters();
 
-            int sale_id = Integer.parseInt(params.get("id"));
+            int sale_id = parseInt(params.get("id"));
 
-            String customer_name = URLDecoder.decode(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("customer_name"));
+            int customer_id = parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("customer_id"));
             String product_or_service= URLDecoder.decode(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("product_or_service"));
-            int price= Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("price_of_sale"));
+            int price= parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("price_of_sale"));
             String time_of_sale = vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("time_of_sale");
 
             Timestamp expense_date_timestamp = new Timestamp((new SimpleDateFormat("yyyy-MM-dd").parse(time_of_sale)).getTime());
 
-            SalesService.updateById(user_id,sale_id,customer_name,price,expense_date_timestamp,product_or_service);
+            SalesService.updateById(user_id,sale_id,customer_id,price,expense_date_timestamp,product_or_service);
 
             return new VaquitaRedirectToGETResponse("/sales",request);
         }else{
