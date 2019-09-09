@@ -58,17 +58,21 @@ public class SalesController extends VaquitaController {
                                                     td(record.get(SALES.PRODUCT_OR_SERVICE)),
                                                     td(record.get(SALES.TIME_OF_SALE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
                                                     td(
-                                                            div(attrs(".row"),
+                                                            div(
                                                                     form(
                                                                             input().withName("id").isHidden().withValue(record.get(SALES.ID).toString()),
                                                                             RecordEditIconUtils.deleteButton()
-                                                                    ).withAction("/sales?action=delete").withMethod("post"),
+                                                                    ).withAction("/sales?action=delete")
+                                                                      .withMethod("post")
+                                                                      .withClasses("col-sm-6"),
 
                                                                     form(
                                                                             input().withName("id").isHidden().withValue(record.get(SALES.ID).toString()),
                                                                             RecordEditIconUtils.updateButton()
-                                                                    ).withAction("/sales/edit").withMethod("get")
-                                                            )
+                                                                    ).withAction("/sales/edit")
+                                                                      .withMethod("get")
+                                                                      .withClasses("col-sm-6")
+                                                            ).withClasses("d-flex d-nowrap")
                                                     )
                                             )
                             )

@@ -15,9 +15,8 @@ public class RecordEditIconUtils {
 
     public static ContainerTag deleteButton(){
         return button(
-                attrs(".btn .btn-outline-danger"),
                 RecordEditIconUtils.deleteIcon()
-        ).withType("submit");
+        ).withType("submit").withClasses("btn","btn-outline-danger","btn-sm");
     }
 
     public static EmptyTag updateIcon(){
@@ -28,8 +27,7 @@ public class RecordEditIconUtils {
 
     public static ContainerTag updateButton(){
         return button(
-                attrs(".btn .btn-outline-info"),
                 RecordEditIconUtils.updateIcon()
-        ).withType("submit");
+        ).withType("submit").withClasses("btn","btn-outline-info","btn-sm");
     }
 }
