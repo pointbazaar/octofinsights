@@ -41,7 +41,10 @@ public class DashboardApp {
         main4();
         main5();
         main_active_projects();
+        main_active_tasks();
     }
+
+
 
     public static void main2(){
         JQuery balancediv = $("#balancediv");
@@ -193,6 +196,42 @@ public class DashboardApp {
                 }
 
                 if(active_project_count.value==0){
+                    mydiv.remove();
+                }
+
+                fullOpacity(mydiv);
+                return null;
+            }
+        };
+
+        Http.send();
+    }
+
+    private static void main_active_tasks() {
+
+        JQuery mydiv = $("#activetasksdiv");
+        lowOpacity(mydiv);
+        XMLHttpRequest Http = new XMLHttpRequest();
+
+        Http.open("GET","/api/activetasks",true);
+
+
+        Http.onloadend=new Function<ProgressEvent, Object>() {
+            @Override
+            public Object apply(ProgressEvent progressEvent) {
+                IntObject active_task_count = (IntObject) JSON.parse(Http.responseText);
+
+                $("#activetasks").get()[0].textContent=(active_task_count.value)+"";
+
+                if(active_task_count.value>20){
+                    //too many projects
+                    mydiv.get()[0].classList.add("text-danger");
+                }else if(active_task_count.value>10){
+                    //still too many projects at once
+                    mydiv.get()[0].classList.add("text-warning");
+                }
+
+                if(active_task_count.value==0){
                     mydiv.remove();
                 }
 
