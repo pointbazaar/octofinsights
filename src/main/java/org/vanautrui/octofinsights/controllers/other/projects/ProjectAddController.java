@@ -117,7 +117,9 @@ public class ProjectAddController extends VaquitaController {
       int earnings_estimate = parseInt(params.get("project-earnings-estimate"));
       String project_description = params.get("project-description");
 
-      ProjectsService.insertProject(user_id,project_name,project_start_date,project_end_date_estimate,effort_estimate_hours,earnings_estimate,project_description);
+      int customer_id = parseInt(params.get("customer_id"));
+
+      ProjectsService.insertProject(user_id,project_name,project_start_date,project_end_date_estimate,effort_estimate_hours,earnings_estimate,project_description,customer_id);
 
       return new VaquitaRedirectToGETResponse("/projects",req);
 

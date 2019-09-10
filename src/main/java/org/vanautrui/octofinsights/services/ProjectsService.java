@@ -79,7 +79,8 @@ public class ProjectsService {
             /*Timestamp project_end,*/
             int initial_effort_estimate_hours,
             int project_earnings_estimate,
-            String project_description
+            String project_description,
+            int customer_id
     )throws Exception{
         byte isActive=1;
         Connection conn = DBUtils.makeDBConnection();
@@ -94,7 +95,8 @@ public class ProjectsService {
                         PROJECTS.PROJECT_END_ESTIMATE,
                         PROJECTS.INITIAL_EFFORT_ESTIMATE_HOURS,
                         PROJECTS.PROJECT_EARNINGS_ESTIMATE,
-                        PROJECTS.ISACTIVE
+                        PROJECTS.ISACTIVE,
+                        PROJECTS.CUSTOMER_ID
                 )
                 .values(
                         user_id,
@@ -104,7 +106,8 @@ public class ProjectsService {
                         project_end_estimate,
                         initial_effort_estimate_hours,
                         project_earnings_estimate,
-                        isActive
+                        isActive,
+                        customer_id
                 )
                 .execute();
         conn.close();
