@@ -42,23 +42,7 @@ public class ExpensesController extends VaquitaController {
                                     NavigationUtil.createNavbar(request.session().get().get("username"),"Expenses"),
                                     div(attrs(".container"),
                                             div(attrs("#main-content"),
-                                                    form(
-                                                            div(
-                                                                label("Expense Name"),
-                                                                input().withName("expense_name").withType("text").withClasses("form-control")
-                                                            ),
-                                                            div(
-                                                                label("Expense Date"),
-                                                                input().withName("expense_date").withType("date").withClasses("form-control")
-                                                            ),
-                                                            div(
-                                                                label("Expense Value (enter a positive integer)"),
-                                                                input().withName("expense_value").withType("number").withClasses("form-control").attr("min","1")
-                                                            ),
-                                                            div(
-                                                                button(attrs(".btn .btn-outline-info"),"Insert").withType("submit")
-                                                            ).withClasses("form-group")
-                                                    ).withAction("/expenses?action=insert").withMethod("post").withClasses("form-inline"),
+                                                    ExpensesJ2HTMLUtils.makeExpenseInsertWidget(user_id),
                                                     table(
                                                             attrs(".table"),
                                                             thead(
