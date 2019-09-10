@@ -60,14 +60,14 @@ public class DashboardController extends VaquitaController {
                             //business situation
 
                             div(
-                                    makeDashboardCard("Balance","~","","","balance","balancediv"),
-                                    makeDashboardCard("Open Leads",""+ lead_count,"",classes_leads,"","leadsdiv"),
-                                    makeDashboardCard("Sales this Month","~","","","salesthismonth","salesdiv"),
+                                    makeDashboardSimpleCard("Balance","~", "","balance","balancediv"),
+                                    makeDashboardSimpleCard("Open Leads",""+ lead_count, classes_leads,"","leadsdiv"),
+                                    makeDashboardSimpleCard("Sales this Month","~", "","salesthismonth","salesdiv"),
 
-                                    makeDashboardCard("Loss this Month","~","","","expensesthismonth","expensesdiv"),
-                                    makeDashboardCard("Profit this Month","~","","","profit","profitdiv"),
-                                    makeDashboardCard("Active Projects","~","","","activeprojects","activeprojectsdiv"),
-                                    makeDashboardCard("Active Tasks","~","","","activetasks","activetasksdiv")
+                                    makeDashboardSimpleCard("Loss this Month","~", "","expensesthismonth","expensesdiv"),
+                                    makeDashboardSimpleCard("Profit this Month","~", "","profit","profitdiv"),
+                                    makeDashboardSimpleCard("Active Projects","~", "","activeprojects","activeprojectsdiv"),
+                                    makeDashboardSimpleCard("Active Tasks","~", "","activetasks","activetasksdiv")
                                     //makeDashboardCard("TODO: Business Health","Good","",""),
                                     //makeDashboardCard("TODO: lifeline","4 Weeks","","")
                             ).withClasses("row align-items-center justify-content-center"),
@@ -88,20 +88,20 @@ public class DashboardController extends VaquitaController {
         }
     }
 
-    private static ContainerTag makeDashboardCard(String text,String text2,String classes1, String classes2, String id2,String id3){
+    private static ContainerTag makeDashboardSimpleCard(String widgetName, String placeHolder, String textClasses, String textId, String cardId){
         return
 
         div(
                 div(
-                        text
-                ).withClasses(" text-center mt-1 "+classes1),
+                        widgetName
+                ).withClasses(" text-center mt-1 "+ ""),
                 div(
-                        text2
-                ).withClasses("text-center m-3 "+classes2).withStyle("font-size: 1.8em;").withId(id2)
+                        placeHolder
+                ).withClasses("text-center m-3 "+textClasses).withStyle("font-size: 1.8em;").withId(textId)
 
         ).withClasses("card shadow  p-1 m-3")
         .withStyle("height: 10rem; width: 13rem;")
-        .withId(id3);
+        .withId(cardId);
     }
 
 
