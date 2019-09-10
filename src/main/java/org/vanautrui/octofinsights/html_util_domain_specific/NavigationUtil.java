@@ -53,8 +53,6 @@ public class NavigationUtil {
 
                 ).withStyle("background-color:#014421;");
 
-
-
         return navbar;
     }
 

@@ -42,7 +42,6 @@ public class CustomersController extends VaquitaController {
                               NavigationUtil.createNavbar(request.session().get().get("username"),"Customers"),
                               div(
                                   div(
-                                      h3("Customers"),
                                       form(
                                           div(
                                               input().withType("text").withName("customer-name").withPlaceholder("name").withClasses("form-control")

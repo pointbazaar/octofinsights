@@ -33,7 +33,6 @@ public class ProfileController extends org.vanautrui.vaquitamvc.controller.Vaqui
                         NavigationUtil.createNavbar(request.session().get().get("username"),"Profile"),
                         div(
                             div(
-                                h2("Profile"),
                                 p(
                                         span("Id: "),
                                         strong(user.get(USERS.ID)+"")
