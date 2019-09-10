@@ -45,11 +45,9 @@ public class NavigationUtil {
                                         ),
 
                                         li(
-                                                a("Logout").withClasses("nav-link mt-1").withHref("/logout")
+                                                a("Logout "+username).withClasses("nav-link mt-1").withHref("/logout")
                                         ).withClasses("nav-item"),
-                                        li(
-                                                p("Logged in as : "+username).withClasses("mt-1")
-                                        ).withClasses("nav-item")
+                                        
                                 ).withClasses("navbar-nav", "mr-auto")
                         ).withId("navbarSupportedContent")
 
