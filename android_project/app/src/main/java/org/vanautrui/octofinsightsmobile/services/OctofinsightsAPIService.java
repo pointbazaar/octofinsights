@@ -9,6 +9,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONString;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -23,7 +26,7 @@ public class OctofinsightsAPIService {
         return "https://octofinsights.vanautrui.org/api/";
     }
 
-    public static synchronized long get_access_token(final Context context, final String myusername, final String mypassword) throws Exception {
+    public static synchronized void retrieve_and_store_access_token(final String myusername, final String mypassword) throws Exception {
         //TODO: create the appropriate code in the backend so that the android app can retrieve an access token
         //and can use it as a query parameter in further requests to access the api for the user
 
@@ -33,7 +36,7 @@ public class OctofinsightsAPIService {
         OctofinsightsAPIService dummy = new OctofinsightsAPIService();
 
         if(access_token.isPresent()){
-            return access_token.get();
+            return;
         }else{
 
             CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -42,9 +45,19 @@ public class OctofinsightsAPIService {
 
             if(resp.getStatusLine().getStatusCode()==200) {
                 access_token = Optional.of(Long.parseLong(EntityUtils.toString(resp.getEntity())));
-                return access_token.get();
             }
             throw new Exception("could not get access token ");
         }
+    }
+
+    public static synchronized long getBalance()throws Exception{
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpGet get_req_access_token = new HttpGet(getAPIEndpointBaseURL()+"profit");
+        CloseableHttpResponse resp = httpClient.execute(get_req_access_token);
+
+        //parse json
+        JSONObject jsonObject = new JSONObject(EntityUtils.toString(resp.getEntity()));
+
+        return jsonObject.getLong("value");
     }
 }

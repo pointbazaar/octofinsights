@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import org.vanautrui.octofinsightsmobile.leads.LeadsActivity;
+import org.vanautrui.octofinsightsmobile.services.OctofinsightsAPIService;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -26,5 +27,12 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button btn_balance = findViewById(R.id.btn_balance);
+        try {
+            btn_balance.setText(OctofinsightsAPIService.getBalance()+"");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

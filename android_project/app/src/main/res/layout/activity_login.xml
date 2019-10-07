@@ -24,7 +24,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="horizontal">
 
@@ -34,6 +34,7 @@
             android:orientation="vertical">
 
             <EditText
+                android:id="@+id/text_username"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:hint="Password"
@@ -42,6 +43,7 @@
             </EditText>
 
             <EditText
+                android:id="@+id/text_password"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:hint="Username"
@@ -62,5 +64,11 @@
 
         </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center" />
 
 </LinearLayout>
