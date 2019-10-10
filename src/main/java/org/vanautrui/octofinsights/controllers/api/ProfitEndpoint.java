@@ -48,8 +48,8 @@ public class ProfitEndpoint implements IVGETHandler {
             });
 
             //start both db queries
-            t1.run();
-            t2.run();
+            t1.start();
+            t2.start();
 
             //wait for both to finish
             t1.join();
