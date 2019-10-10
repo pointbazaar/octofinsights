@@ -54,7 +54,7 @@ public class ProjectsController implements IVFullController {
         return res;
     }
 
-    private ContainerTag makeProjectDiv(String projectName,int project_id,int user_id) {
+    private ContainerTag makeProjectDiv(String projectName,int project_id,int user_id) throws Exception {
         ContainerTag res=
                 li(
                     div(
@@ -99,7 +99,7 @@ public class ProjectsController implements IVFullController {
         List<Record> active_projects = myprojects.stream().filter(proj -> proj.get(PROJECTS.ISACTIVE).intValue() == 1).collect(Collectors.toList());
         List<Record> inactive_projects = myprojects.stream().filter(proj -> proj.get(PROJECTS.ISACTIVE).intValue() == 0).collect(Collectors.toList());
 
-        String page =
+        final String page =
                 html(
                         HeadUtil.makeHead(),
                         body(
@@ -117,9 +117,15 @@ public class ProjectsController implements IVFullController {
 
                                                         each(
                                                                 active_projects,
-                                                                proj->makeProjectDiv(
-                                                                        proj.get(PROJECTS.PROJECT_NAME), proj.get(PROJECTS.ID),user_id
-                                                                )
+                                                                proj-> {
+                                                                    try {
+                                                                        return makeProjectDiv(
+                                                                                proj.get(PROJECTS.PROJECT_NAME), proj.get(PROJECTS.ID),user_id
+                                                                        );
+                                                                    } catch (Exception e) {
+                                                                        return p("error making project div");
+                                                                    }
+                                                                }
                                                         )
 
                                                 ).withClasses("list-group"),

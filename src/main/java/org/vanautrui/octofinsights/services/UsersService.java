@@ -13,12 +13,13 @@ import static org.vanautrui.octofinsights.generated.Tables.USERS;
 public class UsersService {
 
   public static Record getUserById(int user_id) throws Exception{
-    Connection conn= DBUtils.makeDBConnection();
-    DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+      try(Connection conn= DBUtils.makeDBConnection()) {
+          DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
 
-    Record user = ctx.select(USERS.asterisk()).from(USERS).where(USERS.ID.eq(user_id)).fetchOne();
+          final Record user = ctx.select(USERS.asterisk()).from(USERS).where(USERS.ID.eq(user_id)).fetchOne();
 
-    ctx.close();
-    return user;
+          ctx.close();
+          return user;
+      }
   }
 }

@@ -48,7 +48,7 @@ public class TranslationService {
         }
 
         try{
-            String result = translate_inner_2(content,format,target_lang);
+            final String result = translate_inner_2(content,format,target_lang);
 
             translationsCache.get(target_lang).put(content,result);
 
@@ -62,21 +62,21 @@ public class TranslationService {
     private static synchronized String translate_inner_2(String text, String format, String target_lang)throws Exception{
         //String text="hello my friend";
 
-        HttpClient client=new DefaultHttpClient();
-        HttpGet req = new HttpGet(yandex_translate_base_url +"?key="+yandex_api_key+"&text="+URLEncoder.encode(text)+"&lang=en-"+target_lang+"&format="+format);
+        final HttpClient client=new DefaultHttpClient();
+        final HttpGet req = new HttpGet(yandex_translate_base_url +"?key="+yandex_api_key+"&text="+URLEncoder.encode(text)+"&lang=en-"+target_lang+"&format="+format);
 
-        HttpResponse response = client.execute(req);
+        final HttpResponse response = client.execute(req);
 
-        ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new ObjectMapper();
 
-        String text_translated = IOUtils.toString(response.getEntity().getContent());
+        final String text_translated = IOUtils.toString(response.getEntity().getContent());
         System.out.println(text_translated);
 
-        JsonNode node = mapper.readTree(text_translated);
+        final JsonNode node = mapper.readTree(text_translated);
         System.out.println(node.get("text").toString());
 
-        String result= node.get("text").get(0).toString();
-        String result2= URLDecoder.decode(result);
+        final String result= node.get("text").get(0).toString();
+        final String result2= URLDecoder.decode(result);
 
         return result2.substring(1,result2.length()-1);
     }

@@ -30,10 +30,10 @@ import java.util.List;
 public class App
 {
 
-    public static String octofinsights_primary_color = "#ffc143";
+    public static final String octofinsights_primary_color = "#ffc143";
 
     public static String yandex_api_key;
-    public static String yandex_translate_base_url ="https://translate.yandex.net/api/v1.5/tr.json/translate";
+    public static final String yandex_translate_base_url ="https://translate.yandex.net/api/v1.5/tr.json/translate";
 
     private static void setup_translation_configuration() throws Exception{
 
@@ -52,7 +52,7 @@ public class App
             e.printStackTrace();
         }
 
-        VApp app = new VApp(9377, "Octofinsights",true);
+        final VApp app = new VApp(9377, "Octofinsights",true);
 
         app.putGetMapping("/",new IndexController());
 

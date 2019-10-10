@@ -51,20 +51,19 @@ public class CustomersService {
         //this service class. this makes caching easier, since we know when the name has been updated,
         //and we have to remove that name from the cache
 
-            Connection conn = DBUtils.makeDBConnection();
+        try(Connection conn = DBUtils.makeDBConnection()) {
             DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 
             Record1<String> name = create.select(CUSTOMERS.CUSTOMER_NAME).from(CUSTOMERS).where(CUSTOMERS.USER_ID.eq(user_id).and(CUSTOMERS.ID.eq(customer_id))).fetchOne();
 
-            conn.close();
             return name.component1();
-
+        }
     }
 
-    public static List<Record> getCustomers(int user_id){
+    public static List<Record> getCustomers(int user_id) throws Exception {
 
-        try {
-            Connection conn = DBUtils.makeDBConnection();
+        try (Connection conn = DBUtils.makeDBConnection()){
+
             DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
 
             List<Record> list = ctx
@@ -75,37 +74,31 @@ public class CustomersService {
                     .stream()
                     .collect(Collectors.toList());
 
-            conn.close();
             return list;
-        }catch (Exception e){
-            e.printStackTrace();
-            //fatal error
-            return new ArrayList<>();
         }
     }
 
     public static void insertCustomer(int user_id, String customer_name, String customer_source)throws Exception{
-        Connection conn= DBUtils.makeDBConnection();
-        DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+        try(Connection conn= DBUtils.makeDBConnection()) {
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
 
-        ctx.insertInto(CUSTOMERS)
-                .columns(CUSTOMERS.CUSTOMER_NAME,CUSTOMERS.USER_ID,CUSTOMERS.SOURCE)
-                .values(customer_name,user_id,customer_source)
-                .execute();
-
-        conn.close();
+            ctx.insertInto(CUSTOMERS)
+                    .columns(CUSTOMERS.CUSTOMER_NAME, CUSTOMERS.USER_ID, CUSTOMERS.SOURCE)
+                    .values(customer_name, user_id, customer_source)
+                    .execute();
+        }
     }
 
     public static Record getCustomerById(int user_id,int customer_id) throws Exception{
-        Connection conn= DBUtils.makeDBConnection();
-        DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+        try(Connection conn= DBUtils.makeDBConnection()) {
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
 
-        Record customer = ctx.select(CUSTOMERS.asterisk())
-                .from(CUSTOMERS)
-                .where(CUSTOMERS.ID.eq(customer_id).and(CUSTOMERS.USER_ID.eq(user_id)))
-                .fetchOne();
+            Record customer = ctx.select(CUSTOMERS.asterisk())
+                    .from(CUSTOMERS)
+                    .where(CUSTOMERS.ID.eq(customer_id).and(CUSTOMERS.USER_ID.eq(user_id)))
+                    .fetchOne();
 
-        conn.close();
-        return customer;
+            return customer;
+        }
     }
 }

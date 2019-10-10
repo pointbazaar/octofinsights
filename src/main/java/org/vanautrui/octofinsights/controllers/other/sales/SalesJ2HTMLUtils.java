@@ -60,7 +60,7 @@ public class SalesJ2HTMLUtils {
     return mytable;
   }
 
-  public static ContainerTag makeSalesInsertWidget(int user_id){
+  public static ContainerTag makeSalesInsertWidget(int user_id) throws Exception {
     return
             div(
                     div("Add a Sale").withClasses("card-header"),
@@ -108,7 +108,7 @@ public class SalesJ2HTMLUtils {
             ).withClasses("m-3","card","mb-4");
   }
 
-  public static ContainerTag makeCustomerSelect(int user_id){
+  public static ContainerTag makeCustomerSelect(int user_id) throws Exception {
 
     return
             select(

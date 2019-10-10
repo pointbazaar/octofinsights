@@ -16,12 +16,11 @@ public class ProfitEndpoint implements IVGETHandler {
     @Override
     public IVHTTPResponse handleGET(VHTTPGetRequest req, VApp vApp) throws Exception {
         if(req.session().isPresent() && req.session().get().containsKey("user_id")){
-            int user_id = Integer.parseInt(req.session().get().get("user_id"));
+            final int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
+            final long balance = SalesService.getTotalForThisMonth(user_id)+ ExpensesService.getTotalForThisMonth(user_id);
 
-            long balance = SalesService.getTotalForThisMonth(user_id)+ ExpensesService.getTotalForThisMonth(user_id);
-
-            ObjectNode node = (new ObjectMapper()).createObjectNode();
+            final ObjectNode node = (new ObjectMapper()).createObjectNode();
 
             node.put("value",balance);
 
