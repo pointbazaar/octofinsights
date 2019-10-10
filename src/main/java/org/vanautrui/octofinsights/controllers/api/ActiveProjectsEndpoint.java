@@ -3,37 +3,33 @@ package org.vanautrui.octofinsights.controllers.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.vanautrui.octofinsights.services.ProjectsService;
-import org.vanautrui.vaquitamvc.VaquitaApp;
-import org.vanautrui.vaquitamvc.controller.VaquitaController;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaJSONResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
+import org.vanautrui.vaquitamvc.VApp;
+import org.vanautrui.vaquitamvc.controller.IVGETHandler;
+import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
+import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
+import org.vanautrui.vaquitamvc.responses.VJsonResponse;
+import org.vanautrui.vaquitamvc.responses.VTextResponse;
 
 
-public class ActiveProjectsEndpoint extends VaquitaController {
+public class ActiveProjectsEndpoint implements IVGETHandler {
+
     @Override
-    public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest req, VaquitaApp app) throws Exception {
+    public IVHTTPResponse handleGET(VHTTPGetRequest req, VApp app) throws Exception {
+        if(
+                req.session().isPresent()
+                && req.session().get().containsKey("user_id")
+        ){
+            final int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
-        if(req.session().isPresent() && req.session().get().containsKey("user_id")){
-            int user_id = Integer.parseInt(req.session().get().get("user_id"));
+            final long count = ProjectsService.getActiveProjectsCount(user_id);
 
-
-            long count = ProjectsService.getActiveProjectsCount(user_id);
-
-            ObjectNode node = (new ObjectMapper()).createObjectNode();
+            final ObjectNode node = (new ObjectMapper()).createObjectNode();
 
             node.put("value",count);
 
-            return new VaquitaJSONResponse(200,node);
+            return new VJsonResponse(200,node);
         }else{
-            return new VaquitaTextResponse(400, "Bad Request, no user_id found in session.");
+            return new VTextResponse(400, "Bad Request, no user_id found in session.");
         }
-    }
-
-    @Override
-    public VaquitaJSONResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest,VaquitaApp app) throws Exception {
-        return null;
     }
 }

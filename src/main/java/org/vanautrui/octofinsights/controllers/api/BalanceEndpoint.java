@@ -4,19 +4,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.vanautrui.octofinsights.services.ExpensesService;
 import org.vanautrui.octofinsights.services.SalesService;
-import org.vanautrui.vaquitamvc.VaquitaApp;
-import org.vanautrui.vaquitamvc.controller.VaquitaController;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaJSONResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
+import org.vanautrui.vaquitamvc.VApp;
+import org.vanautrui.vaquitamvc.controller.IVGETHandler;
+import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
+import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
+import org.vanautrui.vaquitamvc.responses.VJsonResponse;
+import org.vanautrui.vaquitamvc.responses.VTextResponse;
 
 
-public class BalanceEndpoint extends VaquitaController {
+public class BalanceEndpoint implements IVGETHandler {
 
     @Override
-    public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest req, VaquitaApp vaquitaApp) throws Exception {
+    public IVHTTPResponse handleGET(VHTTPGetRequest req, VApp vApp) throws Exception {
         if(req.session().isPresent() && req.session().get().containsKey("user_id")){
             int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
@@ -27,14 +26,9 @@ public class BalanceEndpoint extends VaquitaController {
 
             node.put("value",balance);
 
-            return new VaquitaJSONResponse(200,node);
+            return new VJsonResponse(200,node);
         }else{
-            return new VaquitaTextResponse(400, "Bad Request, no user_id found in session.");
+            return new VTextResponse(400, "Bad Request, no user_id found in session.");
         }
-    }
-
-    @Override
-    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest, VaquitaApp vaquitaApp) throws Exception {
-        return null;
     }
 }

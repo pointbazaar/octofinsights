@@ -10,10 +10,11 @@ import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.services.ProjectsService;
-import org.vanautrui.vaquitamvc.VaquitaApp;
-import org.vanautrui.vaquitamvc.controller.VaquitaController;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
+import org.vanautrui.vaquitamvc.VApp;
+import org.vanautrui.vaquitamvc.controller.IVFullController;
+import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
+import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
+import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
 import org.vanautrui.vaquitamvc.responses.*;
 
 import java.sql.Connection;
@@ -24,57 +25,7 @@ import static j2html.TagCreator.*;
 import static java.lang.Integer.parseInt;
 import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
 
-public class ProjectsController extends VaquitaController {
-
-    @Override
-    public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest request, VaquitaApp app) throws Exception {
-
-      boolean loggedin=request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true");
-      if(!loggedin){
-          return new VaquitaRedirectResponse("/login",request,app);
-      }
-
-      int user_id = parseInt(request.session().get().get("user_id"));
-
-      Result<Record> myprojects = ProjectsService.getProjectsByUserId(user_id);
-      List<Record> active_projects = myprojects.stream().filter(proj -> proj.get(PROJECTS.ISACTIVE).intValue() == 1).collect(Collectors.toList());
-      List<Record> inactive_projects = myprojects.stream().filter(proj -> proj.get(PROJECTS.ISACTIVE).intValue() == 0).collect(Collectors.toList());
-
-      String page =
-                html(
-                        HeadUtil.makeHead(),
-                        body(
-                                NavigationUtil.createNavbar(request.session().get().get("username"),"Projects"),
-                                div(
-                                        div().withClasses("m-3"),
-                                        div(
-                                            a(
-                                              button(
-                                                    "ADD PROJECT"
-                                              ).withClasses("btn","btn-outline-primary","col-md-12")
-                                            ).withHref("/projects/add"),
-                                            h5("ACTIVE PROJECTS").withClasses("m-2"),
-                                            ul(
-
-                                                each(
-                                                        active_projects,
-                                                        proj->makeProjectDiv(
-                                                                proj.get(PROJECTS.PROJECT_NAME), proj.get(PROJECTS.ID),user_id
-                                                        )
-                                                )
-
-                                            ).withClasses("list-group"),
-                                            h5("INACTIVE PROJECTS").withClasses("m-2"),
-                                            ul(
-                                                each(inactive_projects,proj->makeInactiveProjectDiv(proj.get(PROJECTS.PROJECT_NAME),proj.get(PROJECTS.ID).intValue()))
-
-                                            ).withClasses("list-group")
-                                        ).withClasses("col-md-12")
-                                ).withClasses("container")
-                        )
-                ).render();
-        return new VaquitaHTMLResponse(200,page);
-    }
+public class ProjectsController implements IVFullController {
 
     private ContainerTag makeInactiveProjectDiv(String projectName,int project_id){
         ContainerTag res=
@@ -136,50 +87,104 @@ public class ProjectsController extends VaquitaController {
     }
 
     @Override
-    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest request,VaquitaApp app) throws Exception {
-      // this method should handle
-      // archive, unarchive, delete
-      // of projects
+    public IVHTTPResponse handleGET(VHTTPGetRequest request, VApp app) throws Exception {
+        boolean loggedin=request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true");
+        if(!loggedin){
+            return new VRedirectResponse("/login",request,app);
+        }
 
-      if( request.session().isPresent()
-              && request.session().get().containsKey("authenticated")
-              && request.session().get().get("authenticated").equals("true")
-              && request.session().get().containsKey("user_id")
-      ) {
         int user_id = parseInt(request.session().get().get("user_id"));
 
-        int project_id = parseInt(request.getQueryParameter("id"));
+        Result<Record> myprojects = ProjectsService.getProjectsByUserId(user_id);
+        List<Record> active_projects = myprojects.stream().filter(proj -> proj.get(PROJECTS.ISACTIVE).intValue() == 1).collect(Collectors.toList());
+        List<Record> inactive_projects = myprojects.stream().filter(proj -> proj.get(PROJECTS.ISACTIVE).intValue() == 0).collect(Collectors.toList());
 
-        String action = request.getQueryParameter("action");
+        String page =
+                html(
+                        HeadUtil.makeHead(),
+                        body(
+                                NavigationUtil.createNavbar(request.session().get().get("username"),"Projects"),
+                                div(
+                                        div().withClasses("m-3"),
+                                        div(
+                                                a(
+                                                        button(
+                                                                "ADD PROJECT"
+                                                        ).withClasses("btn","btn-outline-primary","col-md-12")
+                                                ).withHref("/projects/add"),
+                                                h5("ACTIVE PROJECTS").withClasses("m-2"),
+                                                ul(
 
-        Connection conn= DBUtils.makeDBConnection();
+                                                        each(
+                                                                active_projects,
+                                                                proj->makeProjectDiv(
+                                                                        proj.get(PROJECTS.PROJECT_NAME), proj.get(PROJECTS.ID),user_id
+                                                                )
+                                                        )
 
-        DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+                                                ).withClasses("list-group"),
+                                                h5("INACTIVE PROJECTS").withClasses("m-2"),
+                                                ul(
+                                                        each(inactive_projects,proj->makeInactiveProjectDiv(proj.get(PROJECTS.PROJECT_NAME), proj.get(PROJECTS.ID)))
 
-        byte inactive =0;
-        byte active=1;
+                                                ).withClasses("list-group")
+                                        ).withClasses("col-md-12")
+                                ).withClasses("container")
+                        )
+                ).render();
+        return new VHTMLResponse(200,page);
+    }
 
-        switch (action){
-          case "archive":
-            System.out.println("try to archive project with id "+project_id);
-            ctx.update(PROJECTS).set(PROJECTS.ISACTIVE,inactive).where(PROJECTS.ID.eq(project_id).and(PROJECTS.USER_ID.eq(user_id))).execute();
-            break;
-          case "unarchive":
-            System.out.println("try to unarchive project with id "+project_id);
-            ctx.update(PROJECTS).set(PROJECTS.ISACTIVE,active).where(PROJECTS.ID.eq(project_id).and(PROJECTS.USER_ID.eq(user_id))).execute();
-            break;
-          case "delete":
-            System.out.println("try to delete project with id "+project_id);
-            ctx.delete(PROJECTS).where(PROJECTS.ID.eq(project_id).and(PROJECTS.USER_ID.eq(user_id))).execute();
-            break;
-          default:
+    @Override
+    public IVHTTPResponse handlePOST(VHTTPPostRequest request, VApp vApp) throws Exception {
+        // this method should handle
+        // archive, unarchive, delete
+        // of projects
+
+        if( request.session().isPresent()
+                && request.session().get().containsKey("authenticated")
+                && request.session().get().get("authenticated").equals("true")
+                && request.session().get().containsKey("user_id")
+        ) {
+            int user_id = parseInt(request.session().get().get("user_id"));
+
+            int project_id = parseInt(request.getQueryParam("id"));
+
+            String action = request.getQueryParam("action");
+
+            Connection conn= DBUtils.makeDBConnection();
+
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+            byte inactive =0;
+            byte active=1;
+
+            switch (action){
+                case "archive":
+                    System.out.println("try to archive project with id "+project_id);
+                    ctx.update(PROJECTS).set(PROJECTS.ISACTIVE,inactive).where(PROJECTS.ID.eq(project_id).and(PROJECTS.USER_ID.eq(user_id))).execute();
+                    break;
+                case "unarchive":
+                    System.out.println("try to unarchive project with id "+project_id);
+                    ctx.update(PROJECTS).set(PROJECTS.ISACTIVE,active).where(PROJECTS.ID.eq(project_id).and(PROJECTS.USER_ID.eq(user_id))).execute();
+                    break;
+                case "delete":
+                    System.out.println("try to delete project with id "+project_id);
+                    ctx.delete(PROJECTS).where(PROJECTS.ID.eq(project_id).and(PROJECTS.USER_ID.eq(user_id))).execute();
+                    break;
+                default:
+                    conn.close();
+                    return new VTextResponse(400,"BAD REQUEST. this action is not available. ");
+            }
             conn.close();
-            return new VaquitaTextResponse(400,"BAD REQUEST. this action is not available. ");
+            return new VRedirectToGETResponse("/projects",request);
+        }else {
+            return new VRedirectToGETResponse("/login", request);
         }
-        conn.close();
-        return new VaquitaRedirectToGETResponse("/projects",request);
-      }else {
-        return new VaquitaRedirectToGETResponse("/login", request);
-      }
+    }
+
+    @Override
+    public IVHTTPResponse handlePUT(VHTTPPutRequest vhttpPutRequest, VApp vApp) throws Exception {
+        return null;
     }
 }

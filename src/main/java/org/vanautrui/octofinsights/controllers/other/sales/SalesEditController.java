@@ -4,13 +4,14 @@ import org.jooq.Record;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.services.SalesService;
-import org.vanautrui.vaquitamvc.VaquitaApp;
-import org.vanautrui.vaquitamvc.requests.IVaquitaHTTPRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
+import org.vanautrui.vaquitamvc.VApp;
+import org.vanautrui.vaquitamvc.controller.IVFullController;
+import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
+import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
+import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
+import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
+import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
+import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 
 import java.net.URLDecoder;
 import java.sql.Timestamp;
@@ -23,19 +24,20 @@ import static java.lang.Integer.parseInt;
 import static org.vanautrui.octofinsights.controllers.other.sales.SalesJ2HTMLUtils.makeCustomerSelect;
 import static org.vanautrui.octofinsights.generated.tables.Sales.SALES;
 
-public class SalesEditController extends org.vanautrui.vaquitamvc.controller.VaquitaController {
+public class SalesEditController implements IVFullController {
+
     @Override
-    public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest request, VaquitaApp app) throws Exception {
+    public IVHTTPResponse handleGET(VHTTPGetRequest request, VApp vApp) throws Exception {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ){
-            int user_id = parseInt(request.session().get().get("user_id"));
+            final int user_id = parseInt(request.session().get().get("user_id"));
 
-            int sale_id = parseInt(request.getQueryParameter("id"));
+            final int sale_id = parseInt(request.getQueryParam("id"));
 
-            Record sale = SalesService.getById(user_id,sale_id);
+            final Record sale = SalesService.getById(user_id,sale_id);
 
-            String page=
+            final String page=
                     html(
                             HeadUtil.makeHead(),
                             body(
@@ -49,25 +51,25 @@ public class SalesEditController extends org.vanautrui.vaquitamvc.controller.Vaq
                                                             makeCustomerSelect(user_id),
 
                                                             div(
-                                                                input()
-                                                                    .withName("price_of_sale")
-                                                                    .withPlaceholder("price_of_sale")
-                                                                    .withType("number")
-                                                                    .withValue(sale.get(SALES.PRICE_OF_SALE) +"")
-                                                                    .attr("min","0")
-                                                                    .withClasses("form-control"),
-                                                                div(
-                                                                    span("$").withClasses("input-group-text")
-                                                                ).withClasses("input-group-append")
+                                                                    input()
+                                                                            .withName("price_of_sale")
+                                                                            .withPlaceholder("price_of_sale")
+                                                                            .withType("number")
+                                                                            .withValue(sale.get(SALES.PRICE_OF_SALE) +"")
+                                                                            .attr("min","0")
+                                                                            .withClasses("form-control"),
+                                                                    div(
+                                                                            span("$").withClasses("input-group-text")
+                                                                    ).withClasses("input-group-append")
                                                             ).withClasses("input-group"),
 
                                                             div(
-                                                                input()
-                                                                    .withName("product_or_service")
-                                                                    .withPlaceholder("product_or_service")
-                                                                    .withType("text")
-                                                                    .withValue(sale.get(SALES.PRODUCT_OR_SERVICE))
-                                                                    .withClasses("form-control")
+                                                                    input()
+                                                                            .withName("product_or_service")
+                                                                            .withPlaceholder("product_or_service")
+                                                                            .withType("text")
+                                                                            .withValue(sale.get(SALES.PRODUCT_OR_SERVICE))
+                                                                            .withClasses("form-control")
                                                             ).withClasses("input-group"),
 
                                                             input()
@@ -86,38 +88,43 @@ public class SalesEditController extends org.vanautrui.vaquitamvc.controller.Vaq
 
 
             //conn.close();
-            return new VaquitaHTMLResponse(200,page);
+            return new VHTMLResponse(200,page);
 
         }else {
-            return new VaquitaRedirectToGETResponse("/login", request);
+            return new VRedirectToGETResponse("/login", request);
         }
     }
 
     @Override
-    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest,VaquitaApp app) throws Exception {
-        IVaquitaHTTPRequest request = vaquitaHTTPEntityEnclosingRequest;
-        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
-                && request.session().get().containsKey("user_id")
+    public IVHTTPResponse handlePOST(VHTTPPostRequest req, VApp app) throws Exception {
+
+        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
+                && req.session().get().containsKey("user_id")
         ) {
 
-            int user_id = parseInt(request.session().get().get("user_id"));
+            final int user_id = parseInt(req.session().get().get("user_id"));
 
-            Map<String,String> params = vaquitaHTTPEntityEnclosingRequest.getPostParameters();
+            final Map<String,String> params = req.getPostParameters();
 
-            int sale_id = parseInt(params.get("id"));
+            final int sale_id = parseInt(params.get("id"));
 
-            int customer_id = parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("customer_id"));
-            String product_or_service= URLDecoder.decode(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("product_or_service"));
-            int price= parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("price_of_sale"));
-            String time_of_sale = vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("time_of_sale");
+            final int customer_id = parseInt(req.getPostParameters().get("customer_id"));
+            final String product_or_service= URLDecoder.decode(req.getPostParameters().get("product_or_service"));
+            final int price= parseInt(req.getPostParameters().get("price_of_sale"));
+            final String time_of_sale = req.getPostParameters().get("time_of_sale");
 
-            Timestamp expense_date_timestamp = new Timestamp((new SimpleDateFormat("yyyy-MM-dd").parse(time_of_sale)).getTime());
+            final Timestamp expense_date_timestamp = new Timestamp((new SimpleDateFormat("yyyy-MM-dd").parse(time_of_sale)).getTime());
 
             SalesService.updateById(user_id,sale_id,customer_id,price,expense_date_timestamp,product_or_service);
 
-            return new VaquitaRedirectToGETResponse("/sales",request);
+            return new VRedirectToGETResponse("/sales",req);
         }else{
-            return new VaquitaRedirectToGETResponse("/login",request);
+            return new VRedirectToGETResponse("/login",req);
         }
+    }
+
+    @Override
+    public IVHTTPResponse handlePUT(VHTTPPutRequest vhttpPutRequest, VApp vApp) throws Exception {
+        return null;
     }
 }

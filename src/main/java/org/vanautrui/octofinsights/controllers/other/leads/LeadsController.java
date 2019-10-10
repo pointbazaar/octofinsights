@@ -10,14 +10,14 @@ import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.RecordEditIconUtils;
 import org.vanautrui.octofinsights.services.LeadsService;
-import org.vanautrui.vaquitamvc.VaquitaApp;
-import org.vanautrui.vaquitamvc.controller.VaquitaController;
-import org.vanautrui.vaquitamvc.requests.IVaquitaHTTPRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
+import org.vanautrui.vaquitamvc.VApp;
+import org.vanautrui.vaquitamvc.controller.IVFullController;
+import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
+import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
+import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
+import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
+import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
+import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 
 import java.net.URLDecoder;
 import java.sql.Connection;
@@ -30,7 +30,7 @@ import java.util.Optional;
 import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.tables.Leads.LEADS;
 
-public class LeadsController extends VaquitaController {
+public class LeadsController implements IVFullController {
 
     private static ContainerTag makeLeadBadge(String lead_status){
 
@@ -55,8 +55,7 @@ public class LeadsController extends VaquitaController {
     }
 
     @Override
-    public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest request, VaquitaApp app) throws Exception {
-
+    public IVHTTPResponse handleGET(VHTTPGetRequest request, VApp app) throws Exception {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ){
@@ -65,7 +64,7 @@ public class LeadsController extends VaquitaController {
 
             Optional<String> searchQuery;
             try{
-                searchQuery=Optional.of(request.getQueryParameter("search"));
+                searchQuery=Optional.of(request.getQueryParam("search"));
             }catch (Exception e){
                 searchQuery=Optional.empty();
             }
@@ -110,43 +109,43 @@ public class LeadsController extends VaquitaController {
                                                                                             td(makeLeadBadge(record.get(LEADS.LEAD_STATUS))),
                                                                                             td(record.get(LEADS.WHAT_THE_LEAD_WANTS)),
                                                                                             td(
-                                                                                                div(attrs(".row .align-items-center"),
-                                                                                                        form(
-                                                                                                                input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                                RecordEditIconUtils.deleteButton()
-                                                                                                        ).withAction("/leads?action=delete").withMethod("post"),
-
-                                                                                                        /*Open the lead again, after it has been closed.
-                                                                                                         * Some people become repeat customers.
-                                                                                                         * Some people get back to you, even after you have forgotten them
-                                                                                                         * */
-                                                                                                        iff(
-                                                                                                                record.get(LEADS.LEAD_STATUS).startsWith("closed"),
-                                                                                                                form(
-                                                                                                                        input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                                        button(attrs(".btn .btn-outline-info .p-2 .m-1"),"open").withType("submit")
-                                                                                                                ).withAction("/leads?action=open").withMethod("post")
-                                                                                                        ),
-
-                                                                                                        iff(
-                                                                                                                record.get(LEADS.LEAD_STATUS).startsWith("open"),
-                                                                                                                form(
-                                                                                                                        input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                                        button(attrs(".btn .btn-outline-info .p-2 .m-1"),"convert").withType("submit")
-                                                                                                                ).withAction("/leads?action=convert").withMethod("post")
-                                                                                                        ),
-
-                                                                                                        /*close the lead. either they accepted to become a client, or not,
-                                                                                                         * the important thing is that we no longer worry about the lead
-                                                                                                         * */
-                                                                                                        iff(
-                                                                                                            record.get(LEADS.LEAD_STATUS).startsWith("open"),
+                                                                                                    div(attrs(".row .align-items-center"),
                                                                                                             form(
                                                                                                                     input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                                    button(attrs(".btn .btn-outline-info .p-2 .m-1"),"close").withType("submit")
-                                                                                                            ).withAction("/leads?action=close").withMethod("post")
-                                                                                                        )
-                                                                                                )
+                                                                                                                    RecordEditIconUtils.deleteButton()
+                                                                                                            ).withAction("/leads?action=delete").withMethod("post"),
+
+                                                                                                            /*Open the lead again, after it has been closed.
+                                                                                                             * Some people become repeat customers.
+                                                                                                             * Some people get back to you, even after you have forgotten them
+                                                                                                             * */
+                                                                                                            iff(
+                                                                                                                    record.get(LEADS.LEAD_STATUS).startsWith("closed"),
+                                                                                                                    form(
+                                                                                                                            input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
+                                                                                                                            button(attrs(".btn .btn-outline-info .p-2 .m-1"),"open").withType("submit")
+                                                                                                                    ).withAction("/leads?action=open").withMethod("post")
+                                                                                                            ),
+
+                                                                                                            iff(
+                                                                                                                    record.get(LEADS.LEAD_STATUS).startsWith("open"),
+                                                                                                                    form(
+                                                                                                                            input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
+                                                                                                                            button(attrs(".btn .btn-outline-info .p-2 .m-1"),"convert").withType("submit")
+                                                                                                                    ).withAction("/leads?action=convert").withMethod("post")
+                                                                                                            ),
+
+                                                                                                            /*close the lead. either they accepted to become a client, or not,
+                                                                                                             * the important thing is that we no longer worry about the lead
+                                                                                                             * */
+                                                                                                            iff(
+                                                                                                                    record.get(LEADS.LEAD_STATUS).startsWith("open"),
+                                                                                                                    form(
+                                                                                                                            input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
+                                                                                                                            button(attrs(".btn .btn-outline-info .p-2 .m-1"),"close").withType("submit")
+                                                                                                                    ).withAction("/leads?action=close").withMethod("post")
+                                                                                                            )
+                                                                                                    )
                                                                                             )
                                                                                     )
                                                                     )
@@ -158,24 +157,23 @@ public class LeadsController extends VaquitaController {
                             )
                     ).render();
 
-            return new VaquitaHTMLResponse(200,page);
+            return new VHTMLResponse(200,page);
 
         }else {
-            return new VaquitaRedirectToGETResponse("/login", request);
+            return new VRedirectToGETResponse("/login", request);
         }
     }
 
     @Override
-    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest,VaquitaApp app) throws Exception {
+    public IVHTTPResponse handlePOST(VHTTPPostRequest vaquitaHTTPEntityEnclosingRequest, VApp vApp) throws Exception {
 
-        IVaquitaHTTPRequest request = vaquitaHTTPEntityEnclosingRequest;
-        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
-                && request.session().get().containsKey("user_id")
+        if( vaquitaHTTPEntityEnclosingRequest.session().isPresent() && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("authenticated") && vaquitaHTTPEntityEnclosingRequest.session().get().get("authenticated").equals("true")
+                && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("user_id")
         ){
 
-            int user_id = Integer.parseInt(request.session().get().get("user_id"));
+            int user_id = Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.session().get().get("user_id"));
 
-            String action = vaquitaHTTPEntityEnclosingRequest.getQueryParameter("action");
+            String action = vaquitaHTTPEntityEnclosingRequest.getQueryParam("action");
 
             if(action.equals("delete") && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("id")){
 
@@ -230,9 +228,14 @@ public class LeadsController extends VaquitaController {
                 conn.close();
             }
 
-            return new VaquitaRedirectToGETResponse("/leads",request);
+            return new VRedirectToGETResponse("/leads",vaquitaHTTPEntityEnclosingRequest);
         }else {
-            return new VaquitaRedirectToGETResponse("/login",request);
+            return new VRedirectToGETResponse("/login",vaquitaHTTPEntityEnclosingRequest);
         }
+    }
+
+    @Override
+    public IVHTTPResponse handlePUT(VHTTPPutRequest vhttpPutRequest, VApp vApp) throws Exception {
+        return null;
     }
 }

@@ -6,14 +6,14 @@ import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.RecordEditIconUtils;
 import org.vanautrui.octofinsights.services.ExpensesService;
-import org.vanautrui.vaquitamvc.VaquitaApp;
-import org.vanautrui.vaquitamvc.controller.VaquitaController;
-import org.vanautrui.vaquitamvc.requests.IVaquitaHTTPRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
+import org.vanautrui.vaquitamvc.VApp;
+import org.vanautrui.vaquitamvc.controller.IVFullController;
+import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
+import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
+import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
+import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
+import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
+import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -23,16 +23,15 @@ import java.util.Date;
 import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.tables.Expenses.EXPENSES;
 
-public class ExpensesController extends VaquitaController {
+public class ExpensesController implements IVFullController {
 
     @Override
-    public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest request, VaquitaApp app) throws Exception {
-
+    public IVHTTPResponse handleGET(VHTTPGetRequest request, VApp app) throws Exception {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ){
             int user_id = Integer.parseInt(request.session().get().get("user_id"));
-            
+
             Result<Record> records = ExpensesService.getExpenses(user_id);
 
             String page=
@@ -62,17 +61,17 @@ public class ExpensesController extends VaquitaController {
                                                                                             td(record.get(EXPENSES.EXPENSE_DATE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
                                                                                             td(record.get(EXPENSES.EXPENSE_VALUE).toString()+" €"),
                                                                                             td(
-                                                                                                div(attrs(".row"),
-                                                                                                        form(
-                                                                                                                input().withName("id").isHidden().withValue(record.get(EXPENSES.ID).toString()),
-                                                                                                                RecordEditIconUtils.deleteButton()
-                                                                                                        ).withAction("/expenses?action=delete").withMethod("post"),
+                                                                                                    div(attrs(".row"),
+                                                                                                            form(
+                                                                                                                    input().withName("id").isHidden().withValue(record.get(EXPENSES.ID).toString()),
+                                                                                                                    RecordEditIconUtils.deleteButton()
+                                                                                                            ).withAction("/expenses?action=delete").withMethod("post"),
 
-                                                                                                        form(
-                                                                                                                input().withName("id").isHidden().withValue(record.get(EXPENSES.ID).toString()),
-                                                                                                                RecordEditIconUtils.updateButton()
-                                                                                                        ).withAction("/expenses/edit").withMethod("get")
-                                                                                                )
+                                                                                                            form(
+                                                                                                                    input().withName("id").isHidden().withValue(record.get(EXPENSES.ID).toString()),
+                                                                                                                    RecordEditIconUtils.updateButton()
+                                                                                                            ).withAction("/expenses/edit").withMethod("get")
+                                                                                                    )
                                                                                             )
                                                                                     )
                                                                     )
@@ -83,24 +82,23 @@ public class ExpensesController extends VaquitaController {
                             )
                     ).render();
 
-            return new VaquitaHTMLResponse(200,page);
+            return new VHTMLResponse(200,page);
 
         }else {
-            return new VaquitaRedirectToGETResponse("/login", request);
+            return new VRedirectToGETResponse("/login", request);
         }
     }
 
     @Override
-    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest,VaquitaApp app) throws Exception {
+    public IVHTTPResponse handlePOST(VHTTPPostRequest vaquitaHTTPEntityEnclosingRequest, VApp vApp) throws Exception {
 
-        IVaquitaHTTPRequest request = vaquitaHTTPEntityEnclosingRequest;
-        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
-                && request.session().get().containsKey("user_id")
+        if( vaquitaHTTPEntityEnclosingRequest.session().isPresent() && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("authenticated") && vaquitaHTTPEntityEnclosingRequest.session().get().get("authenticated").equals("true")
+                && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("user_id")
         ) {
 
-            int user_id = Integer.parseInt(request.session().get().get("user_id"));
+            int user_id = Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.session().get().get("user_id"));
 
-            String action = vaquitaHTTPEntityEnclosingRequest.getQueryParameter("action");
+            String action = vaquitaHTTPEntityEnclosingRequest.getQueryParam("action");
 
             if(action.equals("delete") && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("id")){
 
@@ -134,9 +132,14 @@ public class ExpensesController extends VaquitaController {
                 ExpensesService.insert(expense_name,expense_date_timestamp,expense_value,user_id);
             }
 
-            return new VaquitaRedirectToGETResponse("/expenses",request);
+            return new VRedirectToGETResponse("/expenses",vaquitaHTTPEntityEnclosingRequest);
         }else {
-            return new VaquitaRedirectToGETResponse("/login",request);
+            return new VRedirectToGETResponse("/login",vaquitaHTTPEntityEnclosingRequest);
         }
+    }
+
+    @Override
+    public IVHTTPResponse handlePUT(VHTTPPutRequest vhttpPutRequest, VApp vApp) throws Exception {
+        return null;
     }
 }

@@ -1,52 +1,40 @@
 package org.vanautrui.octofinsights.controllers.other.tasks;
 
 import org.vanautrui.octofinsights.services.TasksService;
-import org.vanautrui.vaquitamvc.VaquitaApp;
-import org.vanautrui.vaquitamvc.controller.VaquitaController;
-import org.vanautrui.vaquitamvc.requests.IVaquitaHTTPRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
+import org.vanautrui.vaquitamvc.VApp;
+import org.vanautrui.vaquitamvc.controller.IVPOSTHandler;
+import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
+import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
+import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 
 import static java.lang.Integer.parseInt;
 
-public class TaskActionController extends VaquitaController {
-  @Override
-  public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest vaquitaHTTPJustRequest, VaquitaApp vaquitaApp) throws Exception {
-    return null;
-  }
+public class TaskActionController implements IVPOSTHandler {
 
   @Override
-  public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest, VaquitaApp vaquitaApp) throws Exception {
+  public IVHTTPResponse handlePOST(VHTTPPostRequest vhttpPostRequest, VApp vApp) throws Exception {
 
-    IVaquitaHTTPRequest request = vaquitaHTTPEntityEnclosingRequest;
-    if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
-            && request.session().get().containsKey("user_id")
+    if(        vhttpPostRequest.session().isPresent()
+            && vhttpPostRequest.session().get().containsKey("authenticated")
+            && vhttpPostRequest.session().get().get("authenticated").equals("true")
+            && vhttpPostRequest.session().get().containsKey("user_id")
     ) {
-      int user_id = parseInt(request.session().get().get("user_id"));
+      final int user_id = parseInt(vhttpPostRequest.session().get().get("user_id"));
 
-      String action = vaquitaHTTPEntityEnclosingRequest.getQueryParameter("action");
-      int id = parseInt(vaquitaHTTPEntityEnclosingRequest.getQueryParameter("id"));
+      final String action = vhttpPostRequest.getQueryParam("action");
+      final int id = parseInt(vhttpPostRequest.getQueryParam("id"));
 
-      String redirect_url = request.getQueryParameter("redirect");
+      final String redirect_url = vhttpPostRequest.getQueryParam("redirect");
 
       switch (action){
-        case "complete":
-          TasksService.completeTask(id,user_id);
-          break;
-        case "spend1hour":
-          TasksService.spend1hour(id,user_id);
-          break;
-        case "delete":
-          TasksService.deleteTask(id,user_id);
-          break;
-        default:
-          throw new Exception("unrecognized query parameter value");
+        case "complete": TasksService.completeTask(id,user_id); break;
+        case "spend1hour": TasksService.spend1hour(id,user_id); break;
+        case "delete": TasksService.deleteTask(id,user_id); break;
+        default: throw new Exception("unrecognized query parameter value");
       }
 
-      return new VaquitaRedirectToGETResponse(redirect_url,request);
+      return new VRedirectToGETResponse(redirect_url,vhttpPostRequest);
     }
-    return new VaquitaRedirectToGETResponse("/login",request);
+    return new VRedirectToGETResponse("/login",vhttpPostRequest);
   }
 }

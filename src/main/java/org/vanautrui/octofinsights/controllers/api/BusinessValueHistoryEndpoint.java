@@ -6,13 +6,12 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
-import org.vanautrui.vaquitamvc.VaquitaApp;
-import org.vanautrui.vaquitamvc.controller.VaquitaController;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaJSONResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
+import org.vanautrui.vaquitamvc.VApp;
+import org.vanautrui.vaquitamvc.controller.IVGETHandler;
+import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
+import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
+import org.vanautrui.vaquitamvc.responses.VJsonResponse;
+import org.vanautrui.vaquitamvc.responses.VTextResponse;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -23,10 +22,10 @@ import static org.vanautrui.octofinsights.generated.Tables.EXPENSES;
 import static org.vanautrui.octofinsights.generated.Tables.SALES;
 
 
-public class BusinessValueHistoryEndpoint extends VaquitaController {
-    @Override
-    public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest req, VaquitaApp app) throws Exception {
+public class BusinessValueHistoryEndpoint implements IVGETHandler {
 
+    @Override
+    public IVHTTPResponse handleGET(VHTTPGetRequest req, VApp vApp) throws Exception {
         if(req.session().isPresent() && req.session().get().containsKey("user_id")){
             int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
@@ -48,11 +47,11 @@ public class BusinessValueHistoryEndpoint extends VaquitaController {
 
                     .union(
                             create.select(
-                                sum((EXPENSES.EXPENSE_VALUE)).as("value"),
-                                month(EXPENSES.EXPENSE_DATE).as("month"),
-                                year(EXPENSES.EXPENSE_DATE).as("year")
+                                    sum((EXPENSES.EXPENSE_VALUE)).as("value"),
+                                    month(EXPENSES.EXPENSE_DATE).as("month"),
+                                    year(EXPENSES.EXPENSE_DATE).as("year")
                             )
-                            .from(EXPENSES).where(EXPENSES.USER_ID.eq(user_id)).groupBy(year(EXPENSES.EXPENSE_DATE),month(EXPENSES.EXPENSE_DATE))
+                                    .from(EXPENSES).where(EXPENSES.USER_ID.eq(user_id)).groupBy(year(EXPENSES.EXPENSE_DATE),month(EXPENSES.EXPENSE_DATE))
                     )
                     .orderBy(3,2);
 
@@ -74,18 +73,9 @@ public class BusinessValueHistoryEndpoint extends VaquitaController {
 
             conn.close();
 
-            return new VaquitaJSONResponse(200,node);
+            return new VJsonResponse(200,node);
         }else{
-            return new VaquitaTextResponse(400, "Bad Request, no user_id found in session.");
+            return new VTextResponse(400, "Bad Request, no user_id found in session.");
         }
-
-
-
-
-    }
-
-    @Override
-    public VaquitaJSONResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest,VaquitaApp app) throws Exception {
-        return null;
     }
 }

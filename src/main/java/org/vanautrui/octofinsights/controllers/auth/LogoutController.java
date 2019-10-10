@@ -1,28 +1,21 @@
 package org.vanautrui.octofinsights.controllers.auth;
 
-import org.vanautrui.vaquitamvc.VaquitaApp;
-import org.vanautrui.vaquitamvc.controller.VaquitaController;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
+import org.vanautrui.vaquitamvc.VApp;
+import org.vanautrui.vaquitamvc.controller.IVGETHandler;
+import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
+import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
+import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 
-public class LogoutController extends VaquitaController {
-
-
+public class LogoutController implements IVGETHandler {
 
     @Override
-    public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest request, VaquitaApp app) throws Exception {
-
-        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true") ) {
+    public IVHTTPResponse handleGET(VHTTPGetRequest request, VApp vApp) throws Exception {
+        if( request.session().isPresent()
+                && request.session().get().containsKey("authenticated")
+                && request.session().get().get("authenticated").equals("true") ) {
             request.session().get().remove("authenticated");
         }
 
-        return new VaquitaRedirectToGETResponse("/",request);
-    }
-
-    @Override
-    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest,VaquitaApp app) throws Exception {
-        return null;
+        return new VRedirectToGETResponse("/",request);
     }
 }

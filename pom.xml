@@ -12,20 +12,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>jsweet-plugins-release</id>
-            <name>plugins-release</name>
-            <url>http://repository.jsweet.org/artifactory/plugins-release-local</url>
-        </pluginRepository>
-        <pluginRepository>
-            <snapshots />
-            <id>jsweet-plugins-snapshots</id>
-            <name>plugins-snapshot</name>
-            <url>http://repository.jsweet.org/artifactory/plugins-snapshot-local</url>
-        </pluginRepository>
-    </pluginRepositories>
-
   <dependencies>
 
     <dependency>
@@ -34,11 +20,13 @@
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-	  <groupId>org.vanautrui</groupId>
-	  <artifactId>vaquitapi</artifactId>
-	  <version>1.0.4</version>
-    </dependency>
+
+      <!-- https://jitpack.io/ -->
+      <dependency>
+          <groupId>com.github.pointbazaar</groupId>
+          <artifactId>vaquitapi</artifactId>
+          <version>master-07259ce3c9-1</version>
+      </dependency>
 
       <dependency>
           <groupId>javax.servlet</groupId>
@@ -97,44 +85,18 @@
           <artifactId>activation</artifactId>
           <version>1.1.1</version>
       </dependency>
-
-      <dependency>
-          <groupId>org.jsweet</groupId>
-          <artifactId>jsweet-core</artifactId>
-          <version>6</version>
-      </dependency>
-      <dependency>
-          <groupId>org.jsweet.candies</groupId>
-          <artifactId>jquery</artifactId>
-          <version>1.10.0-20170726</version>
-      </dependency>
-
-      <dependency>
-          <groupId>com.google.api-client</groupId>
-          <artifactId>google-api-client</artifactId>
-          <version>1.24.1</version>
-      </dependency>
-
-
   </dependencies>
+
 	<repositories>
-	  <repository>
-	    <id>vanautrui</id>
-	    <name>Van Autrui Maven Repository</name>
-	    <url>http://maven.vanautrui.org</url>
-	  </repository>
-
-
         <repository>
-            <id>jsweet-central</id>
-            <name>libs-release</name>
-            <url>http://repository.jsweet.org/artifactory/libs-release-local</url>
+            <id>vanautrui</id>
+            <name>Van Autrui Maven Repository</name>
+            <url>http://maven.vanautrui.org</url>
         </repository>
+
         <repository>
-            <snapshots />
-            <id>jsweet-snapshots</id>
-            <name>libs-snapshot</name>
-            <url>http://repository.jsweet.org/artifactory/libs-snapshot-local</url>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
 	</repositories>
 
@@ -177,70 +139,7 @@
                     <fork>true</fork>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.jsweet</groupId>
-                <artifactId>jsweet-maven-plugin</artifactId>
-                <version>2.3.0-SNAPSHOT</version>
-                <configuration>
-                    <includes>
-                        <include>**/frontend/*.java</include>
-                    </includes>
-                    <verbose>true</verbose>
-                    <tsOut>target/ts</tsOut>
-                    <!--<outDir>target/js</outDir>-->
-                    <outDir>src/main/resources/target</outDir>
-                    <candiesJsOut>webapp</candiesJsOut>
-                    <targetVersion>ES6</targetVersion>
-                    <module>none</module>
-                    <moduleResolution>classic</moduleResolution>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>generate-js</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>jsweet</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
-        <pluginManagement>
-            <plugins>
-                <!--This plugin's configuration is used to store Eclipse m2e settings
-                    only. It has no influence on the Maven build itself. -->
-                <plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <version>1.0.0</version>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>
-                                            org.jsweet
-                                        </groupId>
-                                        <artifactId>
-                                            jsweet-maven-plugin
-                                        </artifactId>
-                                        <versionRange>
-                                            [1.0.0,)
-                                        </versionRange>
-                                        <goals>
-                                            <goal>jsweet</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore></ignore>
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
     </build>
+
 </project>

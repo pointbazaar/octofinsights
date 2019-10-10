@@ -4,13 +4,14 @@ import org.jooq.Record;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.services.ExpensesService;
-import org.vanautrui.vaquitamvc.VaquitaApp;
-import org.vanautrui.vaquitamvc.requests.IVaquitaHTTPRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
+import org.vanautrui.vaquitamvc.VApp;
+import org.vanautrui.vaquitamvc.controller.IVFullController;
+import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
+import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
+import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
+import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
+import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
+import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 
 import java.net.URLDecoder;
 import java.sql.Timestamp;
@@ -21,15 +22,16 @@ import java.util.Map;
 import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.Tables.EXPENSES;
 
-public class ExpensesEditController extends org.vanautrui.vaquitamvc.controller.VaquitaController {
+public class ExpensesEditController implements IVFullController {
+
     @Override
-    public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest request, VaquitaApp app) throws Exception {
+    public IVHTTPResponse handleGET(VHTTPGetRequest request, VApp app) throws Exception {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ){
             int user_id = Integer.parseInt(request.session().get().get("user_id"));
 
-            int expense_id = Integer.parseInt(request.getQueryParameter("id"));
+            int expense_id = Integer.parseInt(request.getQueryParam("id"));
 
             Record expense = ExpensesService.getById(user_id,expense_id);
 
@@ -73,37 +75,41 @@ public class ExpensesEditController extends org.vanautrui.vaquitamvc.controller.
 
 
             //conn.close();
-            return new VaquitaHTMLResponse(200,page);
+            return new VHTMLResponse(200,page);
 
         }else {
-            return new VaquitaRedirectToGETResponse("/login", request);
+            return new VRedirectToGETResponse("/login", request);
         }
     }
 
     @Override
-    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest,VaquitaApp app) throws Exception {
-        IVaquitaHTTPRequest request = vaquitaHTTPEntityEnclosingRequest;
+    public IVHTTPResponse handlePOST(VHTTPPostRequest request, VApp vApp) throws Exception {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ) {
 
             int user_id = Integer.parseInt(request.session().get().get("user_id"));
 
-            Map<String,String> params = vaquitaHTTPEntityEnclosingRequest.getPostParameters();
+            Map<String,String> params = request.getPostParameters();
 
             int expense_id = Integer.parseInt(params.get("id"));
 
-            String expense_name = URLDecoder.decode(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("expense_name"));
-            int price= (-1)*Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("expense_value"));
-            String time_of_sale = vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("expense_date");
+            String expense_name = URLDecoder.decode(request.getPostParameters().get("expense_name"));
+            int price= (-1)*Integer.parseInt(request.getPostParameters().get("expense_value"));
+            String time_of_sale = request.getPostParameters().get("expense_date");
 
             Timestamp expense_date_timestamp = new Timestamp((new SimpleDateFormat("yyyy-MM-dd").parse(time_of_sale)).getTime());
 
             ExpensesService.updateById(user_id,expense_id,expense_name,price,expense_date_timestamp);
 
-            return new VaquitaRedirectToGETResponse("/expenses",request);
+            return new VRedirectToGETResponse("/expenses",request);
         }else{
-            return new VaquitaRedirectToGETResponse("/login",request);
+            return new VRedirectToGETResponse("/login",request);
         }
+    }
+
+    @Override
+    public IVHTTPResponse handlePUT(VHTTPPutRequest vhttpPutRequest, VApp vApp) throws Exception {
+        return null;
     }
 }

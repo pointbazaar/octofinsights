@@ -2,23 +2,21 @@ package org.vanautrui.octofinsights.controllers;
 
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
-import org.vanautrui.vaquitamvc.VaquitaApp;
-import org.vanautrui.vaquitamvc.controller.VaquitaController;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
+import org.vanautrui.vaquitamvc.VApp;
+import org.vanautrui.vaquitamvc.controller.IVGETHandler;
+import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
+import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
+import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
+import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 
 import static j2html.TagCreator.*;
 
-public class InvoicesController extends VaquitaController {
+public class InvoicesController implements IVGETHandler {
 
     //https://codeburst.io/generate-pdf-invoices-with-javascript-c8dbbfb56361
 
     @Override
-    public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest request, VaquitaApp app) throws Exception {
-
+    public IVHTTPResponse handleGET(VHTTPGetRequest request, VApp app) throws Exception {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ){
@@ -35,8 +33,8 @@ public class InvoicesController extends VaquitaController {
                     html(
                             HeadUtil.makeHead(
                                     script()
-                                        .withSrc("https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js")
-                                        .attr("crossorigin","anonymous")
+                                            .withSrc("https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js")
+                                            .attr("crossorigin","anonymous")
                             ),
                             body(
                                     NavigationUtil.createNavbar(request.session().get().get("username"),"Invoices"),
@@ -62,17 +60,17 @@ public class InvoicesController extends VaquitaController {
                                                                             .withId("price")
                                                             ).withClasses("form-group").withClasses("col-md-2"),
                                                             div(
-                                                                button(attrs(".btn .btn-primary .m-2 .p-3"),"Enter ")
-                                                                        .withId("enterButton")
-                                                                        .withType("submit")
-                                                                        .attr("onclick","entervalue")
+                                                                    button(attrs(".btn .btn-primary .m-2 .p-3"),"Enter ")
+                                                                            .withId("enterButton")
+                                                                            .withType("submit")
+                                                                            .attr("onclick","entervalue")
                                                             ).withClasses("col-md-2")
                                                     ).withClasses("row"),
 
                                                     ul(
 
                                                     ).withId("invoice-list")
-                                                    .withClasses("list-group"),
+                                                            .withClasses("list-group"),
 
                                                     hr(),
                                                     button("Generate PDF")
@@ -84,15 +82,10 @@ public class InvoicesController extends VaquitaController {
                             )
                     ).render();
 
-            return new VaquitaHTMLResponse(200,page);
+            return new VHTMLResponse(200,page);
 
         }else {
-            return new VaquitaRedirectToGETResponse("/login", request);
+            return new VRedirectToGETResponse("/login", request);
         }
-    }
-
-    @Override
-    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest,VaquitaApp app) throws Exception {
-        return null;
     }
 }

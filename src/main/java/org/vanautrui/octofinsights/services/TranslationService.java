@@ -7,7 +7,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.vanautrui.vaquitamvc.VaquitaLogger;
+import org.vanautrui.vaquitamvc.VLogger;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -24,7 +24,7 @@ public class TranslationService {
     private static Map<String, Map<String,String>> translationsCache=new HashMap<>();
 
     public static synchronized String translateText(String text,String target_lang){
-        VaquitaLogger.info("translating to "+target_lang);
+        VLogger.info("translating to "+target_lang);
         return translate_inner_0(text,"plain",target_lang);
     }
 
@@ -54,7 +54,7 @@ public class TranslationService {
 
             return result;
         }catch (Exception e){
-            VaquitaLogger.error("FATAL ERROR IN TRANSLATION. PROVIDING THE ORIGINAL TEXT.");
+            VLogger.error("FATAL ERROR IN TRANSLATION. PROVIDING THE ORIGINAL TEXT.");
             return content;
         }
     }

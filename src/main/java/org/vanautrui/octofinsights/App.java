@@ -5,7 +5,9 @@ import org.vanautrui.octofinsights.controllers.IndexController;
 import org.vanautrui.octofinsights.controllers.InvoicesController;
 import org.vanautrui.octofinsights.controllers.ProfileController;
 import org.vanautrui.octofinsights.controllers.api.*;
-import org.vanautrui.octofinsights.controllers.auth.*;
+import org.vanautrui.octofinsights.controllers.auth.LoginController;
+import org.vanautrui.octofinsights.controllers.auth.LogoutController;
+import org.vanautrui.octofinsights.controllers.auth.RegisterController;
 import org.vanautrui.octofinsights.controllers.other.customers.CustomerViewController;
 import org.vanautrui.octofinsights.controllers.other.customers.CustomersController;
 import org.vanautrui.octofinsights.controllers.other.expenses.ExpensesController;
@@ -19,14 +21,11 @@ import org.vanautrui.octofinsights.controllers.other.sales.SalesController;
 import org.vanautrui.octofinsights.controllers.other.sales.SalesEditController;
 import org.vanautrui.octofinsights.controllers.other.tasks.TaskActionController;
 import org.vanautrui.octofinsights.controllers.other.tasks.TaskAddController;
-import org.vanautrui.vaquitamvc.VaquitaApp;
-import org.vanautrui.vaquitamvc.controller.VaquitaController;
+import org.vanautrui.vaquitamvc.VApp;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class App
 {
@@ -53,57 +52,56 @@ public class App
             e.printStackTrace();
         }
 
-        Map<String, VaquitaController> routes=new HashMap<String, VaquitaController>();
+        VApp app = new VApp(9377, "Octofinsights",true);
 
-        routes.put("/", new IndexController());
+        app.putGetMapping("/",new IndexController());
 
-        routes.put("/dashboard",new DashboardController());
-        routes.put("/leads",new LeadsController());
+        app.putGetMapping("/dashboard",new DashboardController());
 
-
-
-        routes.put("/sales",new SalesController());
-        routes.put("/sales/edit",new SalesEditController());
+        app.putFullMapping("/leads",new LeadsController());
 
 
-
-        routes.put("/expenses",new ExpensesController());
-        routes.put("/expenses/edit",new ExpensesEditController());
-
-        routes.put("/projects",new ProjectsController());
-        routes.put("/projects/add",new ProjectAddController());
-        routes.put("/projects/edit",new ProjectEditController());
-        routes.put("/projects/view",new ProjectViewController());
-
-        routes.put("/customers",new CustomersController());
-        routes.put("/customers/view",new CustomerViewController());
-
-        routes.put("/tasks/add",new TaskAddController());
-        routes.put("/tasks/action",new TaskActionController());
-
-        routes.put("/invoices",new InvoicesController());
-
-        routes.put("/profile",new ProfileController());
-
-        routes.put("/login",new LoginController());
-        routes.put("/logout",new LogoutController());
-
-        routes.put("/register",new RegisterController());
+        app.putFullMapping("/sales",new SalesController());
+        app.putFullMapping("/sales/edit",new SalesEditController());
 
 
 
-        routes.put("/api/cashflow",new CashFlowEndpoint());
-        routes.put("/api/businessvaluehistory",new BusinessValueHistoryEndpoint());
+        app.putFullMapping("/expenses",new ExpensesController());
+        app.putFullMapping("/expenses/edit",new ExpensesEditController());
 
-        routes.put("/api/value",new BalanceEndpoint());
-        routes.put("/api/salesthismonth",new SalesThisMonthEndpoint());
-        routes.put("/api/expensesthismonth",new ExpensesThisMonthEndpoint());
-        routes.put("/api/profit",new ProfitEndpoint());
-        routes.put("/api/activeprojects",new ActiveProjectsEndpoint());
-        routes.put("/api/activetasks",new ActiveTasksEndpoint());
+        app.putFullMapping("/projects",new ProjectsController());
+        app.putFullMapping("/projects/add",new ProjectAddController());
+        app.putFullMapping("/projects/edit",new ProjectEditController());
+        app.putGetMapping("/projects/view",new ProjectViewController());
+
+        app.putFullMapping("/customers",new CustomersController());
+        app.putGetMapping("/customers/view",new CustomerViewController());
+
+        app.putPostMapping("/tasks/add",new TaskAddController());
+        app.putPostMapping("/tasks/action",new TaskActionController());
+
+        app.putGetMapping("/invoices",new InvoicesController());
+
+        app.putGetMapping("/profile",new ProfileController());
+
+        app.putFullMapping("/login",new LoginController());
+        app.putGetMapping("/logout",new LogoutController());
+
+        app.putFullMapping("/register",new RegisterController());
+
+
+
+        app.putGetMapping("/api/cashflow",new CashFlowEndpoint());
+        app.putGetMapping("/api/businessvaluehistory",new BusinessValueHistoryEndpoint());
+
+        app.putGetMapping("/api/value",new BalanceEndpoint());
+        app.putGetMapping("/api/salesthismonth",new SalesThisMonthEndpoint());
+        app.putGetMapping("/api/expensesthismonth",new ExpensesThisMonthEndpoint());
+        app.putGetMapping("/api/profit",new ProfitEndpoint());
+        app.putGetMapping("/api/activeprojects",new ActiveProjectsEndpoint());
+        app.putGetMapping("/api/activetasks",new ActiveTasksEndpoint());
 
         try {
-            VaquitaApp app = new VaquitaApp(9377, routes);
             app.startServer();
         }catch (Exception e){
             e.printStackTrace();

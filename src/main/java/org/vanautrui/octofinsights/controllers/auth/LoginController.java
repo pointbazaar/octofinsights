@@ -5,14 +5,15 @@ import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
-import org.vanautrui.vaquitamvc.VaquitaApp;
-import org.vanautrui.vaquitamvc.controller.VaquitaController;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPEntityEnclosingRequest;
-import org.vanautrui.vaquitamvc.requests.VaquitaHTTPJustRequest;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaRedirectToGETResponse;
-import org.vanautrui.vaquitamvc.responses.VaquitaTextResponse;
+import org.vanautrui.vaquitamvc.VApp;
+import org.vanautrui.vaquitamvc.controller.IVFullController;
+import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
+import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
+import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
+import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
+import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
+import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
+import org.vanautrui.vaquitamvc.responses.VTextResponse;
 
 import java.net.URLDecoder;
 import java.sql.Connection;
@@ -22,59 +23,58 @@ import java.util.Optional;
 import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.tables.Users.USERS;
 
-public class LoginController extends VaquitaController {
+public class LoginController implements IVFullController {
 
     @Override
-    public VaquitaHTTPResponse handleGET(VaquitaHTTPJustRequest req, VaquitaApp app) throws Exception {
-
-        ContainerTag page =
+    public IVHTTPResponse handleGET(VHTTPGetRequest vhttpGetRequest, VApp vApp) throws Exception {
+        final ContainerTag page =
                 html(
                         HeadUtil.makeHead(),
                         body(
                                 div(
                                         attrs(".container"),
                                         div(
-                                            div(
-                                                h1("Octofinsights Login").withClasses("text-center"),
-                                                form(
-                                                        div(
-                                                            label("Username"),
-                                                            input().withName("username").withType("text").withClasses("form-control")
-                                                        ).withClasses("form-group"),
-                                                        div(
-                                                            label("Password"),
-                                                            input().withName("password").withPlaceholder("password").withType("password").withClasses("form-control")
-                                                        ).withClasses("form-group"),
-                                                        button(attrs(".btn .btn-primary .col-md-12"),"Login").withType("submit")
-                                                ).withAction("/login").withMethod("post")
-                                            )
+                                                div(
+                                                        h1("Octofinsights Login").withClasses("text-center"),
+                                                        form(
+                                                                div(
+                                                                        label("Username"),
+                                                                        input().withName("username").withType("text").withClasses("form-control")
+                                                                ).withClasses("form-group"),
+                                                                div(
+                                                                        label("Password"),
+                                                                        input().withName("password").withPlaceholder("password").withType("password").withClasses("form-control")
+                                                                ).withClasses("form-group"),
+                                                                button(attrs(".btn .btn-primary .col-md-12"),"Login").withType("submit")
+                                                        ).withAction("/login").withMethod("post")
+                                                )
                                         ).withClasses("row justify-content-center")
                                 )
                         )
                 );
 
-        return new VaquitaHTMLResponse(200,page.render());
+        return new VHTMLResponse(200,page.render());
     }
 
     @Override
-    public VaquitaHTTPResponse handlePOST(VaquitaHTTPEntityEnclosingRequest vaquitaHTTPEntityEnclosingRequest,VaquitaApp app) throws Exception {
+    public IVHTTPResponse handlePOST(VHTTPPostRequest req, VApp vApp) throws Exception {
         //verify login credentials and set cookie
 
-        Map<String,String> parameters= vaquitaHTTPEntityEnclosingRequest.getPostParameters();
+        final Map<String,String> parameters= req.getPostParameters();
 
-        String username = URLDecoder.decode(parameters.get("username"));
-        String password = URLDecoder.decode(parameters.get("password"));
+        final String username = URLDecoder.decode(parameters.get("username"));
+        final String password = URLDecoder.decode(parameters.get("password"));
 
-        Connection conn = DBUtils.makeDBConnection();
+        final Connection conn = DBUtils.makeDBConnection();
 
-        DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+        final DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 
-        Result<Record1<Integer>> does_it_login= create
+        final Result<Record1<Integer>> does_it_login= create
                 .select(USERS.ID)
                 .from(USERS)
                 .where(
                         USERS.USERNAME.eq(username)
-                        .and(USERS.PASSWORD.eq(password))
+                                .and(USERS.PASSWORD.eq(password))
                 )
                 .fetch();
         Optional<Integer> id = Optional.empty();
@@ -87,20 +87,25 @@ public class LoginController extends VaquitaController {
 
         conn.close();
 
-        if(vaquitaHTTPEntityEnclosingRequest.session().isPresent()){
+        if(req.session().isPresent()){
 
             if(id.isPresent()) {
 
-                vaquitaHTTPEntityEnclosingRequest.session().get().put("authenticated", "true");
-                vaquitaHTTPEntityEnclosingRequest.session().get().put("username", parameters.get("username"));
-                vaquitaHTTPEntityEnclosingRequest.session().get().put("user_id", id.get().toString());
+                req.session().get().put("authenticated", "true");
+                req.session().get().put("username", parameters.get("username"));
+                req.session().get().put("user_id", id.get().toString());
 
-                return new VaquitaRedirectToGETResponse("/",vaquitaHTTPEntityEnclosingRequest);
+                return new VRedirectToGETResponse("/",req);
             }else {
-                return new VaquitaTextResponse(500,"user seems not to exist");
+                return new VTextResponse(500,"user seems not to exist");
             }
         }else{
-            return new VaquitaTextResponse(500,"something went wrong with the sessions");
+            return new VTextResponse(500,"something went wrong with the sessions");
         }
+    }
+
+    @Override
+    public IVHTTPResponse handlePUT(VHTTPPutRequest vhttpPutRequest, VApp vApp) throws Exception {
+        return null;
     }
 }
