@@ -1,16 +1,15 @@
 package org.vanautrui.octofinsights.services;
 
-import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.Result;
-import org.jooq.SQLDialect;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.time.YearMonth;
 
+import static org.jooq.impl.DSL.sum;
 import static org.vanautrui.octofinsights.generated.tables.Sales.SALES;
 
 public class SalesService {
@@ -40,7 +39,14 @@ public class SalesService {
     }
 
     public static long getTotal(int user_id) throws Exception{
-        return getSales(user_id).stream().map(sale->sale.get(SALES.PRICE_OF_SALE).longValue()).reduce(Long::sum).orElse(0L);
+        //old impl. inefficient, because all sales are requested from the db
+        //return getSales(user_id).stream().map(sale->sale.get(SALES.PRICE_OF_SALE).longValue()).reduce(Long::sum).orElse(0L);
+
+        try(Connection conn = DBUtils.makeDBConnection()){
+            final DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+            Record1<BigDecimal> sum = ctx.select(sum(SALES.PRICE_OF_SALE)).from(SALES).where(SALES.USER_ID.eq(user_id)).fetchOne();
+            return sum.component1().longValue();
+        }
     }
 
     public static Result<Record> getSalesThisMonth(int user_id) throws Exception{
@@ -52,10 +58,7 @@ public class SalesService {
         try(Connection conn= DBUtils.makeDBConnection()) {
             final DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 
-            Result<Record> records = create.select(SALES.asterisk()).from(SALES).where(SALES.USER_ID.eq(user_id).and(SALES.TIME_OF_SALE.between(date1, date2))).fetch().sortDesc(SALES.TIME_OF_SALE);
-            conn.close();
-
-            return records;
+            return create.select(SALES.asterisk()).from(SALES).where(SALES.USER_ID.eq(user_id).and(SALES.TIME_OF_SALE.between(date1, date2))).fetch().sortDesc(SALES.TIME_OF_SALE);
         }
     }
 

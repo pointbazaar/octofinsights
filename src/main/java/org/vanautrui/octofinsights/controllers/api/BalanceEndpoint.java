@@ -11,6 +11,8 @@ import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VJsonResponse;
 import org.vanautrui.vaquitamvc.responses.VTextResponse;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 
 public class BalanceEndpoint implements IVGETHandler {
 
@@ -19,10 +21,40 @@ public class BalanceEndpoint implements IVGETHandler {
         if(req.session().isPresent() && req.session().get().containsKey("user_id")){
             int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
+            AtomicLong x1 = new AtomicLong(0);
+            AtomicLong x2 = new AtomicLong(0);
 
-            long balance = SalesService.getTotal(user_id)+ ExpensesService.getTotal(user_id);
+            Thread t1 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        x1.set(SalesService.getTotal(user_id));
+                    } catch (Exception e) {
+                        //TODO
+                    }
+                }
+            });
 
-            ObjectNode node = (new ObjectMapper()).createObjectNode();
+            Thread t2 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        x2.set(ExpensesService.getTotal(user_id));
+                    } catch (Exception e) {
+                        //TODO
+                    }
+                }
+            });
+
+            t1.start();
+            t2.start();
+
+            t1.join();
+            t2.join();
+
+            final long balance = x1.get()+x2.get();
+
+            final ObjectNode node = (new ObjectMapper()).createObjectNode();
 
             node.put("value",balance);
 

@@ -8,6 +8,7 @@
         main5();
         main_active_projects();
         main_active_tasks();
+        main_open_leads();
     }
 
 
@@ -17,7 +18,7 @@
         //balancediv.hide();
         lowOpacity(balancediv);
 
-        fetch("/api/value").then(data=>data.json()).then(parse=>{
+        fetch("/api/current_balance").then(data=>data.json()).then(parse=>{
             var balance = $("#balance").get()[0];
             balance.textContent=parse.value +" €";
             if(parse.value>=0) {
@@ -109,6 +110,16 @@
             }else if(active_task_count.value==0){
                 mydiv.remove();
             }
+
+            fullOpacity(mydiv);
+        });
+    }
+
+    function main_open_leads(){
+        var mydiv = $("#openleadsdiv");
+        lowOpacity(mydiv);
+        fetch("/api/openleads").then(data=>data.json()).then(openleads=>{
+            $("#openleads").get()[0].textContent=openleads.value+"";
 
             fullOpacity(mydiv);
         });

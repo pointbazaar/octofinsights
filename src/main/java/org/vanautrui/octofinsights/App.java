@@ -94,12 +94,13 @@ public class App
         app.putGetMapping("/api/cashflow",new CashFlowEndpoint());
         app.putGetMapping("/api/businessvaluehistory",new BusinessValueHistoryEndpoint());
 
-        app.putGetMapping("/api/value",new BalanceEndpoint());
+        app.putGetMapping("/api/current_balance",new BalanceEndpoint());
         app.putGetMapping("/api/salesthismonth",new SalesThisMonthEndpoint());
         app.putGetMapping("/api/expensesthismonth",new ExpensesThisMonthEndpoint());
         app.putGetMapping("/api/profit",new ProfitEndpoint());
         app.putGetMapping("/api/activeprojects",new ActiveProjectsEndpoint());
         app.putGetMapping("/api/activetasks",new ActiveTasksEndpoint());
+        app.putGetMapping("/api/openleads",new OpenLeadsEndpoint());
 
         try {
             app.startServer();

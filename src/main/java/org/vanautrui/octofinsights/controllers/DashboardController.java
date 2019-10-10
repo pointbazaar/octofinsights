@@ -40,24 +40,7 @@ public class DashboardController implements IVGETHandler {
     public IVHTTPResponse handleGET(VHTTPGetRequest vhttpGetRequest, VApp vApp) throws Exception {
         if( vhttpGetRequest.session().isPresent() && vhttpGetRequest.session().get().containsKey("authenticated") && vhttpGetRequest.session().get().get("authenticated").equals("true") ){
 
-            int user_id = Integer.parseInt(vhttpGetRequest.session().get().get("user_id"));
-
-            //long value = (SalesService.getTotal(user_id)+ ExpensesService.getTotal(user_id));
-
-            long lead_count = LeadsService.getOpenLeadsCount(user_id);
-
-            //String classes_balance = (value>=0)?"text-success":"text-danger";
-
-            String classes_leads = (lead_count>0)?"text-success":"text-info";
-
-
-
-            //long sales_this_month = SalesService.getTotalForThisMonth(user_id);
-            //long expenses_this_month =ExpensesService.getTotalForThisMonth(user_id);
-
-            //long delta_this_month = sales_this_month+expenses_this_month;
-
-            //String classes_month = (delta_this_month>=0)?"text-success":"text-danger";
+            final int user_id = Integer.parseInt(vhttpGetRequest.session().get().get("user_id"));
 
             String page=
                     html(
@@ -76,7 +59,7 @@ public class DashboardController implements IVGETHandler {
 
                                                     div(
                                                             makeDashboardSimpleCard("Balance","~", "","balance","balancediv"),
-                                                            makeDashboardSimpleCard("Open Leads",""+ lead_count, classes_leads,"","leadsdiv"),
+                                                            makeDashboardSimpleCard("Open Leads","~","","openleads","openleadsdiv"),
                                                             makeDashboardSimpleCard("Sales this Month","~", "","salesthismonth","salesdiv"),
 
                                                             makeDashboardSimpleCard("Loss this Month","~", "","expensesthismonth","expensesdiv"),
