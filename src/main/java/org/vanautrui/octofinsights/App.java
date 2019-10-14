@@ -2,7 +2,7 @@ package org.vanautrui.octofinsights;
 
 import org.vanautrui.octofinsights.controllers.DashboardController;
 import org.vanautrui.octofinsights.controllers.IndexController;
-import org.vanautrui.octofinsights.controllers.InvoicesController;
+import org.vanautrui.octofinsights.controllers.other.invoices.InvoicesController;
 import org.vanautrui.octofinsights.controllers.ProfileController;
 import org.vanautrui.octofinsights.controllers.api.*;
 import org.vanautrui.octofinsights.controllers.auth.LoginController;
