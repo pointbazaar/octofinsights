@@ -2,6 +2,7 @@
 
 [![CodeFactor](https://www.codefactor.io/repository/github/vanautrui/octofinsights/badge)](https://www.codefactor.io/repository/github/vanautrui/octofinsights)
 [![](https://jitpack.io/v/vanautrui/octofinsights.svg)](https://jitpack.io/#vanautrui/octofinsights)
+[![Known Vulnerabilities](https://snyk.io/test/github/vanautrui/octofinsights/badge.svg)](https://snyk.io/test/github/vanautrui/octofinsights)
 
 Basic web application which allows for the 
 Tracking of Sales, Leads, Expenses and Projects
