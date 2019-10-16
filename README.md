@@ -43,7 +43,7 @@ You can self host this web app easily.
 - `./generate_classes.sh` 
     - this creates some classes which are needed to build this project
     - for this, it needs to connect to your mysql database
-- `./serverScript.sh`
+- `./build.sh`
     - this builds the project
 - `./serverScriptDeploy.sh`
     - this starts the server
