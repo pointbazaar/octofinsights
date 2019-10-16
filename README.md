@@ -1,5 +1,7 @@
 # Octofinsights 
 
+[![CodeFactor](https://www.codefactor.io/repository/github/vanautrui/octofinsights/badge)](https://www.codefactor.io/repository/github/vanautrui/octofinsights)
+
 Basic web application which allows for the 
 Tracking of Sales, Leads, Expenses and Projects
 
