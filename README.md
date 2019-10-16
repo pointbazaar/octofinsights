@@ -32,6 +32,7 @@ You can self host this web app easily.
     - `jaxb-api-2.2.12.jar`, `jaxb-core-2.2.11.jar`, 
     `jaxb-impl-2.3.0.jar`, `jooq-3.11.11.jar`,
     `jooq-codegen-3.11.11.jar`, `jooq-meta-3.11.11.jar`
+    - you can find most of these on maven central probably https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
 - [optional] setup a reverse proxy and subdomains for octofinsights.yourdomain.tld
 - create the 'octofinsights' database on your mysql server by running `setup_tables.sql`
     - https://stackoverflow.com/questions/11407349/how-to-export-and-import-a-sql-file-from-command-line-with-options
