@@ -125,8 +125,8 @@ public final class ExpensesController {
                     && req.params().containsKey("expense_value")
             ){
 
-                String expense_name = req.params().get("expense_name");
-                String expense_date= req.params().get("expense_date");
+                String expense_name = req.queryParams("expense_name");
+                String expense_date= req.queryParams("expense_date");
 
                 Date expenseDate = null;
                 try {

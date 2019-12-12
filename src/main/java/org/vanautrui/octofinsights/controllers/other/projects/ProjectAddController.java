@@ -22,32 +22,31 @@ public final class ProjectAddController {
                 && req.session().attribute("authenticated").equals("true")
                 && req.session().attributes().contains("user_id")
         ){
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-            Map<String, String> params = req.params();
 
-            int user_id = parseInt(req.session().attribute("user_id"));
+            final int user_id = parseInt(req.session().attribute("user_id"));
 
-            String project_name = params.get("project-name");
+            final String project_name = req.queryParams("project-name");
 
-            String s1 = params.get("project-start-date");
-            String s2 = params.get("project-end-date-estimate");
+            final String start_date = req.queryParams("project-start-date");
+            final String end_date_estimate = req.queryParams("project-end-date-estimate");
 
             Timestamp project_start_date;
             Timestamp project_end_date_estimate;
             try {
-                project_start_date = new Timestamp(dateFormat.parse(s1).getTime());
-                project_end_date_estimate = new Timestamp(dateFormat.parse(s2).getTime());
+                project_start_date = new Timestamp(dateFormat.parse(start_date).getTime());
+                project_end_date_estimate = new Timestamp(dateFormat.parse(end_date_estimate).getTime());
             }catch (Exception e){
                 e.printStackTrace();
                 return e.getMessage();
             }
 
-            int effort_estimate_hours = parseInt(params.get("project-effort-estimate"));
-            int earnings_estimate = parseInt(params.get("project-earnings-estimate"));
-            String project_description = params.get("project-description");
+            int effort_estimate_hours = parseInt(req.queryParams("project-effort-estimate"));
+            int earnings_estimate = parseInt(req.queryParams("project-earnings-estimate"));
+            String project_description = req.queryParams("project-description");
 
-            int customer_id = parseInt(params.get("customer_id"));
+            int customer_id = parseInt(req.queryParams("customer_id"));
 
             try {
                 ProjectsService.insertProject(user_id,project_name,project_start_date,project_end_date_estimate,effort_estimate_hours,earnings_estimate,project_description,customer_id);

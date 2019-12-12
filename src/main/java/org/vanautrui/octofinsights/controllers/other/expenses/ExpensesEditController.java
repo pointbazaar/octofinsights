@@ -96,15 +96,13 @@ public final class ExpensesEditController {
                 && request.session().attributes().contains("user_id")
         ) {
 
-            int user_id = Integer.parseInt(request.session().attribute("user_id"));
+            final int user_id = Integer.parseInt(request.session().attribute("user_id"));
 
-            Map<String,String> params = request.params();
+            final int expense_id = Integer.parseInt(request.queryParams("id"));
 
-            int expense_id = Integer.parseInt(params.get("id"));
-
-            String expense_name = URLDecoder.decode(request.params().get("expense_name"));
-            int price= (-1)*Integer.parseInt(request.params().get("expense_value"));
-            String time_of_sale = request.params().get("expense_date");
+            final String expense_name = URLDecoder.decode(request.queryParams("expense_name"));
+            final int price= (-1)*Integer.parseInt(request.queryParams("expense_value"));
+            final String time_of_sale = request.queryParams("expense_date");
 
             Timestamp expense_date_timestamp = null;
             try {

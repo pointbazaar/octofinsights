@@ -99,10 +99,8 @@ public final class CustomersController {
             int user_id = Integer.parseInt(req.session().attribute("user_id"));
             final String action = req.queryParams("action");
 
-            Map<String, String> params = req.params();
-
-            String customer_name=params.get("customer-name");
-            String customer_source=params.get("customer-source");
+            final String customer_name=req.queryParams("customer-name");
+            final String customer_source=req.queryParams("customer-source");
 
             switch (action){
                 case "insert":
