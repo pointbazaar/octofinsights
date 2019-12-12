@@ -22,10 +22,15 @@ import org.vanautrui.octofinsights.controllers.other.sales.SalesEditController;
 import org.vanautrui.octofinsights.controllers.other.tasks.TaskActionController;
 import org.vanautrui.octofinsights.controllers.other.tasks.TaskAddController;
 import org.vanautrui.vaquitamvc.VApp;
+import spark.Spark;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+
+import static spark.Spark.*;
+import static spark.route.HttpMethod.post;
+
 
 public class App
 {
@@ -52,6 +57,8 @@ public class App
             e.printStackTrace();
         }
 
+
+
         final VApp app = new VApp(9377, "Octofinsights",true);
 
         app.putGetMapping("/",new IndexController());
@@ -69,13 +76,25 @@ public class App
         app.putFullMapping("/expenses",new ExpensesController());
         app.putFullMapping("/expenses/edit",new ExpensesEditController());
 
-        app.putFullMapping("/projects",new ProjectsController());
-        app.putFullMapping("/projects/add",new ProjectAddController());
-        app.putFullMapping("/projects/edit",new ProjectEditController());
-        app.putGetMapping("/projects/view",new ProjectViewController());
+        // /projects
+        get("/projects",ProjectsController::get);
+        post("/projects",ProjectsController::post);
+        path("/projects",()->{
+            get("/view",ProjectViewController::get);
+
+            get("/add",ProjectAddController::get);
+            post("/add",ProjectAddController::post);
+
+            get("/edit",ProjectEditController::get);
+            post("/edit",ProjectEditController::post);
+        });
+
+
 
         app.putFullMapping("/customers",new CustomersController());
         app.putGetMapping("/customers/view",new CustomerViewController());
+
+        // /tasks
 
         app.putPostMapping("/tasks/add",new TaskAddController());
         app.putPostMapping("/tasks/action",new TaskActionController());
@@ -89,18 +108,20 @@ public class App
 
         app.putFullMapping("/register",new RegisterController());
 
+        // /api
 
+        path("/api",()->{
+            get("/cashflow",CashFlowEndpoint::get);
+            get("/businessvaluehistory",BusinessValueHistoryEndpoint::get);
+            get("current_balance",BalanceEndpoint::get);
+            get("/salesthismonth",SalesThisMonthEndpoint::get);
+            get("/expensesthismonth",ExpensesThisMonthEndpoint::get);
+            get("/profit",ProfitEndpoint::get);
+            get("/activeprojects",ActiveProjectsEndpoint::get);
+            get("/activetasks",ActiveTasksEndpoint::get);
+            get("/openleads",OpenLeadsEndpoint::get);
+        });
 
-        app.putGetMapping("/api/cashflow",new CashFlowEndpoint());
-        app.putGetMapping("/api/businessvaluehistory",new BusinessValueHistoryEndpoint());
-
-        app.putGetMapping("/api/current_balance",new BalanceEndpoint());
-        app.putGetMapping("/api/salesthismonth",new SalesThisMonthEndpoint());
-        app.putGetMapping("/api/expensesthismonth",new ExpensesThisMonthEndpoint());
-        app.putGetMapping("/api/profit",new ProfitEndpoint());
-        app.putGetMapping("/api/activeprojects",new ActiveProjectsEndpoint());
-        app.putGetMapping("/api/activetasks",new ActiveTasksEndpoint());
-        app.putGetMapping("/api/openleads",new OpenLeadsEndpoint());
 
         try {
             app.startServer();

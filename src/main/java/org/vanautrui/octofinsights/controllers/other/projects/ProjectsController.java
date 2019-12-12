@@ -16,6 +16,8 @@ import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
 import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
 import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
 import org.vanautrui.vaquitamvc.responses.*;
+import spark.Request;
+import spark.Response;
 
 import java.sql.Connection;
 import java.util.List;
@@ -86,8 +88,8 @@ public class ProjectsController implements IVFullController {
         return res;
     }
 
-    @Override
-    public IVHTTPResponse handleGET(VHTTPGetRequest request, VApp app) throws Exception {
+    public static Response get(Request request, Response response) {
+
         boolean loggedin=request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true");
         if(!loggedin){
             return new VRedirectResponse("/login",request,app);
@@ -141,8 +143,7 @@ public class ProjectsController implements IVFullController {
         return new VHTMLResponse(200,page);
     }
 
-    @Override
-    public IVHTTPResponse handlePOST(VHTTPPostRequest request, VApp vApp) throws Exception {
+    public static Response post(Request request, Response response) {
         // this method should handle
         // archive, unarchive, delete
         // of projects
@@ -187,10 +188,5 @@ public class ProjectsController implements IVFullController {
         }else {
             return new VRedirectToGETResponse("/login", request);
         }
-    }
-
-    @Override
-    public IVHTTPResponse handlePUT(VHTTPPutRequest vhttpPutRequest, VApp vApp) throws Exception {
-        return null;
     }
 }

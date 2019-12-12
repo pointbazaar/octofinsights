@@ -10,13 +10,15 @@ import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
 import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VJsonResponse;
 import org.vanautrui.vaquitamvc.responses.VTextResponse;
+import spark.Request;
+import spark.Response;
 
 import java.util.concurrent.atomic.AtomicLong;
 
 
-public class ProfitEndpoint implements IVGETHandler {
-    @Override
-    public IVHTTPResponse handleGET(VHTTPGetRequest req, VApp vApp) throws Exception {
+public final class ProfitEndpoint {
+
+    public static Response get(Request request, Response response) {
         if(req.session().isPresent() && req.session().get().containsKey("user_id")){
             final int user_id = Integer.parseInt(req.session().get().get("user_id"));
 

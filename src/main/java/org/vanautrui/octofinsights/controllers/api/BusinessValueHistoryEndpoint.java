@@ -12,6 +12,8 @@ import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
 import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VJsonResponse;
 import org.vanautrui.vaquitamvc.responses.VTextResponse;
+import spark.Request;
+import spark.Response;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -22,10 +24,10 @@ import static org.vanautrui.octofinsights.generated.Tables.EXPENSES;
 import static org.vanautrui.octofinsights.generated.Tables.SALES;
 
 
-public class BusinessValueHistoryEndpoint implements IVGETHandler {
+public class BusinessValueHistoryEndpoint {
 
-    @Override
-    public IVHTTPResponse handleGET(VHTTPGetRequest req, VApp vApp) throws Exception {
+
+    public static Response get(Request req, Response res) {
         if(req.session().isPresent() && req.session().get().containsKey("user_id")){
             int user_id = Integer.parseInt(req.session().get().get("user_id"));
 

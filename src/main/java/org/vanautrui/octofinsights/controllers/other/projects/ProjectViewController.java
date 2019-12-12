@@ -16,6 +16,8 @@ import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
 import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VRedirectResponse;
+import spark.Request;
+import spark.Response;
 
 import java.sql.Connection;
 import java.time.format.DateTimeFormatter;
@@ -28,7 +30,7 @@ import static org.vanautrui.octofinsights.generated.tables.Customers.CUSTOMERS;
 import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
 import static org.vanautrui.octofinsights.generated.tables.Tasks.TASKS;
 
-public class ProjectViewController implements IVGETHandler {
+public final class ProjectViewController {
 
 
     private ContainerTag makeEffortDisplay(int effort_spent,int effort_estimated){
@@ -106,8 +108,7 @@ public class ProjectViewController implements IVGETHandler {
         ).withClasses("list-group-item");
     }
 
-    @Override
-    public IVHTTPResponse handleGET(VHTTPGetRequest request, VApp app) throws Exception {
+    public static Response get(Request request, Response response) {
         boolean loggedin=request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true");
         if(!loggedin){
             return new VRedirectResponse("/login",request,app);

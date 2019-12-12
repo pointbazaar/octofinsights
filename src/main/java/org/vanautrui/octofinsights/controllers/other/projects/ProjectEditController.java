@@ -14,6 +14,8 @@ import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VRedirectResponse;
 import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
+import spark.Request;
+import spark.Response;
 
 import java.text.SimpleDateFormat;
 import java.util.Map;
@@ -23,21 +25,21 @@ import static j2html.TagCreator.*;
 import static java.lang.Integer.parseInt;
 import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
 
-public class ProjectEditController implements IVFullController {
+public final class ProjectEditController  {
 
-  @Override
-  public IVHTTPResponse handleGET(VHTTPGetRequest request, VApp app) throws Exception {
-    boolean loggedin = request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true");
+  public static Response get(Request request, Response response) {
+
+    final boolean loggedin = request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true");
     if (!loggedin) {
       return new VRedirectResponse("/login", request, app);
     }
 
-    int user_id = parseInt(request.session().get().get("user_id"));
-    int project_id = parseInt(request.getQueryParam("id"));
+    final int user_id = parseInt(request.session().get().get("user_id"));
+    final int project_id = parseInt(request.getQueryParam("id"));
 
-    Record project = ProjectsService.getById(user_id,project_id);
+    final Record project = ProjectsService.getById(user_id,project_id);
 
-    String page =
+    final String page =
             html(
                     HeadUtil.makeHead(),
                     body(
@@ -79,8 +81,7 @@ public class ProjectEditController implements IVFullController {
     return new VHTMLResponse(200, page);
   }
 
-  @Override
-  public IVHTTPResponse handlePOST(VHTTPPostRequest entReq, VApp vApp) throws Exception {
+  public static Response post(Request request, Response response) {
 
     if( entReq.session().isPresent() && entReq.session().get().containsKey("authenticated")
             && entReq.session().get().get("authenticated").equals("true")
@@ -121,10 +122,5 @@ public class ProjectEditController implements IVFullController {
     }else {
       return new VRedirectToGETResponse("/login",entReq);
     }
-  }
-
-  @Override
-  public IVHTTPResponse handlePUT(VHTTPPutRequest vhttpPutRequest, VApp vApp) throws Exception {
-    return null;
   }
 }
