@@ -48,13 +48,28 @@
           <artifactId>httpclient</artifactId>
           <version>4.5.8</version>
       </dependency>
-
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-simple</artifactId>
+          <version>1.7.21</version>
+      </dependency>
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+          <version>1.7.21</version>
+      </dependency>
 
       <dependency>
           <groupId>javax.servlet</groupId>
           <artifactId>javax.servlet-api</artifactId>
           <version>3.0.1</version>
           <!--<scope>provided</scope>-->
+      </dependency>
+
+      <dependency>
+          <groupId>javax.servlet</groupId>
+          <artifactId>javax.servlet-api</artifactId>
+          <version>4.0.1</version>
       </dependency>
 
       <!-- https://mvnrepository.com/artifact/com.j2html/j2html -->
