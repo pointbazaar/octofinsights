@@ -55,10 +55,11 @@ public final class LoginController {
     public static Object post(Request req, Response res) {
         //verify login credentials and set cookie
 
-        final Map<String,String> parameters= req.params();
+        final String username = URLDecoder.decode(req.queryParams("username"));
+        final String password = URLDecoder.decode(req.queryParams("password"));
 
-        final String username = URLDecoder.decode(parameters.get("username"));
-        final String password = URLDecoder.decode(parameters.get("password"));
+        System.out.println(username);
+        System.out.println(password);
 
         final Connection conn;
         try {
@@ -99,7 +100,7 @@ public final class LoginController {
         if(id.isPresent()) {
             req.session(true);
             req.session().attribute("authenticated", "true");
-            req.session().attribute("username", parameters.get("username"));
+            req.session().attribute("username", req.queryParams("username"));
             req.session().attribute("user_id", id.get().toString());
 
             res.redirect("/");

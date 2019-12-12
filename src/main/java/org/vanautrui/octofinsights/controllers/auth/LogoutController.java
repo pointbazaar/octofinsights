@@ -10,9 +10,10 @@ public final class LogoutController  {
 
             req.session().removeAttribute("authenticated");
 
-        }else {
-            res.redirect("/");
         }
+
+        res.redirect("/");
+
         return "";
     }
 }

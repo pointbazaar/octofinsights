@@ -35,7 +35,7 @@ public final class App
         System.out.println( "Octofinsights starting ... " );
         //https://www.youtube.com/watch?v=v1olRFug2ZM
 
-        //TODO: the spark server should run on port 9377
+        port(9377);
         get("/",IndexController::get);
 
         get("/dashboard",DashboardController::get);
