@@ -12,16 +12,18 @@ import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
 import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
+import spark.Request;
+import spark.Response;
 
 import static j2html.TagCreator.*;
 import static java.lang.Integer.parseInt;
 import static org.vanautrui.octofinsights.controllers.other.sales.SalesJ2HTMLUtils.makeSalesTable;
 import static org.vanautrui.octofinsights.generated.tables.Customers.CUSTOMERS;
 
-public class CustomerViewController implements IVGETHandler {
+public final class CustomerViewController {
 
-    @Override
-    public IVHTTPResponse handleGET(VHTTPGetRequest request, VApp app) throws Exception {
+
+    public static Response get(Request request, Response response) {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ){

@@ -11,16 +11,17 @@ import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
 import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
+import spark.Request;
+import spark.Response;
 
 import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.tables.Users.USERS;
 
-public class ProfileController implements IVGETHandler {
+public final class ProfileController {
 
     //https://www.youtube.com/watch?v=o_1aF54DO60&list=RDEMYGj5tu94_mNz6SrYkDD3_g&start_radio=1
 
-    @Override
-    public IVHTTPResponse handleGET(VHTTPGetRequest request, VApp app) throws Exception {
+    public static Response get(Request request, Response response) {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true") ) {
 
             int user_id = Integer.parseInt(request.session().get().get("user_id"));

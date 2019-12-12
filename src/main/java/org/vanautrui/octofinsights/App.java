@@ -2,7 +2,6 @@ package org.vanautrui.octofinsights;
 
 import org.vanautrui.octofinsights.controllers.DashboardController;
 import org.vanautrui.octofinsights.controllers.IndexController;
-import org.vanautrui.octofinsights.controllers.other.invoices.InvoicesController;
 import org.vanautrui.octofinsights.controllers.ProfileController;
 import org.vanautrui.octofinsights.controllers.api.*;
 import org.vanautrui.octofinsights.controllers.auth.LoginController;
@@ -12,6 +11,7 @@ import org.vanautrui.octofinsights.controllers.other.customers.CustomerViewContr
 import org.vanautrui.octofinsights.controllers.other.customers.CustomersController;
 import org.vanautrui.octofinsights.controllers.other.expenses.ExpensesController;
 import org.vanautrui.octofinsights.controllers.other.expenses.ExpensesEditController;
+import org.vanautrui.octofinsights.controllers.other.invoices.InvoicesController;
 import org.vanautrui.octofinsights.controllers.other.leads.LeadsController;
 import org.vanautrui.octofinsights.controllers.other.projects.ProjectAddController;
 import org.vanautrui.octofinsights.controllers.other.projects.ProjectEditController;
@@ -21,15 +21,12 @@ import org.vanautrui.octofinsights.controllers.other.sales.SalesController;
 import org.vanautrui.octofinsights.controllers.other.sales.SalesEditController;
 import org.vanautrui.octofinsights.controllers.other.tasks.TaskActionController;
 import org.vanautrui.octofinsights.controllers.other.tasks.TaskAddController;
-import org.vanautrui.vaquitamvc.VApp;
-import spark.Spark;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
 import static spark.Spark.*;
-import static spark.route.HttpMethod.post;
 
 
 public class App
@@ -57,24 +54,34 @@ public class App
             e.printStackTrace();
         }
 
+        //TODO: the spark server should run on port 9377
+        get("/",IndexController::get);
 
+        get("/dashboard",DashboardController::get);
 
-        final VApp app = new VApp(9377, "Octofinsights",true);
+        // /leads
+        get("/leads",LeadsController::get);
+        post("/leads",LeadsController::post);
 
-        app.putGetMapping("/",new IndexController());
+        // /sales
 
-        app.putGetMapping("/dashboard",new DashboardController());
+        get("/sales",SalesController::get);
+        post("/sales",SalesController::post);
 
-        app.putFullMapping("/leads",new LeadsController());
+        path("/sales",()->{
+            get("/edit",SalesEditController::get);
+            post("/edit",SalesEditController::post);
+        });
 
+        // /expenses
 
-        app.putFullMapping("/sales",new SalesController());
-        app.putFullMapping("/sales/edit",new SalesEditController());
+        get("/expenses",ExpensesController::get);
+        post("/expenses",ExpensesController::post);
 
-
-
-        app.putFullMapping("/expenses",new ExpensesController());
-        app.putFullMapping("/expenses/edit",new ExpensesEditController());
+        path("/expenses",()->{
+            get("/edit",ExpensesEditController::get);
+            post("/edit",ExpensesEditController::post);
+        });
 
         // /projects
         get("/projects",ProjectsController::get);
@@ -90,23 +97,28 @@ public class App
         });
 
 
-
-        app.putFullMapping("/customers",new CustomersController());
-        app.putGetMapping("/customers/view",new CustomerViewController());
+        get("/customers",CustomersController::get);
+        post("/customers",CustomersController::post);
+        get("/customers/view",CustomerViewController::get);
 
         // /tasks
+        path("/tasks",()->{
+            post("/add",TaskAddController::post);
+            post("/action",TaskActionController::post);
+        });
 
-        app.putPostMapping("/tasks/add",new TaskAddController());
-        app.putPostMapping("/tasks/action",new TaskActionController());
+        get("/invoices",InvoicesController::get);
 
-        app.putGetMapping("/invoices",new InvoicesController());
+        get("/profile",ProfileController::get);
 
-        app.putGetMapping("/profile",new ProfileController());
+        // /login
+        get("/login",LoginController::get);
+        post("/login",LoginController::post);
 
-        app.putFullMapping("/login",new LoginController());
-        app.putGetMapping("/logout",new LogoutController());
+        get("/logout",LogoutController::get);
 
-        app.putFullMapping("/register",new RegisterController());
+        get("/register",RegisterController::get);
+        post("/register",RegisterController::post);
 
         // /api
 
@@ -122,11 +134,5 @@ public class App
             get("/openleads",OpenLeadsEndpoint::get);
         });
 
-
-        try {
-            app.startServer();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 }

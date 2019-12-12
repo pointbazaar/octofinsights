@@ -6,14 +6,14 @@ import org.vanautrui.vaquitamvc.controller.IVPOSTHandler;
 import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
 import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
+import spark.Request;
+import spark.Response;
 
 import static java.lang.Integer.parseInt;
 
-public class TaskActionController implements IVPOSTHandler {
+public final class TaskActionController {
 
-  @Override
-  public IVHTTPResponse handlePOST(VHTTPPostRequest vhttpPostRequest, VApp vApp) throws Exception {
-
+  public static Response post(Request request, Response response) {
     if(        vhttpPostRequest.session().isPresent()
             && vhttpPostRequest.session().get().containsKey("authenticated")
             && vhttpPostRequest.session().get().get("authenticated").equals("true")

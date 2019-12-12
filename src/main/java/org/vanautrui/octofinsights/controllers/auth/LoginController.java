@@ -14,6 +14,8 @@ import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 import org.vanautrui.vaquitamvc.responses.VTextResponse;
+import spark.Request;
+import spark.Response;
 
 import java.net.URLDecoder;
 import java.sql.Connection;
@@ -23,10 +25,9 @@ import java.util.Optional;
 import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.tables.Users.USERS;
 
-public class LoginController implements IVFullController {
+public final class LoginController {
 
-    @Override
-    public IVHTTPResponse handleGET(VHTTPGetRequest vhttpGetRequest, VApp vApp) throws Exception {
+    public static Response get(Request request, Response response) {
         final ContainerTag page =
                 html(
                         HeadUtil.makeHead(),
@@ -56,8 +57,7 @@ public class LoginController implements IVFullController {
         return new VHTMLResponse(200,page.render());
     }
 
-    @Override
-    public IVHTTPResponse handlePOST(VHTTPPostRequest req, VApp vApp) throws Exception {
+    public static Response post(Request request, Response response) {
         //verify login credentials and set cookie
 
         final Map<String,String> parameters= req.getPostParameters();
@@ -102,10 +102,5 @@ public class LoginController implements IVFullController {
         }else{
             return new VTextResponse(500,"something went wrong with the sessions");
         }
-    }
-
-    @Override
-    public IVHTTPResponse handlePUT(VHTTPPutRequest vhttpPutRequest, VApp vApp) throws Exception {
-        return null;
     }
 }

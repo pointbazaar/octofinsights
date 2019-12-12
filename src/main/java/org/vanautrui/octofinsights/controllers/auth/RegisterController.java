@@ -16,6 +16,8 @@ import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
 import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
+import spark.Request;
+import spark.Response;
 
 import java.net.URLDecoder;
 import java.sql.Connection;
@@ -24,12 +26,11 @@ import java.util.Map;
 import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.tables.Users.USERS;
 
-public class RegisterController implements IVFullController {
+public final class RegisterController {
 
     public static final String regex_alphanumeric = "^[a-zA-Z0-9]+$";
 
-    @Override
-    public IVHTTPResponse handleGET(VHTTPGetRequest vhttpGetRequest, VApp vApp) throws Exception {
+    public static Response get(Request request, Response response) {
         final ContainerTag page =
                 html(
                         HeadUtil.makeHead(),
@@ -89,8 +90,7 @@ public class RegisterController implements IVFullController {
         return new VHTMLResponse(200,page.render());
     }
 
-    @Override
-    public IVHTTPResponse handlePOST(VHTTPPostRequest req, VApp vApp) throws Exception {
+    public static Response post(Request request, Response response) {
         final Map<String,String> params= req.getPostParameters();
 
         final String username = URLDecoder.decode(params.get("username"));
@@ -124,10 +124,5 @@ public class RegisterController implements IVFullController {
         conn.close();
 
         return new VRedirectToGETResponse("/",req);
-    }
-
-    @Override
-    public IVHTTPResponse handlePUT(VHTTPPutRequest vhttpPutRequest, VApp vApp) throws Exception {
-        return null;
     }
 }

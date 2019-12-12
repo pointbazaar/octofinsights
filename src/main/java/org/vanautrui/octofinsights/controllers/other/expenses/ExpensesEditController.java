@@ -12,6 +12,8 @@ import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
 import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
+import spark.Request;
+import spark.Response;
 
 import java.net.URLDecoder;
 import java.sql.Timestamp;
@@ -22,10 +24,9 @@ import java.util.Map;
 import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.Tables.EXPENSES;
 
-public class ExpensesEditController implements IVFullController {
+public final class ExpensesEditController {
 
-    @Override
-    public IVHTTPResponse handleGET(VHTTPGetRequest request, VApp app) throws Exception {
+    public static Response get(Request request, Response response) {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ){
@@ -82,8 +83,7 @@ public class ExpensesEditController implements IVFullController {
         }
     }
 
-    @Override
-    public IVHTTPResponse handlePOST(VHTTPPostRequest request, VApp vApp) throws Exception {
+    public static Response post(Request request, Response response) {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ) {
@@ -106,10 +106,5 @@ public class ExpensesEditController implements IVFullController {
         }else{
             return new VRedirectToGETResponse("/login",request);
         }
-    }
-
-    @Override
-    public IVHTTPResponse handlePUT(VHTTPPutRequest vhttpPutRequest, VApp vApp) throws Exception {
-        return null;
     }
 }

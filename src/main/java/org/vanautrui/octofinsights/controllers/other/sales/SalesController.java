@@ -15,6 +15,8 @@ import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 import org.vanautrui.vaquitamvc.responses.VTextResponse;
+import spark.Request;
+import spark.Response;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -26,10 +28,9 @@ import static java.lang.Integer.parseInt;
 import static org.vanautrui.octofinsights.controllers.other.sales.SalesJ2HTMLUtils.makeSalesInsertWidget;
 import static org.vanautrui.octofinsights.controllers.other.sales.SalesJ2HTMLUtils.makeSalesTable;
 
-public class SalesController implements IVFullController {
+public final class SalesController {
 
-    @Override
-    public IVHTTPResponse handleGET(VHTTPGetRequest request, VApp app) throws Exception {
+    public static Response get(Request request, Response response) {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ){
@@ -67,9 +68,7 @@ public class SalesController implements IVFullController {
         }
     }
 
-    @Override
-    public IVHTTPResponse handlePOST(VHTTPPostRequest entityReq, VApp vApp) throws Exception {
-
+    public static Response post(Request request, Response response) {
         if( entityReq.session().isPresent() && entityReq.session().get().containsKey("authenticated") && entityReq.session().get().get("authenticated").equals("true")
                 && entityReq.session().get().containsKey("user_id")
         ) {
@@ -104,10 +103,5 @@ public class SalesController implements IVFullController {
         }else {
             return new VRedirectToGETResponse("/login",entityReq);
         }
-    }
-
-    @Override
-    public IVHTTPResponse handlePUT(VHTTPPutRequest vhttpPutRequest, VApp vApp) throws Exception {
-        return null;
     }
 }

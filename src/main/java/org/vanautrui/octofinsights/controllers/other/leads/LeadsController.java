@@ -18,6 +18,8 @@ import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
 import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
+import spark.Request;
+import spark.Response;
 
 import java.net.URLDecoder;
 import java.sql.Connection;
@@ -54,8 +56,7 @@ public class LeadsController implements IVFullController {
         ).withClasses("badge "+status_sensitive);
     }
 
-    @Override
-    public IVHTTPResponse handleGET(VHTTPGetRequest request, VApp app) throws Exception {
+    public static Response get(Request request, Response response) {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ){
@@ -164,9 +165,7 @@ public class LeadsController implements IVFullController {
         }
     }
 
-    @Override
-    public IVHTTPResponse handlePOST(VHTTPPostRequest vaquitaHTTPEntityEnclosingRequest, VApp vApp) throws Exception {
-
+    public static Response post(Request request, Response response) {
         if( vaquitaHTTPEntityEnclosingRequest.session().isPresent() && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("authenticated") && vaquitaHTTPEntityEnclosingRequest.session().get().get("authenticated").equals("true")
                 && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("user_id")
         ){
@@ -232,10 +231,5 @@ public class LeadsController implements IVFullController {
         }else {
             return new VRedirectToGETResponse("/login",vaquitaHTTPEntityEnclosingRequest);
         }
-    }
-
-    @Override
-    public IVHTTPResponse handlePUT(VHTTPPutRequest vhttpPutRequest, VApp vApp) throws Exception {
-        return null;
     }
 }

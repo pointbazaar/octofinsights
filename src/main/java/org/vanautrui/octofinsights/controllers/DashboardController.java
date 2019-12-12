@@ -13,11 +13,13 @@ import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 import org.vanautrui.vaquitamvc.responses.VTextResponse;
+import spark.Request;
+import spark.Response;
 
 import static j2html.TagCreator.*;
 
 
-public class DashboardController implements IVGETHandler {
+public final class DashboardController {
 
 
     private static ContainerTag makeDashboardSimpleCard(String widgetName, String placeHolder, String textClasses, String textId, String cardId){
@@ -35,9 +37,7 @@ public class DashboardController implements IVGETHandler {
         .withId(cardId);
     }
 
-
-    @Override
-    public IVHTTPResponse handleGET(VHTTPGetRequest vhttpGetRequest, VApp vApp) throws Exception {
+    public static Response get(Request request, Response response) {
         if( vhttpGetRequest.session().isPresent() && vhttpGetRequest.session().get().containsKey("authenticated") && vhttpGetRequest.session().get().get("authenticated").equals("true") ){
 
             final int user_id = Integer.parseInt(vhttpGetRequest.session().get().get("user_id"));

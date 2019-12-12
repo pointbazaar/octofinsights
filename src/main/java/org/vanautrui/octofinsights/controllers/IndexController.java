@@ -11,14 +11,15 @@ import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
 import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
 import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
 import org.vanautrui.vaquitamvc.responses.VRedirectResponse;
+import spark.Request;
+import spark.Response;
 
 import static j2html.TagCreator.*;
 
 
-public class IndexController implements IVGETHandler {
+public final class IndexController {
 
-    @Override
-    public IVHTTPResponse handleGET(VHTTPGetRequest request, VApp app) throws Exception {
+    public static Response get(Request request, Response response) {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true") ){
 
             return new VRedirectResponse("/dashboard", request,app);
