@@ -19,10 +19,9 @@ public final class TaskAddController {
       final int user_id               = parseInt(req.session().attribute("user_id"));
       final int project_id            = parseInt(req.queryParams("project_id"));
       final String redirect_url       = req.queryParams("redirect");
-      final Map<String,String> params = req.params();
 
       try {
-        TasksService.insertTask(user_id,project_id,params.get("task_name"),parseInt(params.get("effort_estimate")));
+        TasksService.insertTask(user_id,project_id,req.queryParams("task_name"),parseInt(req.queryParams("effort_estimate")));
       } catch (Exception e) {
         e.printStackTrace();
         res.status(500);

@@ -106,10 +106,10 @@ public final class ExpensesController {
 
             String action = req.queryParams("action");
 
-            if(action.equals("delete") && req.params().containsKey("id")){
+            if(action.equals("delete") && req.queryParams().contains("id")){
 
                 System.out.println("step 2");
-                int id = Integer.parseInt(req.params("id"));
+                int id = Integer.parseInt(req.queryParams("id"));
 
                 try {
                     ExpensesService.delete(id,user_id);
@@ -120,9 +120,9 @@ public final class ExpensesController {
             }
 
             if(action.equals("insert")
-                    && req.params().containsKey("expense_name")
-                    && req.params().containsKey("expense_date")
-                    && req.params().containsKey("expense_value")
+                    && req.queryParams().contains("expense_name")
+                    && req.queryParams().contains("expense_date")
+                    && req.queryParams().contains("expense_value")
             ){
 
                 String expense_name = req.queryParams("expense_name");
@@ -138,7 +138,7 @@ public final class ExpensesController {
 
                 Timestamp expense_date_timestamp = new Timestamp(expenseDate.getTime());
 
-                int expense_value= Integer.parseInt(req.params().get("expense_value"));
+                int expense_value= Integer.parseInt(req.queryParams("expense_value"));
 
                 if(expense_value<=0){
                     res.status(500);

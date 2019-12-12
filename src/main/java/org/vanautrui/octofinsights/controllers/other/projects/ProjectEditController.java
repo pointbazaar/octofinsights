@@ -52,7 +52,7 @@ public final class ProjectEditController  {
                                     div(
                                             form(
                                                     p("Project Customer:"),
-                                                    SalesJ2HTMLUtils.makeCustomerSelect(user_id),
+                                                    SalesJ2HTMLUtils.makeCustomerSelect(user_id,project.get(PROJECTS.CUSTOMER_ID)),
 
                                                     div(
                                                             label("Project Name"),
@@ -101,25 +101,23 @@ public final class ProjectEditController  {
 
             //TODO : handle missing parameters
 
-            Map<String, String> params = req.params();
-
-            int id = parseInt(req.queryParams("id"));
-            int user_id = parseInt(req.session().attribute("user_id"));
+            final int id = parseInt(req.queryParams("id"));
+            final int user_id = parseInt(req.session().attribute("user_id"));
 
             Optional<Integer> customer_id_opt=Optional.empty();
-            if(params.containsKey("customer_id")) {
-                customer_id_opt = Optional.of(parseInt(params.get("customer_id")));
+            if(req.queryParams().contains("customer_id")) {
+                customer_id_opt = Optional.of(parseInt(req.queryParams("customer_id")));
             }
 
             Optional<String> project_name=Optional.empty();
-            if(params.containsKey("project-name")) {
-                project_name = Optional.of(params.get("project-name"));
+            if(req.queryParams().contains("project-name")) {
+                project_name = Optional.of(req.queryParams("project-name"));
             }
 
 
             Optional<String> project_description = Optional.empty();
-            if(params.containsKey("project-description")){
-                project_description = Optional.of(params.get("project-description"));
+            if(req.queryParams().contains("project-description")){
+                project_description = Optional.of(req.queryParams("project-description"));
             }
 
             if(customer_id_opt.isPresent()) {

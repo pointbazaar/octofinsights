@@ -180,10 +180,10 @@ public final class LeadsController   {
 
             String action = req.queryParams("action");
 
-            if(action.equals("delete") && req.params().containsKey("id")){
+            if(action.equals("delete") && req.queryParams().contains("id")){
 
                 System.out.println("step 2");
-                int id = Integer.parseInt(req.params().get("id"));
+                int id = Integer.parseInt(req.queryParams("id"));
 
                 //delete the lead with that id
                 final Connection conn;
@@ -210,14 +210,12 @@ public final class LeadsController   {
             }
 
             if(action.equals("insert")
-                    && req.params().containsKey("name")
-                    && req.params().containsKey("what_the_lead_wants")
+                    && req.queryParams().contains("name")
+                    && req.queryParams().contains("what_the_lead_wants")
             ){
 
-                Map<String,String> post_parameters =req.params();
-
-                String name = URLDecoder.decode(post_parameters.get("name"));
-                String what_the_lead_wants = URLDecoder.decode(post_parameters.get("what_the_lead_wants"));
+                String name = URLDecoder.decode(req.queryParams("name"));
+                String what_the_lead_wants = URLDecoder.decode(req.queryParams("what_the_lead_wants"));
 
                 Connection conn= null;
                 try {
@@ -242,10 +240,10 @@ public final class LeadsController   {
             }
 
             if(
-                    (action.equals("open") || action.equals("close") || action.equals("convert")) && req.params().containsKey("id")
+                    (action.equals("open") || action.equals("close") || action.equals("convert")) && req.queryParams().contains("id")
             ){
 
-                int id = Integer.parseInt(req.params("id"));
+                int id = Integer.parseInt(req.queryParams("id"));
 
                 Connection conn= null;
                 try {

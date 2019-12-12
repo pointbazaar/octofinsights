@@ -108,7 +108,7 @@ public class SalesJ2HTMLUtils {
             ).withClasses("m-3","card","mb-4");
   }
 
-  public static ContainerTag makeCustomerSelect(int user_id) throws Exception {
+  public static ContainerTag makeCustomerSelect(int user_id, int selected_customer_id) throws Exception {
 
     return
             select(
@@ -117,9 +117,24 @@ public class SalesJ2HTMLUtils {
                             customer->
                                     option(
                                             customer.get(CUSTOMERS.CUSTOMER_NAME)
-                                    ).withValue(customer.get(CUSTOMERS.ID)+"")
+                                    ).withValue(customer.get(CUSTOMERS.ID)+"").condAttr(selected_customer_id==customer.get(CUSTOMERS.ID),"selected","")
                     )
             ).withClasses("custom-select").withName("customer_id")
             ;
   }
+
+    public static ContainerTag makeCustomerSelect(int user_id) throws Exception {
+
+        return
+                select(
+                        each(
+                                CustomersService.getCustomers(user_id),
+                                customer->
+                                        option(
+                                                customer.get(CUSTOMERS.CUSTOMER_NAME)
+                                        ).withValue(customer.get(CUSTOMERS.ID)+"")
+                        )
+                ).withClasses("custom-select").withName("customer_id")
+                ;
+    }
 }

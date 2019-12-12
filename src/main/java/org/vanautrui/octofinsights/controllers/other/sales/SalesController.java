@@ -100,9 +100,9 @@ public final class SalesController {
 
             final String action = req.queryParams("action");
 
-            if(action.equals("delete") && req.params().containsKey("id")){
+            if(action.equals("delete") && req.queryParams().contains("id")){
 
-                int id = parseInt(req.params().get("id"));
+                int id = parseInt(req.queryParams("id"));
                 try {
                     SalesService.deleteById(id,user_id);
                 } catch (Exception e) {
@@ -112,15 +112,15 @@ public final class SalesController {
                     return e.getMessage();
                 }
             }else if(action.equals("insert")
-                    && req.params().containsKey("customer_id")
-                    && req.params().containsKey("product_or_service")
-                    && req.params().containsKey("price_of_sale")
+                    && req.queryParams().contains("customer_id")
+                    && req.queryParams().contains("product_or_service")
+                    && req.queryParams().contains("price_of_sale")
             ){
 
-                final int customer_id = parseInt(req.params().get("customer_id"));
-                final String product_or_service= req.params().get("product_or_service");
-                final int price= parseInt(req.params().get("price_of_sale"));
-                final String time_of_sale = req.params().get("time_of_sale");
+                final int customer_id = parseInt(req.queryParams("customer_id"));
+                final String product_or_service= req.queryParams("product_or_service");
+                final int price= parseInt(req.queryParams("price_of_sale"));
+                final String time_of_sale = req.queryParams("time_of_sale");
 
                 Date date = null;
                 try {

@@ -65,12 +65,7 @@ public final class ProjectViewController {
                 button(
                         "DELETE"
                 ).withClasses("btn","btn-sm","btn-outline-danger","m-2","mr-4").withType("submit")
-              ).withAction("/tasks/action?id="+task_id+"&action=delete&redirect="+"/projects/view?id="+project_id).withMethod("POST"),
-
-              div(
-                "✓"
-              ).withStyle("font-size:2em; color:green;")
-
+              ).withAction("/tasks/action?id="+task_id+"&action=delete&redirect="+"/projects/view?id="+project_id).withMethod("POST")
             ).withClasses("col-md-4","row","justify-content-end")
           ).withClasses("row","align-items-center")
         ).withClasses("list-group-item");
