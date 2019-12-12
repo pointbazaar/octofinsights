@@ -25,7 +25,7 @@ import org.vanautrui.octofinsights.controllers.other.tasks.TaskAddController;
 import static spark.Spark.*;
 
 
-public class App
+public final class App
 {
 
     public static final String octofinsights_primary_color = "#ffc143";

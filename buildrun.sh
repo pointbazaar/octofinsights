@@ -1,2 +1,1 @@
-bash build.sh
-bash run.sh
+bash build.sh && run.sh

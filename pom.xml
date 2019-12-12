@@ -10,6 +10,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
   <dependencies>
@@ -52,7 +54,7 @@
           <groupId>javax.servlet</groupId>
           <artifactId>javax.servlet-api</artifactId>
           <version>3.0.1</version>
-          <scope>provided</scope>
+          <!--<scope>provided</scope>-->
       </dependency>
 
       <!-- https://mvnrepository.com/artifact/com.j2html/j2html -->
@@ -135,7 +137,7 @@
         </repository>
 	</repositories>
 
-    
+
 
     <build>
         <plugins>
@@ -167,13 +169,18 @@
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
                 <configuration>
                     <source>11</source>
                     <target>11</target>
                     <fork>true</fork>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+            </plugin>
+
         </plugins>
     </build>
 
