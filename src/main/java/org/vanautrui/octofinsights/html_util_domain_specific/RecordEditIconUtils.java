@@ -5,7 +5,7 @@ import j2html.tags.EmptyTag;
 
 import static j2html.TagCreator.*;
 
-public class RecordEditIconUtils {
+public final class RecordEditIconUtils {
 
     public static EmptyTag deleteIcon(){
         return img()

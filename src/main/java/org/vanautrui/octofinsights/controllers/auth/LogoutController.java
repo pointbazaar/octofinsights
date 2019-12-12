@@ -10,13 +10,15 @@ import spark.Response;
 
 public final class LogoutController  {
 
-    public static Response get(Request request, Response response) {
+    public static Object get(Request request, Response response) {
         if( request.session().isPresent()
                 && request.session().get().containsKey("authenticated")
                 && request.session().get().get("authenticated").equals("true") ) {
-            request.session().get().remove("authenticated");
-        }
 
-        return new VRedirectToGETResponse("/",request);
+            request.session().get().remove("authenticated");
+        }else {
+            response.redirect("/");
+        }
+        return "";
     }
 }

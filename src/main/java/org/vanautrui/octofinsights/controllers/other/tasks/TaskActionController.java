@@ -13,7 +13,7 @@ import static java.lang.Integer.parseInt;
 
 public final class TaskActionController {
 
-  public static Response post(Request request, Response response) {
+  public static Object post(Request request, Response response) {
     if(        vhttpPostRequest.session().isPresent()
             && vhttpPostRequest.session().get().containsKey("authenticated")
             && vhttpPostRequest.session().get().get("authenticated").equals("true")
@@ -33,8 +33,9 @@ public final class TaskActionController {
         default: throw new Exception("unrecognized query parameter value");
       }
 
-      return new VRedirectToGETResponse(redirect_url,vhttpPostRequest);
+      response.redirect(redirect_url);
     }
-    return new VRedirectToGETResponse("/login",vhttpPostRequest);
+    response.redirect("/login");
+    return "";
   }
 }

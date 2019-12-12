@@ -1,6 +1,8 @@
 package org.vanautrui.octofinsights.controllers;
 
 import j2html.tags.ContainerTag;
+import org.apache.http.entity.ContentType;
+import org.eclipse.jetty.http.HttpParser;
 import org.vanautrui.octofinsights.html_util_domain_specific.BrandUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.services.TranslationService;
@@ -19,16 +21,16 @@ import static j2html.TagCreator.*;
 
 public final class IndexController {
 
-    public static Response get(Request request, Response response) {
+    public static Object get(Request request, Response response) {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true") ){
 
-            return new VRedirectResponse("/dashboard", request,app);
-
+            response.redirect("/dashboard");
+            return "";
         }else {
 
             String lang="ru";
             try {
-                VLogger.info("LANG PARAMETER");
+                System.out.println("INFO: LANG PARAMETER");
                 lang = request.getQueryParam("lang");
                 System.out.println("QUERRY PARAMETERS");
                 System.out.println(request.getQueryParams());
@@ -114,7 +116,9 @@ public final class IndexController {
                     )
             );
 
-            return new VHTMLResponse(200,page.render());
+            response.status(200);
+            response.type(ContentType.TEXT_HTML.toString());
+            response.body(page.render());
             //String translated_content= InternationalizationTranslationServiceAndCachePoweredByYandexTranslationAPI.translateHTML(page.render(),"ru");
             //return new VaquitaHTMLResponse(200,translated_content);
         }

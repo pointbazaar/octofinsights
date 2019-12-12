@@ -1,6 +1,7 @@
 package org.vanautrui.octofinsights.controllers.other.sales;
 
 import j2html.tags.ContainerTag;
+import org.apache.http.entity.ContentType;
 import org.jooq.Record;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
@@ -30,7 +31,7 @@ import static org.vanautrui.octofinsights.controllers.other.sales.SalesJ2HTMLUti
 
 public final class SalesController {
 
-    public static Response get(Request request, Response response) {
+    public static Object get(Request request, Response response) {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ){
@@ -43,7 +44,10 @@ public final class SalesController {
             final List<Record> all_customers = CustomersService.getCustomers(user_id);
 
             if(all_customers.size()==0){
-                return new VTextResponse(200,"Please first create a Customer, to view the Sales Section ");
+
+                response.status(400);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                response.body("Please first create a Customer, to view the Sales Section ");
             }
 
             final String page=
@@ -61,14 +65,17 @@ public final class SalesController {
                             )
                     ).render();
 
-            return new VHTMLResponse(200,page);
+
+            response.status(200);
+            response.type(ContentType.TEXT_HTML.toString());
+            return page;
 
         }else {
-            return new VRedirectToGETResponse("/login", request);
+            response.redirect("/login");
         }
     }
 
-    public static Response post(Request request, Response response) {
+    public static Object post(Request request, Response response) {
         if( entityReq.session().isPresent() && entityReq.session().get().containsKey("authenticated") && entityReq.session().get().get("authenticated").equals("true")
                 && entityReq.session().get().containsKey("user_id")
         ) {
@@ -98,10 +105,10 @@ public final class SalesController {
 
                 SalesService.insert(user_id,customer_id,product_or_service,price,date_of_sale);
             }
-
-            return new VRedirectToGETResponse("/sales",entityReq);
+            response.redirect("/sales");
         }else {
-            return new VRedirectToGETResponse("/login",entityReq);
+            response.redirect("/login");
         }
+        return "";
     }
 }

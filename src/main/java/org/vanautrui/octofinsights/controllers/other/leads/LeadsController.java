@@ -1,6 +1,7 @@
 package org.vanautrui.octofinsights.controllers.other.leads;
 
 import j2html.tags.ContainerTag;
+import org.apache.http.entity.ContentType;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SQLDialect;
@@ -56,7 +57,7 @@ public class LeadsController implements IVFullController {
         ).withClasses("badge "+status_sensitive);
     }
 
-    public static Response get(Request request, Response response) {
+    public static Object get(Request request, Response response) {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ){
@@ -158,14 +159,17 @@ public class LeadsController implements IVFullController {
                             )
                     ).render();
 
-            return new VHTMLResponse(200,page);
+            response.status(200);
+            response.type(ContentType.TEXT_HTML.toString());
+            return page;
 
         }else {
-            return new VRedirectToGETResponse("/login", request);
+            response.redirect("/login");
+            return "";
         }
     }
 
-    public static Response post(Request request, Response response) {
+    public static Object post(Request request, Response response) {
         if( vaquitaHTTPEntityEnclosingRequest.session().isPresent() && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("authenticated") && vaquitaHTTPEntityEnclosingRequest.session().get().get("authenticated").equals("true")
                 && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("user_id")
         ){
@@ -227,9 +231,10 @@ public class LeadsController implements IVFullController {
                 conn.close();
             }
 
-            return new VRedirectToGETResponse("/leads",vaquitaHTTPEntityEnclosingRequest);
+            response.redirect("/leads");
         }else {
-            return new VRedirectToGETResponse("/login",vaquitaHTTPEntityEnclosingRequest);
+            response.redirect("/login");
         }
+        return "";
     }
 }

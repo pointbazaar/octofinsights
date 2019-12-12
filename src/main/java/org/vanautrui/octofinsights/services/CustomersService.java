@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 import static org.vanautrui.octofinsights.generated.tables.Customers.CUSTOMERS;
 
-public class CustomersService {
+public final class CustomersService {
 
     //https://www.youtube.com/watch?v=dlgT8kcAuvk&list=RDEMYGj5tu94_mNz6SrYkDD3_g&index=27
 

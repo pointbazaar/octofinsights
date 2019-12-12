@@ -39,7 +39,7 @@ public class App
 
     private static void setup_translation_configuration() throws Exception{
 
-        List<String> lines= Files.readAllLines(Paths.get("yandex-translate-key.txt"));
+        final List<String> lines= Files.readAllLines(Paths.get("yandex-translate-key.txt"));
         yandex_api_key=lines.get(0);
     }
 

@@ -5,7 +5,7 @@ import org.vanautrui.octofinsights.App;
 
 import static j2html.TagCreator.*;
 
-public class BrandUtil {
+public final class BrandUtil {
 
     public static ContainerTag createBrandLogoAndText(){
 

@@ -1,6 +1,7 @@
 package org.vanautrui.octofinsights.controllers.other.projects;
 
 import j2html.tags.ContainerTag;
+import org.apache.http.entity.ContentType;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -88,11 +89,12 @@ public class ProjectsController implements IVFullController {
         return res;
     }
 
-    public static Response get(Request request, Response response) {
+    public static Object get(Request request, Response response) {
 
         boolean loggedin=request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true");
         if(!loggedin){
-            return new VRedirectResponse("/login",request,app);
+            response.redirect("/login");
+            return;
         }
 
         int user_id = parseInt(request.session().get().get("user_id"));
@@ -140,10 +142,13 @@ public class ProjectsController implements IVFullController {
                                 ).withClasses("container")
                         )
                 ).render();
-        return new VHTMLResponse(200,page);
+
+        response.status(200);
+        response.type(ContentType.TEXT_HTML.toString());
+        return page;
     }
 
-    public static Response post(Request request, Response response) {
+    public static Object post(Request request, Response response) {
         // this method should handle
         // archive, unarchive, delete
         // of projects
@@ -181,12 +186,17 @@ public class ProjectsController implements IVFullController {
                     break;
                 default:
                     conn.close();
-                    return new VTextResponse(400,"BAD REQUEST. this action is not available. ");
+
+                    response.status(400);
+                    response.type(ContentType.TEXT_PLAIN.toString());
+                    response.body("Bad Request, this action is not available.");
+                    return;
             }
             conn.close();
-            return new VRedirectToGETResponse("/projects",request);
+            response.redirect("/projects");
         }else {
-            return new VRedirectToGETResponse("/login", request);
+            response.redirect("/login");
         }
+        return "";
     }
 }

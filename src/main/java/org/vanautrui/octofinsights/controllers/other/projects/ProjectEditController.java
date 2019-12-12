@@ -1,5 +1,6 @@
 package org.vanautrui.octofinsights.controllers.other.projects;
 
+import org.apache.http.entity.ContentType;
 import org.jooq.Record;
 import org.vanautrui.octofinsights.controllers.other.sales.SalesJ2HTMLUtils;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
@@ -27,11 +28,12 @@ import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
 
 public final class ProjectEditController  {
 
-  public static Response get(Request request, Response response) {
+  public static Object get(Request request, Response response) {
 
     final boolean loggedin = request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true");
     if (!loggedin) {
-      return new VRedirectResponse("/login", request, app);
+      response.redirect("/login");
+      return;
     }
 
     final int user_id = parseInt(request.session().get().get("user_id"));
@@ -78,10 +80,14 @@ public final class ProjectEditController  {
                             ).withClasses("container")
                     )
             ).render();
-    return new VHTMLResponse(200, page);
+
+
+    response.status(200);
+    response.type(ContentType.TEXT_HTML.toString());
+    return page;
   }
 
-  public static Response post(Request request, Response response) {
+  public static Object post(Request request, Response response) {
 
     if( entReq.session().isPresent() && entReq.session().get().containsKey("authenticated")
             && entReq.session().get().get("authenticated").equals("true")
@@ -117,10 +123,10 @@ public final class ProjectEditController  {
       }
       ProjectsService.updateProject(user_id,id,project_name,project_description);
 
-      return new VRedirectToGETResponse("/projects",entReq);
-
+      response.redirect("/projects");
     }else {
-      return new VRedirectToGETResponse("/login",entReq);
+      response.redirect("/login");
     }
+    return "";
   }
 }

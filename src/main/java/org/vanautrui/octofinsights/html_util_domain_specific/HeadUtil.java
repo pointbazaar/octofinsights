@@ -5,7 +5,7 @@ import j2html.tags.ContainerTag;
 
 import static j2html.TagCreator.*;
 
-public class HeadUtil {
+public final class HeadUtil {
 
     public static ContainerTag makeHead(){
         return makeHead(new ContainerTag[]{});

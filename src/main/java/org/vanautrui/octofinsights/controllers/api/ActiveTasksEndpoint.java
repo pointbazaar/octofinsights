@@ -2,6 +2,7 @@ package org.vanautrui.octofinsights.controllers.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.http.entity.ContentType;
 import org.vanautrui.octofinsights.services.TasksService;
 import org.vanautrui.vaquitamvc.VApp;
 import org.vanautrui.vaquitamvc.controller.IVGETHandler;
@@ -15,7 +16,7 @@ import spark.Response;
 
 public final class ActiveTasksEndpoint  {
 
-    public static Response get(Request request, Response response) {
+    public static Object get(Request request, Response response) {
         if(req.session().isPresent() && req.session().get().containsKey("user_id")){
             int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
@@ -25,9 +26,14 @@ public final class ActiveTasksEndpoint  {
 
             node.put("value",count);
 
-            return new VJsonResponse(200,node);
+            response.status(200);
+            response.type(ContentType.APPLICATION_JSON.toString());
+            return (node.toPrettyString());
         }else{
-            return new VTextResponse(400, "Bad Request, no user_id found in session.");
+
+            response.status(400);
+            response.type(ContentType.TEXT_PLAIN.toString());
+            return ("Bad Request, no user_id found in session.");
         }
     }
 }

@@ -11,7 +11,7 @@ import java.sql.Connection;
 
 import static org.vanautrui.octofinsights.generated.tables.Tasks.TASKS;
 
-public class TasksService {
+public final class TasksService {
 
     public static int countTasksByUserId(int user_id)throws Exception{
         //this method is for the widgets, to show the user that tasks are to be completed

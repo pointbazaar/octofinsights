@@ -1,5 +1,6 @@
 package org.vanautrui.octofinsights.controllers.other.invoices;
 
+import org.apache.http.entity.ContentType;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.vaquitamvc.VApp;
@@ -17,18 +18,14 @@ public final class InvoicesController {
 
     //https://codeburst.io/generate-pdf-invoices-with-javascript-c8dbbfb56361
 
-    public static Response get(Request request, Response response) {
+    public static Object get(Request request, Response response) {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ){
 
-            int user_id = Integer.parseInt(request.session().get().get("user_id"));
+            final int user_id = Integer.parseInt(request.session().get().get("user_id"));
 
             //TODO
-
-
-
-            //<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js" integrity="sha256-gJWdmuCRBovJMD9D/TVdo4TIK8u5Sti11764sZT1DhI=" crossorigin="anonymous"></script>
 
             String page=
                     html(
@@ -83,10 +80,12 @@ public final class InvoicesController {
                             )
                     ).render();
 
-            return new VHTMLResponse(200,page);
-
+            response.status(200);
+            response.type(ContentType.TEXT_HTML.toString());
+            return page;
         }else {
-            return new VRedirectToGETResponse("/login", request);
+            response.redirect("/login");
+            return "";
         }
     }
 }

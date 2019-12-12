@@ -13,7 +13,7 @@ import static org.jooq.impl.DSL.count;
 import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
 import static org.vanautrui.octofinsights.generated.tables.Tasks.TASKS;
 
-public class ProjectsService {
+public final class ProjectsService {
 
     public static Result<Record> getProjectsByUserId(int user_id)throws Exception{
 

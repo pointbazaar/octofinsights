@@ -1,5 +1,6 @@
 package org.vanautrui.octofinsights.controllers.other.sales;
 
+import org.apache.http.entity.ContentType;
 import org.jooq.Record;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
@@ -28,7 +29,7 @@ import static org.vanautrui.octofinsights.generated.tables.Sales.SALES;
 
 public final class SalesEditController {
 
-    public static Response get(Request request, Response response) {
+    public static Object get(Request request, Response response) {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ){
@@ -89,14 +90,18 @@ public final class SalesEditController {
 
 
             //conn.close();
-            return new VHTMLResponse(200,page);
+
+            response.status(200);
+            response.type(ContentType.TEXT_HTML.toString());
+            return page;
 
         }else {
-            return new VRedirectToGETResponse("/login", request);
+            response.redirect("/login");
+            return "";
         }
     }
 
-    public static Response post(Request request, Response response) {
+    public static Object post(Request request, Response response) {
         if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
                 && req.session().get().containsKey("user_id")
         ) {
@@ -115,10 +120,10 @@ public final class SalesEditController {
             final Timestamp expense_date_timestamp = new Timestamp((new SimpleDateFormat("yyyy-MM-dd").parse(time_of_sale)).getTime());
 
             SalesService.updateById(user_id,sale_id,customer_id,price,expense_date_timestamp,product_or_service);
-
-            return new VRedirectToGETResponse("/sales",req);
+            response.redirect("/sales");
         }else{
-            return new VRedirectToGETResponse("/login",req);
+            response.redirect("/login");
         }
+        return "";
     }
 }

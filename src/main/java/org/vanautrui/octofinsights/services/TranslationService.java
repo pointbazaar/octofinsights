@@ -7,7 +7,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.vanautrui.vaquitamvc.VLogger;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -17,14 +16,14 @@ import java.util.Map;
 import static org.vanautrui.octofinsights.App.yandex_api_key;
 import static org.vanautrui.octofinsights.App.yandex_translate_base_url;
 
-public class TranslationService {
+public final class TranslationService {
 
     //this has a lang 'ru'|'en'|... as a key and a mapping (english text)->
     //the source language is always english in this app
     private static Map<String, Map<String,String>> translationsCache=new HashMap<>();
 
     public static synchronized String translateText(String text,String target_lang){
-        VLogger.info("translating to "+target_lang);
+        System.out.println("INFO: translating to "+target_lang);
         return translate_inner_0(text,"plain",target_lang);
     }
 
@@ -54,7 +53,7 @@ public class TranslationService {
 
             return result;
         }catch (Exception e){
-            VLogger.error("FATAL ERROR IN TRANSLATION. PROVIDING THE ORIGINAL TEXT.");
+            System.err.println("FATAL ERROR IN TRANSLATION. PROVIDING THE ORIGINAL TEXT.");
             return content;
         }
     }

@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import static j2html.TagCreator.*;
 
-public class NavigationUtil {
+public final class NavigationUtil {
 
 
     public static ContainerTag createNavbar(String username, String currentPageName){

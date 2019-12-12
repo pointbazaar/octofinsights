@@ -15,7 +15,7 @@ import static java.lang.Integer.parseInt;
 
 public final class TaskAddController {
 
-  public static Response post(Request request, Response response) {
+  public static Object post(Request request, Response response) {
     if( req.session().isPresent()
             && req.session().get().containsKey("authenticated")
             && req.session().get().get("authenticated").equals("true")
@@ -27,9 +27,10 @@ public final class TaskAddController {
       final Map<String,String> params = req.getPostParameters();
 
       TasksService.insertTask(user_id,project_id,params.get("task_name"),parseInt(params.get("effort_estimate")));
-
-      return new VRedirectToGETResponse(redirect_url,req);
+      response.redirect(redirect_url);
+    }else{
+      response.redirect("/login");
     }
-    return new VRedirectToGETResponse("/login",req);
+    return "";
   }
 }

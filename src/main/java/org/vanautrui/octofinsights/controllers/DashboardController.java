@@ -1,6 +1,7 @@
 package org.vanautrui.octofinsights.controllers;
 
 import j2html.tags.ContainerTag;
+import org.apache.http.entity.ContentType;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.services.LeadsService;
@@ -37,7 +38,7 @@ public final class DashboardController {
         .withId(cardId);
     }
 
-    public static Response get(Request request, Response response) {
+    public static Object get(Request request, Response response) {
         if( vhttpGetRequest.session().isPresent() && vhttpGetRequest.session().get().containsKey("authenticated") && vhttpGetRequest.session().get().get("authenticated").equals("true") ){
 
             final int user_id = Integer.parseInt(vhttpGetRequest.session().get().get("user_id"));
@@ -79,10 +80,14 @@ public final class DashboardController {
                             )
                     ).render();
 
-            return new VHTMLResponse(200,page);
+
+            response.status(200);
+            response.type(ContentType.TEXT_HTML.toString());
+            return page;
 
         }else {
-            return new VRedirectToGETResponse("/login", vhttpGetRequest);
+            response.redirect("/login");
+            return "";
         }
     }
 }

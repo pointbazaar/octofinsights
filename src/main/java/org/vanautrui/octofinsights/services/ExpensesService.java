@@ -18,7 +18,7 @@ import java.util.Date;
 import static org.vanautrui.octofinsights.generated.Tables.EXPENSES;
 import static org.vanautrui.octofinsights.generated.tables.Sales.SALES;
 
-public class ExpensesService {
+public final class ExpensesService {
 
     public static Result<Record> getExpenses(int user_id) throws Exception{
         try(Connection conn= DBUtils.makeDBConnection()) {

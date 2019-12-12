@@ -12,7 +12,7 @@ import java.time.YearMonth;
 import static org.jooq.impl.DSL.sum;
 import static org.vanautrui.octofinsights.generated.tables.Sales.SALES;
 
-public class SalesService {
+public final class SalesService {
 
     //https://www.youtube.com/watch?v=WOBGQvzBDqI&list=RDEMYGj5tu94_mNz6SrYkDD3_g&index=23
 

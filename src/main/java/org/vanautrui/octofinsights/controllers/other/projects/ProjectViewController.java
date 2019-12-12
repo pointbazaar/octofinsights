@@ -1,6 +1,7 @@
 package org.vanautrui.octofinsights.controllers.other.projects;
 
 import j2html.tags.ContainerTag;
+import org.apache.http.entity.ContentType;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SQLDialect;
@@ -108,10 +109,11 @@ public final class ProjectViewController {
         ).withClasses("list-group-item");
     }
 
-    public static Response get(Request request, Response response) {
+    public static Object get(Request request, Response response) {
         boolean loggedin=request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true");
         if(!loggedin){
-            return new VRedirectResponse("/login",request,app);
+            response.redirect("/login");
+            return;
         }
 
         int user_id = parseInt(request.session().get().get("user_id"));
@@ -203,6 +205,8 @@ public final class ProjectViewController {
                 ).render();
 
 
-        return new VHTMLResponse(200,page);
+        response.status(200);
+        response.type(ContentType.TEXT_HTML.toString());
+        return page;
     }
 }

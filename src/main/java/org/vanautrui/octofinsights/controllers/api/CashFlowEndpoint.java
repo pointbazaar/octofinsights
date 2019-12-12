@@ -3,6 +3,7 @@ package org.vanautrui.octofinsights.controllers.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.http.entity.ContentType;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
@@ -26,7 +27,7 @@ import static org.vanautrui.octofinsights.generated.Tables.SALES;
 
 public final class CashFlowEndpoint {
 
-    public static Response get(Request req, Response res) {
+    public static Object get(Request req, Response response {
 
         req.cookie()
 
@@ -83,9 +84,14 @@ public final class CashFlowEndpoint {
 
             conn.close();
 
-            return new VJsonResponse(200,node);
+            response.status(200);
+            response.type(ContentType.APPLICATION_JSON.toString());
+            return node.toPrettyString();
         }else{
-            return new VTextResponse(400, "Bad Request, no user_id found in session.");
+
+            response.status(400);
+            response.type(ContentType.TEXT_PLAIN.toString());
+            return "Bad Request, no user_id found in session.";
         }
     }
 }

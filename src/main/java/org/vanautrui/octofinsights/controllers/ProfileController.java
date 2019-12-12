@@ -1,6 +1,7 @@
 package org.vanautrui.octofinsights.controllers;
 
 import j2html.tags.ContainerTag;
+import org.apache.http.entity.ContentType;
 import org.jooq.Record;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
@@ -21,7 +22,7 @@ public final class ProfileController {
 
     //https://www.youtube.com/watch?v=o_1aF54DO60&list=RDEMYGj5tu94_mNz6SrYkDD3_g&start_radio=1
 
-    public static Response get(Request request, Response response) {
+    public static Object get(Request request, Response response) {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true") ) {
 
             int user_id = Integer.parseInt(request.session().get().get("user_id"));
@@ -49,9 +50,12 @@ public final class ProfileController {
                     )
             );
 
-            return new VHTMLResponse(200,page.render());
+            response.status(200);
+            response.type(ContentType.TEXT_HTML.toString());
+            return page.render();
         }else {
-            return new VRedirectToGETResponse("/login", request);
+            response.redirect("/login");
+            return "";
         }
     }
 }

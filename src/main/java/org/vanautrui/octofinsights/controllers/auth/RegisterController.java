@@ -1,6 +1,7 @@
 package org.vanautrui.octofinsights.controllers.auth;
 
 import j2html.tags.ContainerTag;
+import org.apache.http.entity.ContentType;
 import org.jooq.DSLContext;
 import org.jooq.Record1;
 import org.jooq.Result;
@@ -30,7 +31,7 @@ public final class RegisterController {
 
     public static final String regex_alphanumeric = "^[a-zA-Z0-9]+$";
 
-    public static Response get(Request request, Response response) {
+    public static Object get(Request request, Response response) {
         final ContainerTag page =
                 html(
                         HeadUtil.makeHead(),
@@ -87,10 +88,12 @@ public final class RegisterController {
                         )
                 );
 
-        return new VHTMLResponse(200,page.render());
+        response.status(200);
+        response.type(ContentType.TEXT_HTML.toString());
+        return page.render();
     }
 
-    public static Response post(Request request, Response response) {
+    public static Object post(Request request, Response response) {
         final Map<String,String> params= req.getPostParameters();
 
         final String username = URLDecoder.decode(params.get("username"));
@@ -122,7 +125,7 @@ public final class RegisterController {
         }
 
         conn.close();
-
-        return new VRedirectToGETResponse("/",req);
+        response.redirect("/");
+        return "";
     }
 }

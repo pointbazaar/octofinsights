@@ -1,6 +1,7 @@
 package org.vanautrui.octofinsights.controllers.auth;
 
 import j2html.tags.ContainerTag;
+import org.apache.http.entity.ContentType;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
@@ -27,7 +28,7 @@ import static org.vanautrui.octofinsights.generated.tables.Users.USERS;
 
 public final class LoginController {
 
-    public static Response get(Request request, Response response) {
+    public static Object get(Request request, Response response) {
         final ContainerTag page =
                 html(
                         HeadUtil.makeHead(),
@@ -54,10 +55,12 @@ public final class LoginController {
                         )
                 );
 
-        return new VHTMLResponse(200,page.render());
+        response.status(200);
+        response.type(ContentType.TEXT_HTML.toString());
+        return page.render();
     }
 
-    public static Response post(Request request, Response response) {
+    public static Object post(Request request, Response response) {
         //verify login credentials and set cookie
 
         final Map<String,String> parameters= req.getPostParameters();
@@ -95,12 +98,16 @@ public final class LoginController {
                 req.session().get().put("username", parameters.get("username"));
                 req.session().get().put("user_id", id.get().toString());
 
-                return new VRedirectToGETResponse("/",req);
+                response.redirect("/");
             }else {
-                return new VTextResponse(500,"user seems not to exist");
+                response.status(400);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return "user seems not to exist";
             }
         }else{
-            return new VTextResponse(500,"something went wrong with the sessions");
+            response.status(500);
+            response.type(ContentType.TEXT_PLAIN.toString());
+            return "something went wrong with the sessions";
         }
     }
 }

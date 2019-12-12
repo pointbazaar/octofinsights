@@ -1,5 +1,6 @@
 package org.vanautrui.octofinsights.controllers.other.customers;
 
+import org.apache.http.entity.ContentType;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
@@ -23,7 +24,7 @@ import static org.vanautrui.octofinsights.generated.tables.Customers.CUSTOMERS;
 public final class CustomerViewController {
 
 
-    public static Response get(Request request, Response response) {
+    public static Object get(Request request, Response response) {
         if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
                 && request.session().get().containsKey("user_id")
         ){
@@ -56,10 +57,13 @@ public final class CustomerViewController {
                             )
                     ).render();
 
-            return new VHTMLResponse(200,page);
+            response.status(200);
+            response.type(ContentType.TEXT_HTML.toString());
+            return page;
 
         }else {
-            return new VRedirectToGETResponse("/login", request);
+            response.redirect("/login");
+            return "";
         }
     }
 }

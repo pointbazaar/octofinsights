@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 import static org.vanautrui.octofinsights.generated.tables.Leads.LEADS;
 
-public class LeadsService {
+public final class LeadsService {
 
     public static List<Record> getLeads(int user_id, Optional<String> searchQuery) throws Exception{
         try(Connection conn= DBUtils.makeDBConnection()) {

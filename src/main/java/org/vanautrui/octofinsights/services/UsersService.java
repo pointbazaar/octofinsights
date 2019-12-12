@@ -10,7 +10,7 @@ import java.sql.Connection;
 
 import static org.vanautrui.octofinsights.generated.Tables.USERS;
 
-public class UsersService {
+public final class UsersService {
 
   public static Record getUserById(int user_id) throws Exception{
       try(Connection conn= DBUtils.makeDBConnection()) {

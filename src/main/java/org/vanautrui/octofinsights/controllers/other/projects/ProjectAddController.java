@@ -1,5 +1,6 @@
 package org.vanautrui.octofinsights.controllers.other.projects;
 
+import org.apache.http.entity.ContentType;
 import org.vanautrui.octofinsights.controllers.other.sales.SalesJ2HTMLUtils;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
@@ -25,8 +26,7 @@ import static java.lang.Integer.parseInt;
 
 public final class ProjectAddController {
 
-
-    public static Response post(Request request, Response response) {
+    public static Object post(Request request, Response response) {
         if( entReq.session().isPresent() && entReq.session().get().containsKey("authenticated")
                 && entReq.session().get().get("authenticated").equals("true")
                 && entReq.session().get().containsKey("user_id")
@@ -53,17 +53,18 @@ public final class ProjectAddController {
 
             ProjectsService.insertProject(user_id,project_name,project_start_date,project_end_date_estimate,effort_estimate_hours,earnings_estimate,project_description,customer_id);
 
-            return new VRedirectToGETResponse("/projects",entReq);
-
+            response.redirect("/projects");
         }else {
-            return new VRedirectToGETResponse("/login",entReq);
+            response.redirect("/login");
         }
+        return "";
     }
 
-    public static Response get(Request request, Response response) {
+    public static Object get(Request request, Response response) {
         boolean loggedin = request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true");
         if (!loggedin) {
-            return new VRedirectResponse("/login", request, app);
+            response.redirect("/login");
+            return "";
         }
 
         int user_id = parseInt(request.session().get().get("user_id"));
@@ -124,6 +125,9 @@ public final class ProjectAddController {
                                 ).withClasses("container")
                         )
                 ).render();
-        return new VHTMLResponse(200, page);
+
+        response.status(200);
+        response.type(ContentType.TEXT_HTML.toString());
+        return page;
     }
 }
