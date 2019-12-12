@@ -6,13 +6,6 @@ import org.eclipse.jetty.http.HttpParser;
 import org.vanautrui.octofinsights.html_util_domain_specific.BrandUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.services.TranslationService;
-import org.vanautrui.vaquitamvc.VApp;
-import org.vanautrui.vaquitamvc.VLogger;
-import org.vanautrui.vaquitamvc.controller.IVGETHandler;
-import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
-import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VRedirectResponse;
 import spark.Request;
 import spark.Response;
 
@@ -22,7 +15,9 @@ import static j2html.TagCreator.*;
 public final class IndexController {
 
     public static Object get(Request req, Response res) {
-        if(  req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true") ){
+        if(  req.session().attributes().contains("authenticated")
+                && req.session().attribute("authenticated").equals("true")
+        ){
 
             res.redirect("/dashboard");
             return "";
@@ -118,10 +113,11 @@ public final class IndexController {
 
             res.status(200);
             res.type(ContentType.TEXT_HTML.toString());
-            res.body(page.render());
+            return page.render();
             //String translated_content= InternationalizationTranslationServiceAndCachePoweredByYandexTranslationAPI.translateHTML(page.render(),"ru");
             //return new VaquitaHTMLResponse(200,translated_content);
         }
+
     }
 }
 

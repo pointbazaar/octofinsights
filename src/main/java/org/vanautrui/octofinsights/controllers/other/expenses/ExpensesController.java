@@ -7,14 +7,6 @@ import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.RecordEditIconUtils;
 import org.vanautrui.octofinsights.services.ExpensesService;
-import org.vanautrui.vaquitamvc.VApp;
-import org.vanautrui.vaquitamvc.controller.IVFullController;
-import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
-import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
-import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
-import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 import spark.Request;
 import spark.Response;
 
@@ -30,10 +22,11 @@ import static org.vanautrui.octofinsights.generated.tables.Expenses.EXPENSES;
 public final class ExpensesController {
 
     public static Object get(Request req, Response res) {
-        if(  req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
-                && req.session().get().containsKey("user_id")
+        if(  req.session().attributes().contains("authenticated")
+                && req.session().attribute("authenticated").equals("true")
+                && req.session().attributes().contains("user_id")
         ){
-            int user_id = Integer.parseInt(req.session().get().get("user_id"));
+            int user_id = Integer.parseInt(req.session().attribute("user_id"));
 
             Result<Record> records = null;
             try {
@@ -49,7 +42,7 @@ public final class ExpensesController {
                     html(
                             HeadUtil.makeHead(),
                             body(
-                                    NavigationUtil.createNavbar(req.session().get().get("username"),"Expenses"),
+                                    NavigationUtil.createNavbar(req.session().attribute("username"),"Expenses"),
                                     div(attrs(".container"),
                                             div(attrs("#main-content"),
                                                     ExpensesJ2HTMLUtils.makeExpenseInsertWidget(),
@@ -104,35 +97,36 @@ public final class ExpensesController {
     }
 
     public static Object post(Request req, Response res) {
-        if( vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("authenticated") && vaquitaHTTPEntityEnclosingRequest.session().get().get("authenticated").equals("true")
-                && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("user_id")
+        if( req.session().attributes().contains("authenticated")
+                && req.session().attribute("authenticated").equals("true")
+                && req.session().attributes().contains("user_id")
         ) {
 
-            int user_id = Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.session().get().get("user_id"));
+            int user_id = Integer.parseInt(req.session().attribute("user_id"));
 
             String action = req.queryParams("action");
 
-            if(action.equals("delete") && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("id")){
+            if(action.equals("delete") && req.params().containsKey("id")){
 
                 System.out.println("step 2");
-                int id = Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("id"));
+                int id = Integer.parseInt(req.params("id"));
 
                 try {
                     ExpensesService.delete(id,user_id);
                 } catch (Exception e) {
-                    return e.getMessage();
                     e.printStackTrace();
+                    return e.getMessage();
                 }
             }
 
             if(action.equals("insert")
-                    && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("expense_name")
-                    && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("expense_date")
-                    && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("expense_value")
+                    && req.params().containsKey("expense_name")
+                    && req.params().containsKey("expense_date")
+                    && req.params().containsKey("expense_value")
             ){
 
-                String expense_name = vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("expense_name");
-                String expense_date= vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("expense_date");
+                String expense_name = req.params().get("expense_name");
+                String expense_date= req.params().get("expense_date");
 
                 Date expenseDate = null;
                 try {
@@ -144,7 +138,7 @@ public final class ExpensesController {
 
                 Timestamp expense_date_timestamp = new Timestamp(expenseDate.getTime());
 
-                int expense_value= Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("expense_value"));
+                int expense_value= Integer.parseInt(req.params().get("expense_value"));
 
                 if(expense_value<=0){
                     res.status(500);

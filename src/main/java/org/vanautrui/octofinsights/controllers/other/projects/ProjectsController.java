@@ -11,12 +11,6 @@ import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.services.ProjectsService;
-import org.vanautrui.vaquitamvc.VApp;
-import org.vanautrui.vaquitamvc.controller.IVFullController;
-import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
-import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
-import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
-import org.vanautrui.vaquitamvc.responses.*;
 import spark.Request;
 import spark.Response;
 
@@ -31,7 +25,7 @@ import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
 
 public final class ProjectsController {
 
-    private ContainerTag makeInactiveProjectDiv(String projectName,int project_id){
+    private static ContainerTag makeInactiveProjectDiv(String projectName, int project_id){
         ContainerTag res=
                 li(
                   div(
@@ -58,7 +52,7 @@ public final class ProjectsController {
         return res;
     }
 
-    private ContainerTag makeProjectDiv(String projectName,int project_id,int user_id) throws Exception {
+    private static ContainerTag makeProjectDiv(String projectName, int project_id, int user_id) throws Exception {
         ContainerTag res=
                 li(
                     div(
@@ -92,13 +86,14 @@ public final class ProjectsController {
 
     public static Object get(Request req, Response res) {
 
-        boolean loggedin= req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true");
+        boolean loggedin= req.session().attributes().contains("authenticated")
+                && req.session().attribute("authenticated").equals("true");
         if(!loggedin){
             res.redirect("/login");
             return "";
         }
 
-        int user_id = parseInt(req.session().get().get("user_id"));
+        int user_id = parseInt(req.session().attribute("user_id"));
 
         Result<Record> myprojects = null;
         try {
@@ -116,7 +111,7 @@ public final class ProjectsController {
                 html(
                         HeadUtil.makeHead(),
                         body(
-                                NavigationUtil.createNavbar(req.session().get().get("username"),"Projects"),
+                                NavigationUtil.createNavbar(req.session().attribute("username"),"Projects"),
                                 div(
                                         div().withClasses("m-3"),
                                         div(
@@ -162,12 +157,11 @@ public final class ProjectsController {
         // archive, unarchive, delete
         // of projects
 
-        if(
-                && req.session().get().containsKey("authenticated")
-                && req.session().get().get("authenticated").equals("true")
-                && req.session().get().containsKey("user_id")
+        if(req.session().attributes().contains("authenticated")
+                && req.session().attribute("authenticated").equals("true")
+                && req.session().attributes().contains("user_id")
         ) {
-            int user_id = parseInt(req.session().get().get("user_id"));
+            int user_id = parseInt(req.session().attribute("user_id"));
 
             final int project_id = parseInt(req.queryParams("id"));
 

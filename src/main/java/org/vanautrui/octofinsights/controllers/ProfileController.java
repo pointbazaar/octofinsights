@@ -6,12 +6,6 @@ import org.jooq.Record;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.services.UsersService;
-import org.vanautrui.vaquitamvc.VApp;
-import org.vanautrui.vaquitamvc.controller.IVGETHandler;
-import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
-import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 import spark.Request;
 import spark.Response;
 
@@ -23,9 +17,9 @@ public final class ProfileController {
     //https://www.youtube.com/watch?v=o_1aF54DO60&list=RDEMYGj5tu94_mNz6SrYkDD3_g&start_radio=1
 
     public static Object get(Request req, Response res) {
-        if( req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true") ) {
+        if( req.session().attributes().contains("authenticated") && req.session().attribute("authenticated").equals("true") ) {
 
-            int user_id = Integer.parseInt(req.session().get().get("user_id"));
+            int user_id = Integer.parseInt(req.session().attribute("user_id"));
 
             Record user = null;
             try {
@@ -40,7 +34,7 @@ public final class ProfileController {
             ContainerTag page = html(
                     HeadUtil.makeHead(),
                     body(
-                            NavigationUtil.createNavbar(req.session().get().get("username"),"Profile"),
+                            NavigationUtil.createNavbar(req.session().attribute("username"),"Profile"),
                             div(
                                     div(
                                             p(

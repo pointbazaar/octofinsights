@@ -7,15 +7,6 @@ import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.services.CustomersService;
 import org.vanautrui.octofinsights.services.SalesService;
-import org.vanautrui.vaquitamvc.VApp;
-import org.vanautrui.vaquitamvc.controller.IVFullController;
-import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
-import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
-import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
-import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
-import org.vanautrui.vaquitamvc.responses.VTextResponse;
 import spark.Request;
 import spark.Response;
 
@@ -33,10 +24,11 @@ import static org.vanautrui.octofinsights.controllers.other.sales.SalesJ2HTMLUti
 public final class SalesController {
 
     public static Object get(Request req, Response res) {
-        if( req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
-                && req.session().get().containsKey("user_id")
+        if( req.session().attributes().contains("authenticated")
+                && req.session().attribute("authenticated").equals("true")
+                && req.session().attributes().contains("user_id")
         ){
-            final int user_id = parseInt(req.session().get().get("user_id"));
+            final int user_id = parseInt(req.session().attribute("user_id"));
 
             final List<Record> records;
             try {
@@ -67,20 +59,25 @@ public final class SalesController {
                 res.body("Please first create a Customer, to view the Sales Section ");
             }
 
-            final String page=
-                    html(
-                            HeadUtil.makeHead(),
-                            body(
-                                    NavigationUtil.createNavbar(req.session().get().get("username"),"Sales"),
-                                    div(
-                                            div(
-                                                    makeSalesInsertWidget(user_id),
-                                                    mytable
-                                            ).withId("main-content")
-                                    ).withClasses("container")
+            final String page;
+            try {
+                page = html(
+                        HeadUtil.makeHead(),
+                        body(
+                                NavigationUtil.createNavbar(req.session().attribute("username"),"Sales"),
+                                div(
+                                        div(
+                                                makeSalesInsertWidget(user_id),
+                                                mytable
+                                        ).withId("main-content")
+                                ).withClasses("container")
 
-                            )
-                    ).render();
+                        )
+                ).render();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return e.getMessage();
+            }
 
 
             res.status(200);
@@ -89,21 +86,23 @@ public final class SalesController {
 
         }else {
             res.redirect("/login");
+            return "";
         }
     }
 
     public static Object post(Request req, Response res) {
-        if(  entityReq.session().get().containsKey("authenticated") && entityReq.session().get().get("authenticated").equals("true")
-                && entityReq.session().get().containsKey("user_id")
+        if(  req.session().attributes().contains("authenticated")
+                && req.session().attribute("authenticated").equals("true")
+                && req.session().attributes().contains("user_id")
         ) {
 
-            final int user_id = parseInt(entityReq.session().get().get("user_id"));
+            final int user_id = parseInt(req.session().attribute("user_id"));
 
             final String action = req.queryParams("action");
 
-            if(action.equals("delete") && entityReq.getPostParameters().containsKey("id")){
+            if(action.equals("delete") && req.params().containsKey("id")){
 
-                int id = parseInt(entityReq.getPostParameters().get("id"));
+                int id = parseInt(req.params().get("id"));
                 try {
                     SalesService.deleteById(id,user_id);
                 } catch (Exception e) {
@@ -113,15 +112,15 @@ public final class SalesController {
                     return e.getMessage();
                 }
             }else if(action.equals("insert")
-                    && entityReq.getPostParameters().containsKey("customer_id")
-                    && entityReq.getPostParameters().containsKey("product_or_service")
-                    && entityReq.getPostParameters().containsKey("price_of_sale")
+                    && req.params().containsKey("customer_id")
+                    && req.params().containsKey("product_or_service")
+                    && req.params().containsKey("price_of_sale")
             ){
 
-                final int customer_id = parseInt(entityReq.getPostParameters().get("customer_id"));
-                final String product_or_service= entityReq.getPostParameters().get("product_or_service");
-                final int price= parseInt(entityReq.getPostParameters().get("price_of_sale"));
-                final String time_of_sale = entityReq.getPostParameters().get("time_of_sale");
+                final int customer_id = parseInt(req.params().get("customer_id"));
+                final String product_or_service= req.params().get("product_or_service");
+                final int price= parseInt(req.params().get("price_of_sale"));
+                final String time_of_sale = req.params().get("time_of_sale");
 
                 Date date = null;
                 try {

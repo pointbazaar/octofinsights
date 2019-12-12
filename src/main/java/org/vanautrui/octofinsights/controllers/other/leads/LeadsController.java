@@ -11,14 +11,6 @@ import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.RecordEditIconUtils;
 import org.vanautrui.octofinsights.services.LeadsService;
-import org.vanautrui.vaquitamvc.VApp;
-import org.vanautrui.vaquitamvc.controller.IVFullController;
-import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
-import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
-import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
-import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 import spark.Request;
 import spark.Response;
 
@@ -59,11 +51,12 @@ public final class LeadsController   {
     }
 
     public static Object get(Request req, Response res) {
-        if(  req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
-                && req.session().get().containsKey("user_id")
+        if(  req.session().attributes().contains("authenticated")
+                && req.session().attribute("authenticated").equals("true")
+                && req.session().attributes().contains("user_id")
         ){
 
-            int user_id = Integer.parseInt(req.session().get().get("user_id"));
+            int user_id = Integer.parseInt(req.session().attribute("user_id"));
 
             Optional<String> searchQuery;
             try{
@@ -88,7 +81,7 @@ public final class LeadsController   {
                     html(
                             HeadUtil.makeHead(),
                             body(
-                                    NavigationUtil.createNavbar(req.session().get().get("username"),"Leads"),
+                                    NavigationUtil.createNavbar(req.session().attribute("username"),"Leads"),
                                     div(attrs(".container"),
                                             div(attrs("#main-content"),
                                                     form(
@@ -178,18 +171,19 @@ public final class LeadsController   {
     }
 
     public static Object post(Request req, Response res) {
-        if(  vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("authenticated") && vaquitaHTTPEntityEnclosingRequest.session().get().get("authenticated").equals("true")
-                && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("user_id")
+        if(  req.session().attributes().contains("authenticated")
+                && req.session().attribute("authenticated").equals("true")
+                && req.session().attributes().contains("user_id")
         ){
 
-            int user_id = Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.session().get().get("user_id"));
+            int user_id = Integer.parseInt(req.session().attribute("user_id"));
 
             String action = req.queryParams("action");
 
-            if(action.equals("delete") && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("id")){
+            if(action.equals("delete") && req.params().containsKey("id")){
 
                 System.out.println("step 2");
-                int id = Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("id"));
+                int id = Integer.parseInt(req.params().get("id"));
 
                 //delete the lead with that id
                 final Connection conn;
@@ -216,11 +210,11 @@ public final class LeadsController   {
             }
 
             if(action.equals("insert")
-                    && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("name")
-                    && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("what_the_lead_wants")
+                    && req.params().containsKey("name")
+                    && req.params().containsKey("what_the_lead_wants")
             ){
 
-                Map<String,String> post_parameters =vaquitaHTTPEntityEnclosingRequest.getPostParameters();
+                Map<String,String> post_parameters =req.params();
 
                 String name = URLDecoder.decode(post_parameters.get("name"));
                 String what_the_lead_wants = URLDecoder.decode(post_parameters.get("what_the_lead_wants"));
@@ -248,7 +242,7 @@ public final class LeadsController   {
             }
 
             if(
-                    (action.equals("open") || action.equals("close") || action.equals("convert")) && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("id")
+                    (action.equals("open") || action.equals("close") || action.equals("convert")) && req.params().containsKey("id")
             ){
 
                 int id = Integer.parseInt(req.params("id"));

@@ -4,16 +4,6 @@ import j2html.tags.ContainerTag;
 import org.apache.http.entity.ContentType;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
-import org.vanautrui.octofinsights.services.LeadsService;
-import org.vanautrui.vaquitamvc.VApp;
-import org.vanautrui.vaquitamvc.controller.IVGETHandler;
-import org.vanautrui.vaquitamvc.controller.IVPOSTHandler;
-import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
-import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
-import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
-import org.vanautrui.vaquitamvc.responses.VTextResponse;
 import spark.Request;
 import spark.Response;
 
@@ -39,15 +29,17 @@ public final class DashboardController {
     }
 
     public static Object get(Request req, Response res) {
-        if( vhttpGetRequest.session().get().containsKey("authenticated") && vhttpGetRequest.session().get().get("authenticated").equals("true") ){
+        if( req.session().attributes().contains("authenticated")
+                && req.session().attribute("authenticated").equals("true")
+        ){
 
-            final int user_id = Integer.parseInt(vhttpGetRequest.session().get().get("user_id"));
+            final int user_id = Integer.parseInt(req.session().attribute("user_id"));
 
             String page=
                     html(
                             HeadUtil.makeHead(),
                             body(
-                                    NavigationUtil.createNavbar(vhttpGetRequest.session().get().get("username"),"Dashboard"),
+                                    NavigationUtil.createNavbar(req.session().attribute("username"),"Dashboard"),
                                     div(attrs(".container-fluid"),
                                             div(attrs("#main-content"),
                                                     div(

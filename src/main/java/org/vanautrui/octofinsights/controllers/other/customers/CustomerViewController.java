@@ -7,12 +7,6 @@ import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.services.CustomersService;
 import org.vanautrui.octofinsights.services.SalesService;
-import org.vanautrui.vaquitamvc.VApp;
-import org.vanautrui.vaquitamvc.controller.IVGETHandler;
-import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
-import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 import spark.Request;
 import spark.Response;
 
@@ -25,12 +19,12 @@ public final class CustomerViewController {
 
 
     public static Object get(Request req, Response res) {
-        if( req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
-                && req.session().get().containsKey("user_id")
+        if( req.session().attributes().contains("authenticated") && req.session().attribute("authenticated").equals("true")
+                && req.session().attributes().contains("user_id")
         ){
             //https://www.youtube.com/watch?v=JRWox-i6aAk&list=RDEMYGj5tu94_mNz6SrYkDD3_g&index=2
 
-            int user_id = parseInt(req.session().get().get("user_id"));
+            int user_id = parseInt(req.session().attribute("user_id"));
             int customer_id = parseInt(req.queryParams("id"));
 
             Record customer = null;
@@ -60,7 +54,7 @@ public final class CustomerViewController {
                     html(
                             HeadUtil.makeHead(),
                             body(
-                                    NavigationUtil.createNavbar(req.session().get().get("username"),"Customers"),
+                                    NavigationUtil.createNavbar(req.session().attribute("username"),"Customers"),
                                     div(
                                             div(
                                                     h3("Customer: "+customer_name),

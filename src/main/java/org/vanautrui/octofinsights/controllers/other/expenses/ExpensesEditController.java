@@ -5,19 +5,12 @@ import org.jooq.Record;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.services.ExpensesService;
-import org.vanautrui.vaquitamvc.VApp;
-import org.vanautrui.vaquitamvc.controller.IVFullController;
-import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
-import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
-import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
-import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 import spark.Request;
 import spark.Response;
 
 import java.net.URLDecoder;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
@@ -28,10 +21,11 @@ import static org.vanautrui.octofinsights.generated.Tables.EXPENSES;
 public final class ExpensesEditController {
 
     public static Object get(Request req, Response res) {
-        if(  req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
-                && req.session().get().containsKey("user_id")
+        if(  req.session().attributes().contains("authenticated")
+                && req.session().attribute("authenticated").equals("true")
+                && req.session().attributes().contains("user_id")
         ){
-            int user_id = Integer.parseInt(req.session().get().get("user_id"));
+            int user_id = Integer.parseInt(req.session().attribute("user_id"));
 
             int expense_id = Integer.parseInt(req.queryParams("id"));
 
@@ -49,7 +43,7 @@ public final class ExpensesEditController {
                     html(
                             HeadUtil.makeHead(),
                             body(
-                                    NavigationUtil.createNavbar(req.session().get().get("username"),"Expenses"),
+                                    NavigationUtil.createNavbar(req.session().attribute("username"),"Expenses"),
                                     div(attrs(".container"),
                                             div(attrs("#main-content"),
                                                     h1("Edit an Expense"),
@@ -97,21 +91,28 @@ public final class ExpensesEditController {
     }
 
     public static Object post(Request request, Response response) {
-        if( request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
-                && request.session().get().containsKey("user_id")
+        if( request.session().attributes().contains("authenticated")
+                && request.session().attribute("authenticated").equals("true")
+                && request.session().attributes().contains("user_id")
         ) {
 
-            int user_id = Integer.parseInt(request.session().get().get("user_id"));
+            int user_id = Integer.parseInt(request.session().attribute("user_id"));
 
-            Map<String,String> params = request.getPostParameters();
+            Map<String,String> params = request.params();
 
             int expense_id = Integer.parseInt(params.get("id"));
 
-            String expense_name = URLDecoder.decode(request.getPostParameters().get("expense_name"));
-            int price= (-1)*Integer.parseInt(request.getPostParameters().get("expense_value"));
-            String time_of_sale = request.getPostParameters().get("expense_date");
+            String expense_name = URLDecoder.decode(request.params().get("expense_name"));
+            int price= (-1)*Integer.parseInt(request.params().get("expense_value"));
+            String time_of_sale = request.params().get("expense_date");
 
-            Timestamp expense_date_timestamp = new Timestamp((new SimpleDateFormat("yyyy-MM-dd").parse(time_of_sale)).getTime());
+            Timestamp expense_date_timestamp = null;
+            try {
+                expense_date_timestamp = new Timestamp((new SimpleDateFormat("yyyy-MM-dd").parse(time_of_sale)).getTime());
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return e.getMessage();
+            }
 
             try {
                 ExpensesService.updateById(user_id,expense_id,expense_name,price,expense_date_timestamp);

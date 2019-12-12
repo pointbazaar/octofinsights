@@ -3,12 +3,6 @@ package org.vanautrui.octofinsights.controllers.other.invoices;
 import org.apache.http.entity.ContentType;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
-import org.vanautrui.vaquitamvc.VApp;
-import org.vanautrui.vaquitamvc.controller.IVGETHandler;
-import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
-import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 import spark.Request;
 import spark.Response;
 
@@ -19,11 +13,12 @@ public final class InvoicesController {
     //https://codeburst.io/generate-pdf-invoices-with-javascript-c8dbbfb56361
 
     public static Object get(Request req, Response res) {
-        if( req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
-                && req.session().get().containsKey("user_id")
+        if( req.session().attributes().contains("authenticated")
+                && req.session().attribute("authenticated").equals("true")
+                && req.session().attributes().contains("user_id")
         ){
 
-            final int user_id = Integer.parseInt(req.session().get().get("user_id"));
+            final int user_id = Integer.parseInt(req.session().attribute("user_id"));
 
             //TODO
 
@@ -35,7 +30,7 @@ public final class InvoicesController {
                                             .attr("crossorigin","anonymous")
                             ),
                             body(
-                                    NavigationUtil.createNavbar(req.session().get().get("username"),"Invoices"),
+                                    NavigationUtil.createNavbar(req.session().attribute("username"),"Invoices"),
                                     div(attrs(".container"),
                                             div(attrs("#main-content"),
                                                     p("TODO: make feature to generate invoices"),

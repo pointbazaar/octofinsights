@@ -11,12 +11,6 @@ import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.services.CustomersService;
 import org.vanautrui.octofinsights.services.TasksService;
-import org.vanautrui.vaquitamvc.VApp;
-import org.vanautrui.vaquitamvc.controller.IVGETHandler;
-import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
-import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VRedirectResponse;
 import spark.Request;
 import spark.Response;
 
@@ -34,7 +28,7 @@ import static org.vanautrui.octofinsights.generated.tables.Tasks.TASKS;
 public final class ProjectViewController {
 
 
-    private ContainerTag makeEffortDisplay(int effort_spent,int effort_estimated){
+    private static ContainerTag makeEffortDisplay(int effort_spent, int effort_estimated){
 
       String color;
       if(effort_spent > 2*effort_estimated){
@@ -56,7 +50,7 @@ public final class ProjectViewController {
       return res;
     }
 
-    private ContainerTag makeCompletedTask(String task_name,int task_id,int effort_estimate,int effort_spent,int project_id){
+    private static ContainerTag makeCompletedTask(String task_name, int task_id, int effort_estimate, int effort_spent, int project_id){
         //TODO: make that checking or unchecking the checkbox makes a POST request to change the task in the DB
         return li(
           div(
@@ -82,7 +76,7 @@ public final class ProjectViewController {
         ).withClasses("list-group-item");
     }
 
-    private ContainerTag makeTask(String task,int task_id,int effort_estimate,int effort_spent,int project_id){
+    private static ContainerTag makeTask(String task, int task_id, int effort_estimate, int effort_spent, int project_id){
         return li(
             div(
                 div(
@@ -110,13 +104,13 @@ public final class ProjectViewController {
     }
 
     public static Object get(Request req, Response res) {
-        boolean loggedin= req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true");
+        boolean loggedin= req.session().attributes().contains("authenticated") && req.session().attribute("authenticated").equals("true");
         if(!loggedin){
             res.redirect("/login");
             return "";
         }
 
-        int user_id = parseInt(req.session().get().get("user_id"));
+        int user_id = parseInt(req.session().attribute("user_id"));
 
         int project_id=Integer.parseInt(req.queryParams("id"));
 
@@ -151,7 +145,7 @@ public final class ProjectViewController {
                 html(
                         HeadUtil.makeHead(),
                         body(
-                                NavigationUtil.createNavbar(req.session().get().get("username"),"Projects"),
+                                NavigationUtil.createNavbar(req.session().attribute("username"),"Projects"),
                                 div(
                                         h3("Project: "+project.get(PROJECTS.PROJECT_NAME)),
 
