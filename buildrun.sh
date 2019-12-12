@@ -1,1 +1,1 @@
-./build.sh && ./run.sh
+mvn install && ./run.sh

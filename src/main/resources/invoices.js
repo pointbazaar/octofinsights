@@ -21,7 +21,7 @@ function printPDF(){
     //left offset, top offset, text
     pdf.text(20,10,"Invoice");
 
-    var euro="€";
+    var euro="\u20AC";
 
 
 
@@ -93,7 +93,7 @@ function update_one(product_or_service,price,id){
     var list = document.getElementById("invoice-list");
 
     var item_price=document.createElement("p");
-    item_price.innerHTML=price+" €";
+    item_price.innerHTML=price+" \u20AC";
     item_price.className="col-md-3";
 
     var item_name=document.createElement("p");

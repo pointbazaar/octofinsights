@@ -36,6 +36,12 @@ public final class App
         //https://www.youtube.com/watch?v=v1olRFug2ZM
 
         port(9377);
+        staticFiles.location("/");
+        final int cache_time_seconds=30;
+
+        staticFiles.expireTime(cache_time_seconds);
+
+
         get("/",IndexController::get);
 
         get("/dashboard",DashboardController::get);
@@ -106,7 +112,7 @@ public final class App
         path("/api",()->{
             get("/cashflow",CashFlowEndpoint::get);
             get("/businessvaluehistory",BusinessValueHistoryEndpoint::get);
-            get("current_balance",BalanceEndpoint::get);
+            get("/current_balance",BalanceEndpoint::get);
             get("/salesthismonth",SalesThisMonthEndpoint::get);
             get("/expensesthismonth",ExpensesThisMonthEndpoint::get);
             get("/profit",ProfitEndpoint::get);

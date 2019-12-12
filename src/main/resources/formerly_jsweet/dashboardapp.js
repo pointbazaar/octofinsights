@@ -20,7 +20,7 @@
 
         fetch("/api/current_balance").then(data=>data.json()).then(parse=>{
             var balance = $("#balance").get()[0];
-            balance.textContent=parse.value +" €";
+            balance.textContent=parse.value +" \u20AC";
             if(parse.value>=0) {
                 balance.classList.add("text-success");
             }else {
@@ -38,7 +38,7 @@
         //sales_div.hide();
         fetch("/api/salesthismonth").then(data=>data.json()).then(parse=>{
             //console.log(parse.value);
-            sales.textContent=parse.value+" €";
+            sales.textContent=parse.value+" \u20AC";
             if(parse.value>0){
                 sales.classList.add("text-success");
             }else if(parse.value==0){
@@ -53,7 +53,7 @@
         var profitdiv = $("#profitdiv");
         lowOpacity(profitdiv);
         fetch("/api/profit").then(data=>data.json()).then(parse=>{
-            $("#profit").get()[0].textContent=parse.value+" €";
+            $("#profit").get()[0].textContent=parse.value+" \u20AC";
             if(parse.value==0){
                 profitdiv.remove();
             }
@@ -65,7 +65,7 @@
         var expensesdiv = $("#expensesdiv");
         lowOpacity(expensesdiv);
         fetch("/api/salesthismonth").then(data=>data.json()).then(parse=>{
-            $("#expensesthismonth").get()[0].textContent=((-1)*parse.value)+" €";
+            $("#expensesthismonth").get()[0].textContent=((-1)*parse.value)+" \u20AC";
             if(parse.value==0){
                 expensesdiv.remove();
             }

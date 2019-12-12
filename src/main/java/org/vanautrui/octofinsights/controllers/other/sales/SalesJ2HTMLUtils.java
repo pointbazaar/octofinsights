@@ -33,7 +33,7 @@ public class SalesJ2HTMLUtils {
                                                             CustomersService.getCustomerNameForId(user_id,record.get(SALES.CUSTOMER_ID))
                                                     ).withHref("/customers/view?id="+record.get(SALES.CUSTOMER_ID))
                                             ),
-                                            td(record.get(SALES.PRICE_OF_SALE).toString()+" €"),
+                                            td(record.get(SALES.PRICE_OF_SALE).toString()+" Euro"),
                                             td(record.get(SALES.PRODUCT_OR_SERVICE)),
                                             td(record.get(SALES.TIME_OF_SALE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
                                             td(
