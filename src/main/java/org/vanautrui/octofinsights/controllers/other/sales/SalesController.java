@@ -20,6 +20,7 @@ import spark.Request;
 import spark.Response;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -91,14 +92,14 @@ public final class SalesController {
         }
     }
 
-    public static Object post(Request request, Response response) {
+    public static Object post(Request req, Response res) {
         if( entityReq.session().isPresent() && entityReq.session().get().containsKey("authenticated") && entityReq.session().get().get("authenticated").equals("true")
                 && entityReq.session().get().containsKey("user_id")
         ) {
 
             final int user_id = parseInt(entityReq.session().get().get("user_id"));
 
-            final String action = entityReq.getQueryParam("action");
+            final String action = req.queryParams("action");
 
             if(action.equals("delete") && entityReq.getPostParameters().containsKey("id")){
 
@@ -107,8 +108,8 @@ public final class SalesController {
                     SalesService.deleteById(id,user_id);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    response.status(500);
-                    response.type(ContentType.TEXT_PLAIN.toString());
+                    res.status(500);
+                    res.type(ContentType.TEXT_PLAIN.toString());
                     return e.getMessage();
                 }
             }else if(action.equals("insert")
@@ -122,7 +123,13 @@ public final class SalesController {
                 final int price= parseInt(entityReq.getPostParameters().get("price_of_sale"));
                 final String time_of_sale = entityReq.getPostParameters().get("time_of_sale");
 
-                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(time_of_sale);
+                Date date = null;
+                try {
+                    date = new SimpleDateFormat("yyyy-MM-dd").parse(time_of_sale);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return e.getMessage();
+                }
 
                 Timestamp date_of_sale = new Timestamp(date.getTime());
 
@@ -130,14 +137,14 @@ public final class SalesController {
                     SalesService.insert(user_id,customer_id,product_or_service,price,date_of_sale);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    response.status(500);
-                    response.type(ContentType.TEXT_PLAIN.toString());
+                    res.status(500);
+                    res.type(ContentType.TEXT_PLAIN.toString());
                     return e.getMessage();
                 }
             }
-            response.redirect("/sales");
+            res.redirect("/sales");
         }else {
-            response.redirect("/login");
+            res.redirect("/login");
         }
         return "";
     }

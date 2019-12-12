@@ -67,14 +67,14 @@ public final class ProjectAddController {
         return "";
     }
 
-    public static Object get(Request request, Response response) {
-        boolean loggedin = request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true");
+    public static Object get(Request req, Response res) {
+        boolean loggedin = req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true");
         if (!loggedin) {
-            response.redirect("/login");
+            res.redirect("/login");
             return "";
         }
 
-        int user_id = parseInt(request.session().get().get("user_id"));
+        int user_id = parseInt(req.session().get().get("user_id"));
 
         //TODO: create integrity constrains on the mysql database
 
@@ -82,7 +82,7 @@ public final class ProjectAddController {
                 html(
                         HeadUtil.makeHead(),
                         body(
-                                NavigationUtil.createNavbar(request.session().get().get("username"), "Projects"),
+                                NavigationUtil.createNavbar(req.session().get().get("username"), "Projects"),
                                 div(
                                         h3("Create a new Project").withClasses("text-center","m-3"),
                                         hr(),
@@ -133,8 +133,8 @@ public final class ProjectAddController {
                         )
                 ).render();
 
-        response.status(200);
-        response.type(ContentType.TEXT_HTML.toString());
+        res.status(200);
+        res.type(ContentType.TEXT_HTML.toString());
         return page;
     }
 }

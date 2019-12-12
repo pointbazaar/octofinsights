@@ -157,29 +157,29 @@ public final class ProjectsController {
         return page;
     }
 
-    public static Object post(Request request, Response response) {
+    public static Object post(Request req, Response res) {
         // this method should handle
         // archive, unarchive, delete
         // of projects
 
-        if( request.session().isPresent()
-                && request.session().get().containsKey("authenticated")
-                && request.session().get().get("authenticated").equals("true")
-                && request.session().get().containsKey("user_id")
+        if( req.session().isPresent()
+                && req.session().get().containsKey("authenticated")
+                && req.session().get().get("authenticated").equals("true")
+                && req.session().get().containsKey("user_id")
         ) {
-            int user_id = parseInt(request.session().get().get("user_id"));
+            int user_id = parseInt(req.session().get().get("user_id"));
 
-            int project_id = parseInt(request.getQueryParam("id"));
+            final int project_id = parseInt(req.queryParams("id"));
 
-            String action = request.getQueryParam("action");
+            final String action = req.queryParams("action");
 
             Connection conn= null;
             try {
                 conn = DBUtils.makeDBConnection();
             } catch (Exception e) {
                 e.printStackTrace();
-                response.status(500);
-                response.type(ContentType.TEXT_PLAIN.toString());
+                res.status(500);
+                res.type(ContentType.TEXT_PLAIN.toString());
                 return e.getMessage();
             }
 
@@ -208,8 +208,8 @@ public final class ProjectsController {
                         e.printStackTrace();
                     }
 
-                    response.status(400);
-                    response.type(ContentType.TEXT_PLAIN.toString());
+                    res.status(400);
+                    res.type(ContentType.TEXT_PLAIN.toString());
                     return ("Bad Request, this action is not available.");
             }
             try {
@@ -217,9 +217,9 @@ public final class ProjectsController {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            response.redirect("/projects");
+            res.redirect("/projects");
         }else {
-            response.redirect("/login");
+            res.redirect("/login");
         }
         return "";
     }

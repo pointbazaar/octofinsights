@@ -19,6 +19,7 @@ import spark.Request;
 import spark.Response;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -102,21 +103,26 @@ public final class ExpensesController {
         }
     }
 
-    public static Object post(Request request, Response response) {
+    public static Object post(Request req, Response res) {
         if( vaquitaHTTPEntityEnclosingRequest.session().isPresent() && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("authenticated") && vaquitaHTTPEntityEnclosingRequest.session().get().get("authenticated").equals("true")
                 && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("user_id")
         ) {
 
             int user_id = Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.session().get().get("user_id"));
 
-            String action = vaquitaHTTPEntityEnclosingRequest.getQueryParam("action");
+            String action = req.queryParams("action");
 
             if(action.equals("delete") && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("id")){
 
                 System.out.println("step 2");
                 int id = Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("id"));
 
-                ExpensesService.delete(id,user_id);
+                try {
+                    ExpensesService.delete(id,user_id);
+                } catch (Exception e) {
+                    return e.getMessage();
+                    e.printStackTrace();
+                }
             }
 
             if(action.equals("insert")
@@ -128,15 +134,21 @@ public final class ExpensesController {
                 String expense_name = vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("expense_name");
                 String expense_date= vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("expense_date");
 
-                Date expenseDate = new SimpleDateFormat("yyyy-MM-dd").parse(expense_date);
+                Date expenseDate = null;
+                try {
+                    expenseDate = new SimpleDateFormat("yyyy-MM-dd").parse(expense_date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return e.getMessage();
+                }
 
                 Timestamp expense_date_timestamp = new Timestamp(expenseDate.getTime());
 
                 int expense_value= Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("expense_value"));
 
                 if(expense_value<=0){
-                    response.status(500);
-                    response.type(ContentType.TEXT_PLAIN.toString());
+                    res.status(500);
+                    res.type(ContentType.TEXT_PLAIN.toString());
                     return ("should have entered a positive expense value");
                 }
 
@@ -146,15 +158,15 @@ public final class ExpensesController {
                     ExpensesService.insert(expense_name,expense_date_timestamp,expense_value,user_id);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    response.status(500);
-                    response.type(ContentType.TEXT_PLAIN.toString());
+                    res.status(500);
+                    res.type(ContentType.TEXT_PLAIN.toString());
                     return e.getMessage();
                 }
             }
 
-            response.redirect("/expenses");
+            res.redirect("/expenses");
         }else {
-            response.redirect("/login");
+            res.redirect("/login");
         }
         return "";
     }

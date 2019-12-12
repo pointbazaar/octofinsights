@@ -94,7 +94,7 @@ public final class RegisterController {
         return page.render();
     }
 
-    public static Object post(Request request, Response response) {
+    public static Object post(Request req, Response res) {
         final Map<String,String> params= req.getPostParameters();
 
         final String username = URLDecoder.decode(params.get("username"));
@@ -104,14 +104,14 @@ public final class RegisterController {
         final Integer challenge_solution = Integer.parseInt(params.get("challenge"));
 
         if(challenge_solution!=9){
-            response.status(500);
-            response.type(ContentType.TEXT_PLAIN.toString());
+            res.status(500);
+            res.type(ContentType.TEXT_PLAIN.toString());
             return "form submission did not solve challenge. could be a bot.";
         }
 
         if(!username.matches(regex_alphanumeric) || !password.matches(regex_alphanumeric)){
-            response.status(500);
-            response.type(ContentType.TEXT_PLAIN.toString());
+            res.status(500);
+            res.type(ContentType.TEXT_PLAIN.toString());
             return "username or password do not match requested format";
         }
 
@@ -122,8 +122,8 @@ public final class RegisterController {
             conn = DBUtils.makeDBConnection();
         } catch (Exception e) {
             e.printStackTrace();
-            response.status(500);
-            response.type(ContentType.TEXT_PLAIN.toString());
+            res.status(500);
+            res.type(ContentType.TEXT_PLAIN.toString());
             return e.getMessage();
         }
 
@@ -142,7 +142,7 @@ public final class RegisterController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        response.redirect("/");
+        res.redirect("/");
         return "";
     }
 }

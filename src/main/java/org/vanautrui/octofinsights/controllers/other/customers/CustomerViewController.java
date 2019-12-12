@@ -31,7 +31,8 @@ public final class CustomerViewController {
             //https://www.youtube.com/watch?v=JRWox-i6aAk&list=RDEMYGj5tu94_mNz6SrYkDD3_g&index=2
 
             int user_id = parseInt(req.session().get().get("user_id"));
-            int customer_id = parseInt(req.getQueryParam("id"));
+            int customer_id = parseInt(req.queryParams("id"));
+
             Record customer = null;
             try {
                 customer = CustomersService.getCustomerById(user_id,customer_id);

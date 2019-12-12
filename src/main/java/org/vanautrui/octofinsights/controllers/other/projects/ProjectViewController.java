@@ -118,7 +118,7 @@ public final class ProjectViewController {
 
         int user_id = parseInt(req.session().get().get("user_id"));
 
-        int project_id=Integer.parseInt(req.getQueryParam("id"));
+        int project_id=Integer.parseInt(req.queryParams("id"));
 
         Connection conn= null;
         try {

@@ -23,8 +23,8 @@ public final class TaskAddController {
             && req.session().get().containsKey("user_id")
     ) {
       final int user_id               = parseInt(req.session().get().get("user_id"));
-      final int project_id            = parseInt(req.getQueryParam("project_id"));
-      final String redirect_url       = req.getQueryParam("redirect");
+      final int project_id            = parseInt(req.queryParams("project_id"));
+      final String redirect_url       = req.queryParams("redirect");
       final Map<String,String> params = req.getPostParameters();
 
       try {

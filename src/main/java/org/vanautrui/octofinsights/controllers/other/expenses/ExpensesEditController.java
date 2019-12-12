@@ -33,7 +33,7 @@ public final class ExpensesEditController {
         ){
             int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
-            int expense_id = Integer.parseInt(req.getQueryParam("id"));
+            int expense_id = Integer.parseInt(req.queryParams("id"));
 
             Record expense = null;
             try {

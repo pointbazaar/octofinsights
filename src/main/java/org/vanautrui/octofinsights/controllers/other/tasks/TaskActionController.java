@@ -22,10 +22,10 @@ public final class TaskActionController {
     ) {
       final int user_id = parseInt(vhttpPostRequest.session().get().get("user_id"));
 
-      final String action = vhttpPostRequest.getQueryParam("action");
-      final int id = parseInt(vhttpPostRequest.getQueryParam("id"));
+      final String action = req.queryParams("action");
+      final int id = parseInt(req.queryParams("id"));
 
-      final String redirect_url = vhttpPostRequest.getQueryParam("redirect");
+      final String redirect_url = req.queryParams("redirect");
 
       try {
         switch (action) {

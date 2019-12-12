@@ -35,7 +35,7 @@ public final class SalesEditController {
         ){
             final int user_id = parseInt(req.session().get().get("user_id"));
 
-            final int sale_id = parseInt(req.getQueryParam("id"));
+            final int sale_id = parseInt(req.queryParams("id"));
 
             final Record sale;
             try {
@@ -109,7 +109,7 @@ public final class SalesEditController {
         }
     }
 
-    public static Object post(Request request, Response response) {
+    public static Object post(Request req, Response res) {
         if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
                 && req.session().get().containsKey("user_id")
         ) {
@@ -131,13 +131,13 @@ public final class SalesEditController {
                 SalesService.updateById(user_id,sale_id,customer_id,price,expense_date_timestamp,product_or_service);
             } catch (Exception e) {
                 e.printStackTrace();
-                response.status(500);
-                response.type(ContentType.TEXT_PLAIN.toString());
+                res.status(500);
+                res.type(ContentType.TEXT_PLAIN.toString());
                 return e.getMessage();
             }
-            response.redirect("/sales");
+            res.redirect("/sales");
         }else{
-            response.redirect("/login");
+            res.redirect("/login");
         }
         return "";
     }

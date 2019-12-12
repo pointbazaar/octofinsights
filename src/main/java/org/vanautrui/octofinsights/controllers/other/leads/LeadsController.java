@@ -67,7 +67,7 @@ public final class LeadsController   {
 
             Optional<String> searchQuery;
             try{
-                searchQuery=Optional.of(req.getQueryParam("search"));
+                searchQuery=Optional.of(req.queryParams("search"));
             }catch (Exception e){
                 searchQuery=Optional.empty();
             }
@@ -177,14 +177,14 @@ public final class LeadsController   {
         }
     }
 
-    public static Object post(Request request, Response response) {
+    public static Object post(Request req, Response res) {
         if( vaquitaHTTPEntityEnclosingRequest.session().isPresent() && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("authenticated") && vaquitaHTTPEntityEnclosingRequest.session().get().get("authenticated").equals("true")
                 && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("user_id")
         ){
 
             int user_id = Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.session().get().get("user_id"));
 
-            String action = vaquitaHTTPEntityEnclosingRequest.getQueryParam("action");
+            String action = req.queryParams("action");
 
             if(action.equals("delete") && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("id")){
 
@@ -197,8 +197,8 @@ public final class LeadsController   {
                     conn = DBUtils.makeDBConnection();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    response.status(500);
-                    response.type(ContentType.TEXT_PLAIN.toString());
+                    res.status(500);
+                    res.type(ContentType.TEXT_PLAIN.toString());
                     return e.getMessage();
                 }
 
@@ -209,8 +209,8 @@ public final class LeadsController   {
                     conn.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
-                    response.status(500);
-                    response.type(ContentType.TEXT_PLAIN.toString());
+                    res.status(500);
+                    res.type(ContentType.TEXT_PLAIN.toString());
                     return e.getMessage();
                 }
             }
@@ -225,7 +225,13 @@ public final class LeadsController   {
                 String name = URLDecoder.decode(post_parameters.get("name"));
                 String what_the_lead_wants = URLDecoder.decode(post_parameters.get("what_the_lead_wants"));
 
-                Connection conn= DBUtils.makeDBConnection();
+                Connection conn= null;
+                try {
+                    conn = DBUtils.makeDBConnection();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return e.getMessage();
+                }
 
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
                 create.insertInto(LEADS).columns(LEADS.LEAD_NAME, LEADS.LEAD_STATUS, LEADS.DATE_OF_LEAD_ENTRY, LEADS.WHAT_THE_LEAD_WANTS,LEADS.USER_ID)
@@ -235,8 +241,8 @@ public final class LeadsController   {
                     conn.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
-                    response.status(500);
-                    response.type(ContentType.TEXT_PLAIN.toString());
+                    res.status(500);
+                    res.type(ContentType.TEXT_PLAIN.toString());
                     return e.getMessage();
                 }
             }
@@ -252,8 +258,8 @@ public final class LeadsController   {
                     conn = DBUtils.makeDBConnection();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    response.status(500);
-                    response.type(ContentType.TEXT_PLAIN.toString());
+                    res.status(500);
+                    res.type(ContentType.TEXT_PLAIN.toString());
                     return e.getMessage();
                 }
 
@@ -270,15 +276,15 @@ public final class LeadsController   {
                     conn.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
-                    response.status(500);
-                    response.type(ContentType.TEXT_PLAIN.toString());
+                    res.status(500);
+                    res.type(ContentType.TEXT_PLAIN.toString());
                     return e.getMessage();
                 }
             }
 
-            response.redirect("/leads");
+            res.redirect("/leads");
         }else {
-            response.redirect("/login");
+            res.redirect("/login");
         }
         return "";
     }

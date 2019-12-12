@@ -37,7 +37,7 @@ public final class ProjectEditController  {
     }
 
     final int user_id = parseInt(req.session().get().get("user_id"));
-    final int project_id = parseInt(req.getQueryParam("id"));
+    final int project_id = parseInt(req.queryParams("id"));
 
     final Record project;
     try {
@@ -95,7 +95,7 @@ public final class ProjectEditController  {
     return page;
   }
 
-  public static Object post(Request request, Response response) {
+  public static Object post(Request req, Response res) {
 
     if( entReq.session().isPresent() && entReq.session().get().containsKey("authenticated")
             && entReq.session().get().get("authenticated").equals("true")
@@ -107,8 +107,8 @@ public final class ProjectEditController  {
 
       Map<String, String> params = entReq.getPostParameters();
 
-      int id = parseInt(entReq.getQueryParam("id"));
-      int user_id = parseInt(entReq.session().get().get("user_id"));
+      int id = parseInt(req.queryParams("id"));
+      int user_id = parseInt(req.session().get().get("user_id"));
 
       Optional<Integer> customer_id_opt=Optional.empty();
       if(params.containsKey("customer_id")) {
@@ -131,8 +131,8 @@ public final class ProjectEditController  {
           ProjectsService.updateProjectCustomer(user_id, id, customer_id_opt.get());
         } catch (Exception e) {
           e.printStackTrace();
-          response.status(500);
-          response.type(ContentType.TEXT_PLAIN.toString());
+          res.status(500);
+          res.type(ContentType.TEXT_PLAIN.toString());
           return e.getMessage();
         }
       }
@@ -140,14 +140,14 @@ public final class ProjectEditController  {
         ProjectsService.updateProject(user_id,id,project_name,project_description);
       } catch (Exception e) {
         e.printStackTrace();
-        response.status(500);
-        response.type(ContentType.TEXT_PLAIN.toString());
+        res.status(500);
+        res.type(ContentType.TEXT_PLAIN.toString());
         return e.getMessage();
       }
 
-      response.redirect("/projects");
+      res.redirect("/projects");
     }else {
-      response.redirect("/login");
+      res.redirect("/login");
     }
     return "";
   }

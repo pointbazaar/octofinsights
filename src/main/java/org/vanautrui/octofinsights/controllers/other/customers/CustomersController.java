@@ -99,15 +99,15 @@ public final class CustomersController {
         }
     }
 
-    public static Object post(Request request, Response response) {
-        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
-                && request.session().get().containsKey("user_id")
+    public static Object post(Request req, Response res) {
+        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
+                && req.session().get().containsKey("user_id")
         ){
 
-            int user_id = Integer.parseInt(request.session().get().get("user_id"));
-            String action = request.getQueryParam("action");
+            int user_id = Integer.parseInt(req.session().get().get("user_id"));
+            final String action = req.queryParams("action");
 
-            Map<String, String> params = request.getPostParameters();
+            Map<String, String> params = req.getPostParameters();
 
             String customer_name=params.get("customer-name");
             String customer_source=params.get("customer-source");
@@ -118,19 +118,19 @@ public final class CustomersController {
                         CustomersService.insertCustomer(user_id,customer_name,customer_source);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        response.status(500);
-                        response.type(ContentType.TEXT_PLAIN.toString());
+                        res.status(500);
+                        res.type(ContentType.TEXT_PLAIN.toString());
                         return e.getMessage();
                     }
                     break;
                 case "delete":
-                    response.status(500);
-                    response.type(ContentType.TEXT_PLAIN.toString());
+                    res.status(500);
+                    res.type(ContentType.TEXT_PLAIN.toString());
                     return ("not yet supported");
             }
-            response.redirect("/customers");
+            res.redirect("/customers");
         }else {
-            response.redirect("/login");
+            res.redirect("/login");
         }
         return "";
     }

@@ -31,9 +31,9 @@ public final class IndexController {
             String lang="ru";
             try {
                 System.out.println("INFO: LANG PARAMETER");
-                lang = req.getQueryParam("lang");
+                lang = req.queryParams("lang");
                 System.out.println("QUERRY PARAMETERS");
-                System.out.println(req.getQueryParams());
+                System.out.println(req.queryMap());
             }catch (Exception e){
                 //pass
                 e.printStackTrace();
