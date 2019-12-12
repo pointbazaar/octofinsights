@@ -6,20 +6,12 @@ import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
-import org.vanautrui.vaquitamvc.VApp;
-import org.vanautrui.vaquitamvc.controller.IVFullController;
-import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
-import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
-import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
-import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
-import org.vanautrui.vaquitamvc.responses.VTextResponse;
 import spark.Request;
 import spark.Response;
 
 import java.net.URLDecoder;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -60,10 +52,10 @@ public final class LoginController {
         return page.render();
     }
 
-    public static Object post(Request request, Response response) {
+    public static Object post(Request req, Response res) {
         //verify login credentials and set cookie
 
-        final Map<String,String> parameters= req.getPostParameters();
+        final Map<String,String> parameters= req.params();
 
         final String username = URLDecoder.decode(parameters.get("username"));
         final String password = URLDecoder.decode(parameters.get("password"));
@@ -73,8 +65,8 @@ public final class LoginController {
             conn = DBUtils.makeDBConnection();
         } catch (Exception e) {
             e.printStackTrace();
-            response.status(500);
-            response.type(ContentType.TEXT_PLAIN.toString());
+            res.status(500);
+            res.type(ContentType.TEXT_PLAIN.toString());
             return e.getMessage();
         }
 
@@ -96,26 +88,27 @@ public final class LoginController {
             }
         }
 
-        conn.close();
-
-        if(req.session().isPresent()){
-
-            if(id.isPresent()) {
-
-                req.session().get().put("authenticated", "true");
-                req.session().get().put("username", parameters.get("username"));
-                req.session().get().put("user_id", id.get().toString());
-
-                response.redirect("/");
-            }else {
-                response.status(400);
-                response.type(ContentType.TEXT_PLAIN.toString());
-                return "user seems not to exist";
-            }
-        }else{
-            response.status(500);
-            response.type(ContentType.TEXT_PLAIN.toString());
-            return "something went wrong with the sessions";
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return e.getMessage();
         }
+
+
+        if(id.isPresent()) {
+            req.session(true);
+            req.session().attribute("authenticated", "true");
+            req.session().attribute("username", parameters.get("username"));
+            req.session().attribute("user_id", id.get().toString());
+
+            res.redirect("/");
+            return "";
+        }else {
+            res.status(400);
+            res.type(ContentType.TEXT_PLAIN.toString());
+            return "user seems not to exist";
+        }
+
     }
 }

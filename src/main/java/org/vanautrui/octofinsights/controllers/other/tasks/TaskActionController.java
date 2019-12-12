@@ -20,7 +20,7 @@ public final class TaskActionController {
             && vhttpPostRequest.session().get().get("authenticated").equals("true")
             && vhttpPostRequest.session().get().containsKey("user_id")
     ) {
-      final int user_id = parseInt(vhttpPostRequest.session().get().get("user_id"));
+      final int user_id = parseInt(req.session().attribute("user_id"));
 
       final String action = req.queryParams("action");
       final int id = parseInt(req.queryParams("id"));

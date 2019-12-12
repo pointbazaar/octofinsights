@@ -110,7 +110,7 @@ public final class ProjectViewController {
     }
 
     public static Object get(Request req, Response res) {
-        boolean loggedin=req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true");
+        boolean loggedin= req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true");
         if(!loggedin){
             res.redirect("/login");
             return "";

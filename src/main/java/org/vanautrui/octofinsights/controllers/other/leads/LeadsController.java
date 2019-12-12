@@ -59,7 +59,7 @@ public final class LeadsController   {
     }
 
     public static Object get(Request req, Response res) {
-        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
+        if(  req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
                 && req.session().get().containsKey("user_id")
         ){
 
@@ -178,7 +178,7 @@ public final class LeadsController   {
     }
 
     public static Object post(Request req, Response res) {
-        if( vaquitaHTTPEntityEnclosingRequest.session().isPresent() && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("authenticated") && vaquitaHTTPEntityEnclosingRequest.session().get().get("authenticated").equals("true")
+        if(  vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("authenticated") && vaquitaHTTPEntityEnclosingRequest.session().get().get("authenticated").equals("true")
                 && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("user_id")
         ){
 
@@ -251,7 +251,7 @@ public final class LeadsController   {
                     (action.equals("open") || action.equals("close") || action.equals("convert")) && vaquitaHTTPEntityEnclosingRequest.getPostParameters().containsKey("id")
             ){
 
-                int id = Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("id"));
+                int id = Integer.parseInt(req.params("id"));
 
                 Connection conn= null;
                 try {

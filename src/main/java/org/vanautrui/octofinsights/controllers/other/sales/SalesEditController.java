@@ -30,7 +30,7 @@ import static org.vanautrui.octofinsights.generated.tables.Sales.SALES;
 public final class SalesEditController {
 
     public static Object get(Request req, Response res) {
-        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
+        if( req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
                 && req.session().get().containsKey("user_id")
         ){
             final int user_id = parseInt(req.session().get().get("user_id"));
@@ -110,7 +110,7 @@ public final class SalesEditController {
     }
 
     public static Object post(Request req, Response res) {
-        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
+        if( req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
                 && req.session().get().containsKey("user_id")
         ) {
 

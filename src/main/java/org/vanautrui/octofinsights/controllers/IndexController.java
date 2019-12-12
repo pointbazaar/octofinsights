@@ -22,7 +22,7 @@ import static j2html.TagCreator.*;
 public final class IndexController {
 
     public static Object get(Request req, Response res) {
-        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true") ){
+        if(  req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true") ){
 
             res.redirect("/dashboard");
             return "";

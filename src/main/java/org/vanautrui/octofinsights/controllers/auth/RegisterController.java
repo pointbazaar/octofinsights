@@ -9,14 +9,6 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
-import org.vanautrui.vaquitamvc.VApp;
-import org.vanautrui.vaquitamvc.controller.IVFullController;
-import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
-import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
-import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
-import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 import spark.Request;
 import spark.Response;
 
@@ -95,7 +87,7 @@ public final class RegisterController {
     }
 
     public static Object post(Request req, Response res) {
-        final Map<String,String> params= req.getPostParameters();
+        final Map<String,String> params= req.params();
 
         final String username = URLDecoder.decode(params.get("username"));
         final String email = URLDecoder.decode(params.get("email"));

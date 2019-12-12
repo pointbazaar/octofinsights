@@ -7,12 +7,6 @@ import org.apache.http.entity.ContentType;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
-import org.vanautrui.vaquitamvc.VApp;
-import org.vanautrui.vaquitamvc.controller.IVGETHandler;
-import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
-import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VJsonResponse;
-import org.vanautrui.vaquitamvc.responses.VTextResponse;
 import spark.Request;
 import spark.Response;
 
@@ -30,8 +24,8 @@ public class BusinessValueHistoryEndpoint {
 
 
     public static Object get(Request req, Response res) {
-        if(req.session().isPresent() && req.session().get().containsKey("user_id")){
-            int user_id = Integer.parseInt(req.session().get().get("user_id"));
+        if( req.session().attributes().contains("user_id")){
+            int user_id = Integer.parseInt(req.session().attribute("user_id"));
 
             final Connection conn;
             try {
@@ -39,8 +33,8 @@ public class BusinessValueHistoryEndpoint {
             } catch (Exception e) {
                 res.status(500);
                 res.type(ContentType.TEXT_PLAIN.toString());
-                return e.getMessage();
                 e.printStackTrace();
+                return e.getMessage();
             }
             DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
             ObjectMapper mapper = new ObjectMapper();

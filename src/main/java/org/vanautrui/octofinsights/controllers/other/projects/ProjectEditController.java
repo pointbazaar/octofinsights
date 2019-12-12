@@ -30,10 +30,10 @@ public final class ProjectEditController  {
 
   public static Object get(Request req, Response res) {
 
-    final boolean loggedin = req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true");
+    final boolean loggedin =  req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true");
     if (!loggedin) {
       res.redirect("/login");
-      return;
+      return "";
     }
 
     final int user_id = parseInt(req.session().get().get("user_id"));
@@ -97,7 +97,7 @@ public final class ProjectEditController  {
 
   public static Object post(Request req, Response res) {
 
-    if( entReq.session().isPresent() && entReq.session().get().containsKey("authenticated")
+    if( entReq.session().get().containsKey("authenticated")
             && entReq.session().get().get("authenticated").equals("true")
             && entReq.session().get().containsKey("user_id")
     ){

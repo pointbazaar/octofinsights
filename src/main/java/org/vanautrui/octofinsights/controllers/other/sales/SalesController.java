@@ -33,7 +33,7 @@ import static org.vanautrui.octofinsights.controllers.other.sales.SalesJ2HTMLUti
 public final class SalesController {
 
     public static Object get(Request req, Response res) {
-        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
+        if( req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
                 && req.session().get().containsKey("user_id")
         ){
             final int user_id = parseInt(req.session().get().get("user_id"));
@@ -93,7 +93,7 @@ public final class SalesController {
     }
 
     public static Object post(Request req, Response res) {
-        if( entityReq.session().isPresent() && entityReq.session().get().containsKey("authenticated") && entityReq.session().get().get("authenticated").equals("true")
+        if(  entityReq.session().get().containsKey("authenticated") && entityReq.session().get().get("authenticated").equals("true")
                 && entityReq.session().get().containsKey("user_id")
         ) {
 

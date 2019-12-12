@@ -30,7 +30,7 @@ import static org.vanautrui.octofinsights.generated.tables.Expenses.EXPENSES;
 public final class ExpensesController {
 
     public static Object get(Request req, Response res) {
-        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
+        if(  req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
                 && req.session().get().containsKey("user_id")
         ){
             int user_id = Integer.parseInt(req.session().get().get("user_id"));
@@ -104,7 +104,7 @@ public final class ExpensesController {
     }
 
     public static Object post(Request req, Response res) {
-        if( vaquitaHTTPEntityEnclosingRequest.session().isPresent() && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("authenticated") && vaquitaHTTPEntityEnclosingRequest.session().get().get("authenticated").equals("true")
+        if( vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("authenticated") && vaquitaHTTPEntityEnclosingRequest.session().get().get("authenticated").equals("true")
                 && vaquitaHTTPEntityEnclosingRequest.session().get().containsKey("user_id")
         ) {
 

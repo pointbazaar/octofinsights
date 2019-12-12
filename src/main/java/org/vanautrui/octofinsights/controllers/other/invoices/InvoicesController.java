@@ -19,7 +19,7 @@ public final class InvoicesController {
     //https://codeburst.io/generate-pdf-invoices-with-javascript-c8dbbfb56361
 
     public static Object get(Request req, Response res) {
-        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
+        if( req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
                 && req.session().get().containsKey("user_id")
         ){
 

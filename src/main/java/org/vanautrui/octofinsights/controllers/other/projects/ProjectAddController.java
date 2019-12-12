@@ -27,7 +27,7 @@ import static java.lang.Integer.parseInt;
 public final class ProjectAddController {
 
     public static Object post(Request req, Response res) {
-        if( entReq.session().isPresent() && entReq.session().get().containsKey("authenticated")
+        if( entReq.session().get().containsKey("authenticated")
                 && entReq.session().get().get("authenticated").equals("true")
                 && entReq.session().get().containsKey("user_id")
         ){
@@ -35,7 +35,7 @@ public final class ProjectAddController {
 
             Map<String, String> params = entReq.getPostParameters();
 
-            int user_id = parseInt(entReq.session().get().get("user_id"));
+            int user_id = parseInt(req.session().attribute("user_id"));
 
             String project_name = params.get("project-name");
 
@@ -68,7 +68,7 @@ public final class ProjectAddController {
     }
 
     public static Object get(Request req, Response res) {
-        boolean loggedin = req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true");
+        boolean loggedin = req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true");
         if (!loggedin) {
             res.redirect("/login");
             return "";

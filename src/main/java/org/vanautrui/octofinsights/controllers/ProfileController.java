@@ -23,7 +23,7 @@ public final class ProfileController {
     //https://www.youtube.com/watch?v=o_1aF54DO60&list=RDEMYGj5tu94_mNz6SrYkDD3_g&start_radio=1
 
     public static Object get(Request req, Response res) {
-        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true") ) {
+        if( req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true") ) {
 
             int user_id = Integer.parseInt(req.session().get().get("user_id"));
 

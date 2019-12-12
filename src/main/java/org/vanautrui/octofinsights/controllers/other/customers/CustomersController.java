@@ -5,14 +5,6 @@ import org.jooq.Record;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.services.CustomersService;
-import org.vanautrui.vaquitamvc.VApp;
-import org.vanautrui.vaquitamvc.controller.IVFullController;
-import org.vanautrui.vaquitamvc.requests.VHTTPGetRequest;
-import org.vanautrui.vaquitamvc.requests.VHTTPPostRequest;
-import org.vanautrui.vaquitamvc.requests.VHTTPPutRequest;
-import org.vanautrui.vaquitamvc.responses.IVHTTPResponse;
-import org.vanautrui.vaquitamvc.responses.VHTMLResponse;
-import org.vanautrui.vaquitamvc.responses.VRedirectToGETResponse;
 import spark.Request;
 import spark.Response;
 
@@ -26,12 +18,12 @@ import static org.vanautrui.octofinsights.generated.tables.Customers.CUSTOMERS;
 public final class CustomersController {
 
     public static Object get(Request req, Response res) {
-        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
-                && req.session().get().containsKey("user_id")
+        if(  req.session().attributes().contains("authenticated")
+                && req.session().attributes().contains("user_id")
         ){
             //https://www.youtube.com/watch?v=JRWox-i6aAk&list=RDEMYGj5tu94_mNz6SrYkDD3_g&index=2
 
-            int user_id = Integer.parseInt(req.session().get().get("user_id"));
+            int user_id = Integer.parseInt(req.session().attribute("user_id"));
 
             final List<Record> list;
             try {
@@ -48,7 +40,7 @@ public final class CustomersController {
                     html(
                             HeadUtil.makeHead(),
                             body(
-                                    NavigationUtil.createNavbar(req.session().get().get("username"),"Customers"),
+                                    NavigationUtil.createNavbar(req.session().attribute("username"),"Customers"),
                                     div(
                                             div(
                                                     form(
@@ -100,14 +92,14 @@ public final class CustomersController {
     }
 
     public static Object post(Request req, Response res) {
-        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
-                && req.session().get().containsKey("user_id")
+        if( req.session().attributes().contains("authenticated") && req.session().attribute("authenticated").equals("true")
+                && req.session().attributes().contains("user_id")
         ){
 
-            int user_id = Integer.parseInt(req.session().get().get("user_id"));
+            int user_id = Integer.parseInt(req.session().attribute("user_id"));
             final String action = req.queryParams("action");
 
-            Map<String, String> params = req.getPostParameters();
+            Map<String, String> params = req.params();
 
             String customer_name=params.get("customer-name");
             String customer_source=params.get("customer-source");

@@ -92,10 +92,10 @@ public final class ProjectsController {
 
     public static Object get(Request req, Response res) {
 
-        boolean loggedin=req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true");
+        boolean loggedin= req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true");
         if(!loggedin){
             res.redirect("/login");
-            return;
+            return "";
         }
 
         int user_id = parseInt(req.session().get().get("user_id"));
@@ -162,7 +162,7 @@ public final class ProjectsController {
         // archive, unarchive, delete
         // of projects
 
-        if( req.session().isPresent()
+        if(
                 && req.session().get().containsKey("authenticated")
                 && req.session().get().get("authenticated").equals("true")
                 && req.session().get().containsKey("user_id")

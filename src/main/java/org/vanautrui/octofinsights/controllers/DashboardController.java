@@ -39,7 +39,7 @@ public final class DashboardController {
     }
 
     public static Object get(Request req, Response res) {
-        if( vhttpGetRequest.session().isPresent() && vhttpGetRequest.session().get().containsKey("authenticated") && vhttpGetRequest.session().get().get("authenticated").equals("true") ){
+        if( vhttpGetRequest.session().get().containsKey("authenticated") && vhttpGetRequest.session().get().get("authenticated").equals("true") ){
 
             final int user_id = Integer.parseInt(vhttpGetRequest.session().get().get("user_id"));
 
