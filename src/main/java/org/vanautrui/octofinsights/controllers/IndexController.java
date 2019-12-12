@@ -21,17 +21,6 @@ public final class IndexController {
             return "";
         }else {
 
-            String lang="ru";
-            try {
-                System.out.println("INFO: LANG PARAMETER");
-                lang = req.queryParams("lang");
-                System.out.println("QUERRY PARAMETERS");
-                System.out.println(req.queryMap());
-            }catch (Exception e){
-                //pass
-                e.printStackTrace();
-            }
-
             //TODO: provide a choice between logging in or registering
 
             ContainerTag page=html(
