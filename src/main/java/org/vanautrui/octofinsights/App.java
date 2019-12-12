@@ -22,10 +22,6 @@ import org.vanautrui.octofinsights.controllers.other.sales.SalesEditController;
 import org.vanautrui.octofinsights.controllers.other.tasks.TaskActionController;
 import org.vanautrui.octofinsights.controllers.other.tasks.TaskAddController;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
-
 import static spark.Spark.*;
 
 
@@ -34,25 +30,10 @@ public class App
 
     public static final String octofinsights_primary_color = "#ffc143";
 
-    public static String yandex_api_key;
-    public static final String yandex_translate_base_url ="https://translate.yandex.net/api/v1.5/tr.json/translate";
-
-    private static void setup_translation_configuration() throws Exception{
-
-        final List<String> lines= Files.readAllLines(Paths.get("yandex-translate-key.txt"));
-        yandex_api_key=lines.get(0);
-    }
-
     public static void main( String[] args )
     {
         System.out.println( "Octofinsights starting ... " );
         //https://www.youtube.com/watch?v=v1olRFug2ZM
-
-        try {
-            setup_translation_configuration();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
 
         //TODO: the spark server should run on port 9377
         get("/",IndexController::get);

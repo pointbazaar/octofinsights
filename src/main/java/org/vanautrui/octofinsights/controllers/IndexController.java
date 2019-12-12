@@ -2,10 +2,8 @@ package org.vanautrui.octofinsights.controllers;
 
 import j2html.tags.ContainerTag;
 import org.apache.http.entity.ContentType;
-import org.eclipse.jetty.http.HttpParser;
 import org.vanautrui.octofinsights.html_util_domain_specific.BrandUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
-import org.vanautrui.octofinsights.services.TranslationService;
 import spark.Request;
 import spark.Response;
 
@@ -70,10 +68,10 @@ public final class IndexController {
 
                                     div(
 
-                                            h3(TranslationService.translateText("Track Sales ",lang)),
-                                            p(TranslationService.translateText("You can track customer name, price, date, product/service sold",lang)),
-                                            p(TranslationService.translateText("Planned Feature: tracking referrers of that sale (e.g. Freelancer.com, a friend, salesperson,...) to understand where sales are coming from ",lang)),
-                                            p(TranslationService.translateText("Planned Feature: show the burn rate or growth rate of company account. show remaining time left to operate before going bankrupt (assuming current expenses and no income)",lang)),
+                                            h3(("Track Sales ")),
+                                            p(("You can track customer name, price, date, product/service sold")),
+                                            p(("Planned Feature: tracking referrers of that sale (e.g. Freelancer.com, a friend, salesperson,...) to understand where sales are coming from ")),
+                                            p(("Planned Feature: show the burn rate or growth rate of company account. show remaining time left to operate before going bankrupt (assuming current expenses and no income)")),
 
 
                                             h3("For Freelancers"),
