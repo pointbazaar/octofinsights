@@ -1,5 +1,6 @@
 package org.vanautrui.octofinsights.controllers.other.tasks;
 
+import org.apache.http.entity.ContentType;
 import org.vanautrui.octofinsights.services.TasksService;
 import org.vanautrui.vaquitamvc.VApp;
 import org.vanautrui.vaquitamvc.controller.IVPOSTHandler;
@@ -26,7 +27,14 @@ public final class TaskAddController {
       final String redirect_url       = req.getQueryParam("redirect");
       final Map<String,String> params = req.getPostParameters();
 
-      TasksService.insertTask(user_id,project_id,params.get("task_name"),parseInt(params.get("effort_estimate")));
+      try {
+        TasksService.insertTask(user_id,project_id,params.get("task_name"),parseInt(params.get("effort_estimate")));
+      } catch (Exception e) {
+        e.printStackTrace();
+        response.status(500);
+        response.type(ContentType.TEXT_PLAIN.toString());
+        return e.getMessage();
+      }
       response.redirect(redirect_url);
     }else{
       response.redirect("/login");

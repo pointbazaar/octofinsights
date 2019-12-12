@@ -21,7 +21,15 @@ public final class OpenLeadsEndpoint {
         if(req.session().isPresent() && req.session().get().containsKey("user_id")){
             final int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
-            final long count = LeadsService.getOpenLeadsCount(user_id);
+            final long count;
+            try {
+                count = LeadsService.getOpenLeadsCount(user_id);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+            }
 
             final ObjectNode node = (new ObjectMapper()).createObjectNode();
 
@@ -29,7 +37,7 @@ public final class OpenLeadsEndpoint {
 
             response.status(200);
             response.type(ContentType.APPLICATION_JSON.toString());
-            return;(node.toPrettyString());
+            return (node.toPrettyString());
         }else{
 
             response.status(400);

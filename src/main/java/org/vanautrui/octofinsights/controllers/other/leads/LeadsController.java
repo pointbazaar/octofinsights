@@ -24,6 +24,7 @@ import spark.Response;
 
 import java.net.URLDecoder;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -72,8 +73,15 @@ public class LeadsController implements IVFullController {
             }
 
 
-            List<Record> filtered_records = LeadsService.getLeads(user_id,searchQuery);
-
+            final List<Record> filtered_records;
+            try {
+                filtered_records = LeadsService.getLeads(user_id,searchQuery);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+            }
 
 
             String page=
@@ -184,12 +192,27 @@ public class LeadsController implements IVFullController {
                 int id = Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("id"));
 
                 //delete the lead with that id
-                Connection conn= DBUtils.makeDBConnection();
+                final Connection conn;
+                try {
+                    conn = DBUtils.makeDBConnection();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    response.status(500);
+                    response.type(ContentType.TEXT_PLAIN.toString());
+                    return e.getMessage();
+                }
 
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
                 create.deleteFrom(LEADS).where( (LEADS.ID).eq(id).and(LEADS.USER_ID.eq(user_id)) ).execute();
 
-                conn.close();
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    response.status(500);
+                    response.type(ContentType.TEXT_PLAIN.toString());
+                    return e.getMessage();
+                }
             }
 
             if(action.equals("insert")
@@ -208,7 +231,14 @@ public class LeadsController implements IVFullController {
                 create.insertInto(LEADS).columns(LEADS.LEAD_NAME, LEADS.LEAD_STATUS, LEADS.DATE_OF_LEAD_ENTRY, LEADS.WHAT_THE_LEAD_WANTS,LEADS.USER_ID)
                         .values(name,"open",new Timestamp(new Date().getTime()),what_the_lead_wants,user_id).execute();
 
-                conn.close();
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    response.status(500);
+                    response.type(ContentType.TEXT_PLAIN.toString());
+                    return e.getMessage();
+                }
             }
 
             if(
@@ -217,7 +247,15 @@ public class LeadsController implements IVFullController {
 
                 int id = Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("id"));
 
-                Connection conn= DBUtils.makeDBConnection();
+                Connection conn= null;
+                try {
+                    conn = DBUtils.makeDBConnection();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    response.status(500);
+                    response.type(ContentType.TEXT_PLAIN.toString());
+                    return e.getMessage();
+                }
 
                 String new_status = (action.equals("open"))?"open":"closed";
 
@@ -228,7 +266,14 @@ public class LeadsController implements IVFullController {
                 DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
                 create.update(LEADS).set(LEADS.LEAD_STATUS,new_status).where(LEADS.ID.eq(id).and(LEADS.USER_ID.eq(user_id))).execute();
 
-                conn.close();
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    response.status(500);
+                    response.type(ContentType.TEXT_PLAIN.toString());
+                    return e.getMessage();
+                }
             }
 
             response.redirect("/leads");

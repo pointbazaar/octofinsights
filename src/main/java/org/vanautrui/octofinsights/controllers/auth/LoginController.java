@@ -68,7 +68,15 @@ public final class LoginController {
         final String username = URLDecoder.decode(parameters.get("username"));
         final String password = URLDecoder.decode(parameters.get("password"));
 
-        final Connection conn = DBUtils.makeDBConnection();
+        final Connection conn;
+        try {
+            conn = DBUtils.makeDBConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.status(500);
+            response.type(ContentType.TEXT_PLAIN.toString());
+            return e.getMessage();
+        }
 
         final DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 

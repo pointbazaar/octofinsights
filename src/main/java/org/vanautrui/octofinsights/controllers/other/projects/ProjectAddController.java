@@ -51,7 +51,14 @@ public final class ProjectAddController {
 
             int customer_id = parseInt(params.get("customer_id"));
 
-            ProjectsService.insertProject(user_id,project_name,project_start_date,project_end_date_estimate,effort_estimate_hours,earnings_estimate,project_description,customer_id);
+            try {
+                ProjectsService.insertProject(user_id,project_name,project_start_date,project_end_date_estimate,effort_estimate_hours,earnings_estimate,project_description,customer_id);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+            }
 
             response.redirect("/projects");
         }else {

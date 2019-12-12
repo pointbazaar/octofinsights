@@ -34,7 +34,15 @@ public final class ExpensesController {
         ){
             int user_id = Integer.parseInt(request.session().get().get("user_id"));
 
-            Result<Record> records = ExpensesService.getExpenses(user_id);
+            Result<Record> records = null;
+            try {
+                records = ExpensesService.getExpenses(user_id);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+            }
 
             String page=
                     html(
@@ -127,12 +135,21 @@ public final class ExpensesController {
                 int expense_value= Integer.parseInt(vaquitaHTTPEntityEnclosingRequest.getPostParameters().get("expense_value"));
 
                 if(expense_value<=0){
-                    throw new Exception("should have entered a positive expense value");
+                    response.status(500);
+                    response.type(ContentType.TEXT_PLAIN.toString());
+                    return ("should have entered a positive expense value");
                 }
 
                 expense_value*=(-1);
 
-                ExpensesService.insert(expense_name,expense_date_timestamp,expense_value,user_id);
+                try {
+                    ExpensesService.insert(expense_name,expense_date_timestamp,expense_value,user_id);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    response.status(500);
+                    response.type(ContentType.TEXT_PLAIN.toString());
+                    return e.getMessage();
+                }
             }
 
             response.redirect("/expenses");

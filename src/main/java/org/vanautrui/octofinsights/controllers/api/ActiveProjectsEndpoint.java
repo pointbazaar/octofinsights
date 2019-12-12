@@ -24,7 +24,15 @@ public final class ActiveProjectsEndpoint {
         ){
             final int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
-            final long count = ProjectsService.getActiveProjectsCount(user_id);
+            final long count;
+            try {
+                count = ProjectsService.getActiveProjectsCount(user_id);
+            } catch (Exception e) {
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+                e.printStackTrace();
+            }
 
             final ObjectNode node = (new ObjectMapper()).createObjectNode();
 

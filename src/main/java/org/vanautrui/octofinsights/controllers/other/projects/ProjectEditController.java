@@ -39,7 +39,15 @@ public final class ProjectEditController  {
     final int user_id = parseInt(request.session().get().get("user_id"));
     final int project_id = parseInt(request.getQueryParam("id"));
 
-    final Record project = ProjectsService.getById(user_id,project_id);
+    final Record project;
+    try {
+      project = ProjectsService.getById(user_id,project_id);
+    } catch (Exception e) {
+      e.printStackTrace();
+      response.status(500);
+      response.type(ContentType.TEXT_PLAIN.toString());
+      return e.getMessage();
+    }
 
     final String page =
             html(
@@ -119,9 +127,23 @@ public final class ProjectEditController  {
       }
 
       if(customer_id_opt.isPresent()) {
-        ProjectsService.updateProjectCustomer(user_id, id, customer_id_opt.get());
+        try {
+          ProjectsService.updateProjectCustomer(user_id, id, customer_id_opt.get());
+        } catch (Exception e) {
+          e.printStackTrace();
+          response.status(500);
+          response.type(ContentType.TEXT_PLAIN.toString());
+          return e.getMessage();
+        }
       }
-      ProjectsService.updateProject(user_id,id,project_name,project_description);
+      try {
+        ProjectsService.updateProject(user_id,id,project_name,project_description);
+      } catch (Exception e) {
+        e.printStackTrace();
+        response.status(500);
+        response.type(ContentType.TEXT_PLAIN.toString());
+        return e.getMessage();
+      }
 
       response.redirect("/projects");
     }else {

@@ -32,10 +32,26 @@ public final class CustomerViewController {
 
             int user_id = parseInt(request.session().get().get("user_id"));
             int customer_id = parseInt(request.getQueryParam("id"));
-            Record customer = CustomersService.getCustomerById(user_id,customer_id);
+            Record customer = null;
+            try {
+                customer = CustomersService.getCustomerById(user_id,customer_id);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+            }
 
             //TODO: use this to make a table, reuse the code from the sales view
-            Result<Record> sales_to_this_customer = SalesService.getSalesToCustomerByCustomerId(user_id,customer_id);
+            Result<Record> sales_to_this_customer = null;
+            try {
+                sales_to_this_customer = SalesService.getSalesToCustomerByCustomerId(user_id,customer_id);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+            }
 
             String customer_name = customer.get(CUSTOMERS.CUSTOMER_NAME);
 

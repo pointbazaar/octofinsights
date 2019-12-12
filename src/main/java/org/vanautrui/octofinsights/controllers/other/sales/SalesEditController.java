@@ -37,7 +37,15 @@ public final class SalesEditController {
 
             final int sale_id = parseInt(request.getQueryParam("id"));
 
-            final Record sale = SalesService.getById(user_id,sale_id);
+            final Record sale;
+            try {
+                sale = SalesService.getById(user_id,sale_id);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+            }
 
             final String page=
                     html(
@@ -119,7 +127,14 @@ public final class SalesEditController {
 
             final Timestamp expense_date_timestamp = new Timestamp((new SimpleDateFormat("yyyy-MM-dd").parse(time_of_sale)).getTime());
 
-            SalesService.updateById(user_id,sale_id,customer_id,price,expense_date_timestamp,product_or_service);
+            try {
+                SalesService.updateById(user_id,sale_id,customer_id,price,expense_date_timestamp,product_or_service);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+            }
             response.redirect("/sales");
         }else{
             response.redirect("/login");

@@ -21,7 +21,15 @@ public final class SalesThisMonthEndpoint {
             int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
 
-            long balance = SalesService.getTotalForThisMonth(user_id);
+            long balance = 0;
+            try {
+                balance = SalesService.getTotalForThisMonth(user_id);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+            }
 
             ObjectNode node = (new ObjectMapper()).createObjectNode();
 

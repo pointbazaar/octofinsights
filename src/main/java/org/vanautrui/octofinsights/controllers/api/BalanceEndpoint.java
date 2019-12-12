@@ -52,8 +52,12 @@ public final class BalanceEndpoint {
             t1.start();
             t2.start();
 
-            t1.join();
-            t2.join();
+            try {
+                t1.join();
+                t2.join();
+            }catch (Exception e){
+                //pass
+            }
 
             final long balance = x1.get()+x2.get();
 

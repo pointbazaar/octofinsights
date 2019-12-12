@@ -120,16 +120,32 @@ public final class ProjectViewController {
 
         int project_id=Integer.parseInt(request.getQueryParam("id"));
 
-        Connection conn= DBUtils.makeDBConnection();
+        Connection conn= null;
+        try {
+            conn = DBUtils.makeDBConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
         Record project = ctx.select(PROJECTS.asterisk()).from(PROJECTS).where(PROJECTS.ID.eq(project_id).and(PROJECTS.USER_ID.eq(user_id))).fetchOne();
         byte not_complete = 0;
         byte complete = 1;
-        List<Record> tasks = TasksService.getTasksByUserIdAndProjectId(user_id,project_id).stream().filter(task->task.get(TASKS.ISCOMPLETED)==not_complete).collect(Collectors.toList());
-        List<Record> tasks_complete = TasksService.getTasksByUserIdAndProjectId(user_id,project_id).stream().filter(task->task.get(TASKS.ISCOMPLETED)==complete).collect(Collectors.toList());
 
-        Record project_customer = CustomersService.getCustomerById(user_id,project.get(PROJECTS.CUSTOMER_ID));
+        final List<Record> tasks;
+        final List<Record> tasks_complete;
+        final Record project_customer;
+        try {
+            tasks = TasksService.getTasksByUserIdAndProjectId(user_id, project_id).stream().filter(task -> task.get(TASKS.ISCOMPLETED) == not_complete).collect(Collectors.toList());
+            tasks_complete = TasksService.getTasksByUserIdAndProjectId(user_id, project_id).stream().filter(task -> task.get(TASKS.ISCOMPLETED) == complete).collect(Collectors.toList());
+
+            project_customer = CustomersService.getCustomerById(user_id, project.get(PROJECTS.CUSTOMER_ID));
+        }catch (Exception e){
+            e.printStackTrace();
+            response.status(500);
+            response.type(ContentType.TEXT_PLAIN.toString());
+            return e.getMessage();
+        }
 
         String page =
                 html(

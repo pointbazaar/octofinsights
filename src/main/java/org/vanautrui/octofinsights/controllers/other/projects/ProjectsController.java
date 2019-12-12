@@ -21,6 +21,7 @@ import spark.Request;
 import spark.Response;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ import static j2html.TagCreator.*;
 import static java.lang.Integer.parseInt;
 import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
 
-public class ProjectsController implements IVFullController {
+public final class ProjectsController {
 
     private ContainerTag makeInactiveProjectDiv(String projectName,int project_id){
         ContainerTag res=
@@ -99,7 +100,15 @@ public class ProjectsController implements IVFullController {
 
         int user_id = parseInt(request.session().get().get("user_id"));
 
-        Result<Record> myprojects = ProjectsService.getProjectsByUserId(user_id);
+        Result<Record> myprojects = null;
+        try {
+            myprojects = ProjectsService.getProjectsByUserId(user_id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.status(500);
+            response.type(ContentType.TEXT_PLAIN.toString());
+            return e.getMessage();
+        }
         List<Record> active_projects = myprojects.stream().filter(proj -> proj.get(PROJECTS.ISACTIVE).intValue() == 1).collect(Collectors.toList());
         List<Record> inactive_projects = myprojects.stream().filter(proj -> proj.get(PROJECTS.ISACTIVE).intValue() == 0).collect(Collectors.toList());
 
@@ -164,7 +173,15 @@ public class ProjectsController implements IVFullController {
 
             String action = request.getQueryParam("action");
 
-            Connection conn= DBUtils.makeDBConnection();
+            Connection conn= null;
+            try {
+                conn = DBUtils.makeDBConnection();
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+            }
 
             DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
 
@@ -185,14 +202,21 @@ public class ProjectsController implements IVFullController {
                     ctx.delete(PROJECTS).where(PROJECTS.ID.eq(project_id).and(PROJECTS.USER_ID.eq(user_id))).execute();
                     break;
                 default:
-                    conn.close();
+                    try {
+                        conn.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
 
                     response.status(400);
                     response.type(ContentType.TEXT_PLAIN.toString());
-                    response.body("Bad Request, this action is not available.");
-                    return;
+                    return ("Bad Request, this action is not available.");
             }
-            conn.close();
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             response.redirect("/projects");
         }else {
             response.redirect("/login");

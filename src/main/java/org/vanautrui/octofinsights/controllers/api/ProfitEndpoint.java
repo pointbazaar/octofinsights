@@ -55,8 +55,12 @@ public final class ProfitEndpoint {
             t2.start();
 
             //wait for both to finish
-            t1.join();
-            t2.join();
+            try {
+                t1.join();
+                t2.join();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
             final long balance = x1.get()+x2.get();
 

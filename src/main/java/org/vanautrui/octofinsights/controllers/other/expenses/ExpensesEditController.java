@@ -35,7 +35,15 @@ public final class ExpensesEditController {
 
             int expense_id = Integer.parseInt(request.getQueryParam("id"));
 
-            Record expense = ExpensesService.getById(user_id,expense_id);
+            Record expense = null;
+            try {
+                expense = ExpensesService.getById(user_id,expense_id);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+            }
 
             String page=
                     html(
@@ -105,7 +113,14 @@ public final class ExpensesEditController {
 
             Timestamp expense_date_timestamp = new Timestamp((new SimpleDateFormat("yyyy-MM-dd").parse(time_of_sale)).getTime());
 
-            ExpensesService.updateById(user_id,expense_id,expense_name,price,expense_date_timestamp);
+            try {
+                ExpensesService.updateById(user_id,expense_id,expense_name,price,expense_date_timestamp);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+            }
 
             response.redirect("/expenses");
         }else{

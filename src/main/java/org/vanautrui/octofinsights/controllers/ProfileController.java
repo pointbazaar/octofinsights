@@ -27,7 +27,15 @@ public final class ProfileController {
 
             int user_id = Integer.parseInt(request.session().get().get("user_id"));
 
-            Record user = UsersService.getUserById(user_id);
+            Record user = null;
+            try {
+                user = UsersService.getUserById(user_id);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+            }
 
             ContainerTag page = html(
                     HeadUtil.makeHead(),

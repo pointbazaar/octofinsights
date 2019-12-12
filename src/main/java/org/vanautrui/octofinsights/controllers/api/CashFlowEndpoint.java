@@ -18,6 +18,7 @@ import spark.Response;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 import static org.jooq.impl.DSL.*;
@@ -34,7 +35,15 @@ public final class CashFlowEndpoint {
         if(req.session().isPresent() && req.session().get().containsKey("user_id")){
             int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
-            Connection conn= DBUtils.makeDBConnection();
+            Connection conn= null;
+            try {
+                conn = DBUtils.makeDBConnection();
+            } catch (Exception e) {
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+                e.printStackTrace();
+            }
             DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
             ObjectMapper mapper = new ObjectMapper();
             ArrayNode node =  mapper.createArrayNode();
@@ -82,7 +91,11 @@ public final class CashFlowEndpoint {
                 node.add(objectNode);
             }
 
-            conn.close();
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
             response.status(200);
             response.type(ContentType.APPLICATION_JSON.toString());

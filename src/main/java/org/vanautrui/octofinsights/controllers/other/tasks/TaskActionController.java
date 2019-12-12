@@ -1,5 +1,6 @@
 package org.vanautrui.octofinsights.controllers.other.tasks;
 
+import org.apache.http.entity.ContentType;
 import org.vanautrui.octofinsights.services.TasksService;
 import org.vanautrui.vaquitamvc.VApp;
 import org.vanautrui.vaquitamvc.controller.IVPOSTHandler;
@@ -26,11 +27,27 @@ public final class TaskActionController {
 
       final String redirect_url = vhttpPostRequest.getQueryParam("redirect");
 
-      switch (action){
-        case "complete": TasksService.completeTask(id,user_id); break;
-        case "spend1hour": TasksService.spend1hour(id,user_id); break;
-        case "delete": TasksService.deleteTask(id,user_id); break;
-        default: throw new Exception("unrecognized query parameter value");
+      try {
+        switch (action) {
+          case "complete":
+            TasksService.completeTask(id, user_id);
+            break;
+          case "spend1hour":
+            TasksService.spend1hour(id, user_id);
+            break;
+          case "delete":
+            TasksService.deleteTask(id, user_id);
+            break;
+          default:
+            response.status(500);
+            response.type(ContentType.TEXT_PLAIN.toString());
+            return ("unrecognized query parameter value");
+        }
+      }catch (Exception e){
+        e.printStackTrace();
+        response.status(500);
+        response.type(ContentType.TEXT_PLAIN.toString());
+        return e.getMessage();
       }
 
       response.redirect(redirect_url);

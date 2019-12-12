@@ -37,11 +37,27 @@ public final class SalesController {
         ){
             final int user_id = parseInt(request.session().get().get("user_id"));
 
-            final List<Record> records = SalesService.getSales(user_id);
+            final List<Record> records;
+            try {
+                records = SalesService.getSales(user_id);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+            }
 
             final ContainerTag mytable = makeSalesTable(user_id,records);
 
-            final List<Record> all_customers = CustomersService.getCustomers(user_id);
+            final List<Record> all_customers;
+            try {
+                all_customers = CustomersService.getCustomers(user_id);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+            }
 
             if(all_customers.size()==0){
 
@@ -87,7 +103,14 @@ public final class SalesController {
             if(action.equals("delete") && entityReq.getPostParameters().containsKey("id")){
 
                 int id = parseInt(entityReq.getPostParameters().get("id"));
-                SalesService.deleteById(id,user_id);
+                try {
+                    SalesService.deleteById(id,user_id);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    response.status(500);
+                    response.type(ContentType.TEXT_PLAIN.toString());
+                    return e.getMessage();
+                }
             }else if(action.equals("insert")
                     && entityReq.getPostParameters().containsKey("customer_id")
                     && entityReq.getPostParameters().containsKey("product_or_service")
@@ -103,7 +126,14 @@ public final class SalesController {
 
                 Timestamp date_of_sale = new Timestamp(date.getTime());
 
-                SalesService.insert(user_id,customer_id,product_or_service,price,date_of_sale);
+                try {
+                    SalesService.insert(user_id,customer_id,product_or_service,price,date_of_sale);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    response.status(500);
+                    response.type(ContentType.TEXT_PLAIN.toString());
+                    return e.getMessage();
+                }
             }
             response.redirect("/sales");
         }else {

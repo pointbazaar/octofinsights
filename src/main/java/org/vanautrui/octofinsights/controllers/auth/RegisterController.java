@@ -22,6 +22,7 @@ import spark.Response;
 
 import java.net.URLDecoder;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Map;
 
 import static j2html.TagCreator.*;
@@ -103,16 +104,28 @@ public final class RegisterController {
         final Integer challenge_solution = Integer.parseInt(params.get("challenge"));
 
         if(challenge_solution!=9){
-            throw new Exception("form submission did not solve challenge. could be a bot.");
+            response.status(500);
+            response.type(ContentType.TEXT_PLAIN.toString());
+            return "form submission did not solve challenge. could be a bot.";
         }
 
         if(!username.matches(regex_alphanumeric) || !password.matches(regex_alphanumeric)){
-            throw new Exception("username or password do not match requested format");
+            response.status(500);
+            response.type(ContentType.TEXT_PLAIN.toString());
+            return "username or password do not match requested format";
         }
 
         //insert new user into the database
 
-        final Connection conn = DBUtils.makeDBConnection();
+        final Connection conn;
+        try {
+            conn = DBUtils.makeDBConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.status(500);
+            response.type(ContentType.TEXT_PLAIN.toString());
+            return e.getMessage();
+        }
 
         final DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 
@@ -124,7 +137,11 @@ public final class RegisterController {
             System.out.println("\t user with this username or email already exists");
         }
 
-        conn.close();
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         response.redirect("/");
         return "";
     }

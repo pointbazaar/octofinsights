@@ -33,7 +33,15 @@ public final class CustomersController {
 
             int user_id = Integer.parseInt(request.session().get().get("user_id"));
 
-            List<Record> list = CustomersService.getCustomers(user_id);
+            final List<Record> list;
+            try {
+                list = CustomersService.getCustomers(user_id);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+            }
 
 
             String page=
@@ -106,10 +114,19 @@ public final class CustomersController {
 
             switch (action){
                 case "insert":
-                    CustomersService.insertCustomer(user_id,customer_name,customer_source);
+                    try {
+                        CustomersService.insertCustomer(user_id,customer_name,customer_source);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        response.status(500);
+                        response.type(ContentType.TEXT_PLAIN.toString());
+                        return e.getMessage();
+                    }
                     break;
                 case "delete":
-                    throw new Exception("not yet supported");
+                    response.status(500);
+                    response.type(ContentType.TEXT_PLAIN.toString());
+                    return ("not yet supported");
             }
             response.redirect("/customers");
         }else {

@@ -20,7 +20,15 @@ public final class ActiveTasksEndpoint  {
         if(req.session().isPresent() && req.session().get().containsKey("user_id")){
             int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
-            long count = TasksService.countTasksByUserId(user_id);
+            long count = 0;
+            try {
+                count = TasksService.countTasksByUserId(user_id);
+            } catch (Exception e) {
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+                e.printStackTrace();
+            }
 
             ObjectNode node = (new ObjectMapper()).createObjectNode();
 

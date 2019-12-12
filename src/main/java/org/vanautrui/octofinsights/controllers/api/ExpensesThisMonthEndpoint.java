@@ -21,7 +21,15 @@ public final class ExpensesThisMonthEndpoint {
             int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
 
-            long balance = ExpensesService.getTotalForThisMonth(user_id);
+            long balance = 0;
+            try {
+                balance = ExpensesService.getTotalForThisMonth(user_id);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.status(500);
+                response.type(ContentType.TEXT_PLAIN.toString());
+                return e.getMessage();
+            }
 
             ObjectNode node = (new ObjectMapper()).createObjectNode();
 
