@@ -29,7 +29,7 @@ import static org.vanautrui.octofinsights.generated.Tables.SALES;
 public class BusinessValueHistoryEndpoint {
 
 
-    public static Object get(Request req, Response response) {
+    public static Object get(Request req, Response res) {
         if(req.session().isPresent() && req.session().get().containsKey("user_id")){
             int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
@@ -37,8 +37,8 @@ public class BusinessValueHistoryEndpoint {
             try {
                 conn = DBUtils.makeDBConnection();
             } catch (Exception e) {
-                response.status(500);
-                response.type(ContentType.TEXT_PLAIN.toString());
+                res.status(500);
+                res.type(ContentType.TEXT_PLAIN.toString());
                 return e.getMessage();
                 e.printStackTrace();
             }
@@ -90,13 +90,13 @@ public class BusinessValueHistoryEndpoint {
                 e.printStackTrace();
             }
 
-            response.status(200);
-            response.type(ContentType.APPLICATION_JSON.toString());
+            res.status(200);
+            res.type(ContentType.APPLICATION_JSON.toString());
             return node.toPrettyString();
         }else{
 
-            response.status(400);
-            response.type(ContentType.TEXT_PLAIN.toString());
+            res.status(400);
+            res.type(ContentType.TEXT_PLAIN.toString());
             return "Bad Request, no user_id found in session.";
         }
     }

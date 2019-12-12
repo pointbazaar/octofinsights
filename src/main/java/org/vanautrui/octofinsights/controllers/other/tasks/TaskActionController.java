@@ -14,7 +14,7 @@ import static java.lang.Integer.parseInt;
 
 public final class TaskActionController {
 
-  public static Object post(Request request, Response response) {
+  public static Object post(Request req, Response res) {
     if(        vhttpPostRequest.session().isPresent()
             && vhttpPostRequest.session().get().containsKey("authenticated")
             && vhttpPostRequest.session().get().get("authenticated").equals("true")
@@ -39,20 +39,20 @@ public final class TaskActionController {
             TasksService.deleteTask(id, user_id);
             break;
           default:
-            response.status(500);
-            response.type(ContentType.TEXT_PLAIN.toString());
+            res.status(500);
+            res.type(ContentType.TEXT_PLAIN.toString());
             return ("unrecognized query parameter value");
         }
       }catch (Exception e){
         e.printStackTrace();
-        response.status(500);
-        response.type(ContentType.TEXT_PLAIN.toString());
+        res.status(500);
+        res.type(ContentType.TEXT_PLAIN.toString());
         return e.getMessage();
       }
 
-      response.redirect(redirect_url);
+      res.redirect(redirect_url);
     }
-    response.redirect("/login");
+    res.redirect("/login");
     return "";
   }
 }

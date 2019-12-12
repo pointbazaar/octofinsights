@@ -90,23 +90,23 @@ public final class ProjectsController {
         return res;
     }
 
-    public static Object get(Request request, Response response) {
+    public static Object get(Request req, Response res) {
 
-        boolean loggedin=request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true");
+        boolean loggedin=req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true");
         if(!loggedin){
-            response.redirect("/login");
+            res.redirect("/login");
             return;
         }
 
-        int user_id = parseInt(request.session().get().get("user_id"));
+        int user_id = parseInt(req.session().get().get("user_id"));
 
         Result<Record> myprojects = null;
         try {
             myprojects = ProjectsService.getProjectsByUserId(user_id);
         } catch (Exception e) {
             e.printStackTrace();
-            response.status(500);
-            response.type(ContentType.TEXT_PLAIN.toString());
+            res.status(500);
+            res.type(ContentType.TEXT_PLAIN.toString());
             return e.getMessage();
         }
         List<Record> active_projects = myprojects.stream().filter(proj -> proj.get(PROJECTS.ISACTIVE).intValue() == 1).collect(Collectors.toList());
@@ -116,7 +116,7 @@ public final class ProjectsController {
                 html(
                         HeadUtil.makeHead(),
                         body(
-                                NavigationUtil.createNavbar(request.session().get().get("username"),"Projects"),
+                                NavigationUtil.createNavbar(req.session().get().get("username"),"Projects"),
                                 div(
                                         div().withClasses("m-3"),
                                         div(
@@ -152,8 +152,8 @@ public final class ProjectsController {
                         )
                 ).render();
 
-        response.status(200);
-        response.type(ContentType.TEXT_HTML.toString());
+        res.status(200);
+        res.type(ContentType.TEXT_HTML.toString());
         return page;
     }
 

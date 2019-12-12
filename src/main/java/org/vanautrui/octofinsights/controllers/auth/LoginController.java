@@ -28,7 +28,7 @@ import static org.vanautrui.octofinsights.generated.tables.Users.USERS;
 
 public final class LoginController {
 
-    public static Object get(Request request, Response response) {
+    public static Object get(Request req, Response res) {
         final ContainerTag page =
                 html(
                         HeadUtil.makeHead(),
@@ -55,8 +55,8 @@ public final class LoginController {
                         )
                 );
 
-        response.status(200);
-        response.type(ContentType.TEXT_HTML.toString());
+        res.status(200);
+        res.type(ContentType.TEXT_HTML.toString());
         return page.render();
     }
 

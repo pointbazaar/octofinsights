@@ -32,7 +32,7 @@ public final class RegisterController {
 
     public static final String regex_alphanumeric = "^[a-zA-Z0-9]+$";
 
-    public static Object get(Request request, Response response) {
+    public static Object get(Request req, Response res) {
         final ContainerTag page =
                 html(
                         HeadUtil.makeHead(),
@@ -89,8 +89,8 @@ public final class RegisterController {
                         )
                 );
 
-        response.status(200);
-        response.type(ContentType.TEXT_HTML.toString());
+        res.status(200);
+        res.type(ContentType.TEXT_HTML.toString());
         return page.render();
     }
 

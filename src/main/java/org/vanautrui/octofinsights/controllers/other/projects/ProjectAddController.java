@@ -26,7 +26,7 @@ import static java.lang.Integer.parseInt;
 
 public final class ProjectAddController {
 
-    public static Object post(Request request, Response response) {
+    public static Object post(Request req, Response res) {
         if( entReq.session().isPresent() && entReq.session().get().containsKey("authenticated")
                 && entReq.session().get().get("authenticated").equals("true")
                 && entReq.session().get().containsKey("user_id")
@@ -55,14 +55,14 @@ public final class ProjectAddController {
                 ProjectsService.insertProject(user_id,project_name,project_start_date,project_end_date_estimate,effort_estimate_hours,earnings_estimate,project_description,customer_id);
             } catch (Exception e) {
                 e.printStackTrace();
-                response.status(500);
-                response.type(ContentType.TEXT_PLAIN.toString());
+                res.status(500);
+                res.type(ContentType.TEXT_PLAIN.toString());
                 return e.getMessage();
             }
 
-            response.redirect("/projects");
+            res.redirect("/projects");
         }else {
-            response.redirect("/login");
+            res.redirect("/login");
         }
         return "";
     }

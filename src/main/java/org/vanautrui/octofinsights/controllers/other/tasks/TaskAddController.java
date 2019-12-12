@@ -16,7 +16,7 @@ import static java.lang.Integer.parseInt;
 
 public final class TaskAddController {
 
-  public static Object post(Request request, Response response) {
+  public static Object post(Request req, Response res) {
     if( req.session().isPresent()
             && req.session().get().containsKey("authenticated")
             && req.session().get().get("authenticated").equals("true")
@@ -31,13 +31,13 @@ public final class TaskAddController {
         TasksService.insertTask(user_id,project_id,params.get("task_name"),parseInt(params.get("effort_estimate")));
       } catch (Exception e) {
         e.printStackTrace();
-        response.status(500);
-        response.type(ContentType.TEXT_PLAIN.toString());
+        res.status(500);
+        res.type(ContentType.TEXT_PLAIN.toString());
         return e.getMessage();
       }
-      response.redirect(redirect_url);
+      res.redirect(redirect_url);
     }else{
-      response.redirect("/login");
+      res.redirect("/login");
     }
     return "";
   }

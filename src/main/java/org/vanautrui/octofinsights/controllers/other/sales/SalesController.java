@@ -31,19 +31,19 @@ import static org.vanautrui.octofinsights.controllers.other.sales.SalesJ2HTMLUti
 
 public final class SalesController {
 
-    public static Object get(Request request, Response response) {
-        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
-                && request.session().get().containsKey("user_id")
+    public static Object get(Request req, Response res) {
+        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
+                && req.session().get().containsKey("user_id")
         ){
-            final int user_id = parseInt(request.session().get().get("user_id"));
+            final int user_id = parseInt(req.session().get().get("user_id"));
 
             final List<Record> records;
             try {
                 records = SalesService.getSales(user_id);
             } catch (Exception e) {
                 e.printStackTrace();
-                response.status(500);
-                response.type(ContentType.TEXT_PLAIN.toString());
+                res.status(500);
+                res.type(ContentType.TEXT_PLAIN.toString());
                 return e.getMessage();
             }
 
@@ -54,23 +54,23 @@ public final class SalesController {
                 all_customers = CustomersService.getCustomers(user_id);
             } catch (Exception e) {
                 e.printStackTrace();
-                response.status(500);
-                response.type(ContentType.TEXT_PLAIN.toString());
+                res.status(500);
+                res.type(ContentType.TEXT_PLAIN.toString());
                 return e.getMessage();
             }
 
             if(all_customers.size()==0){
 
-                response.status(400);
-                response.type(ContentType.TEXT_PLAIN.toString());
-                response.body("Please first create a Customer, to view the Sales Section ");
+                res.status(400);
+                res.type(ContentType.TEXT_PLAIN.toString());
+                res.body("Please first create a Customer, to view the Sales Section ");
             }
 
             final String page=
                     html(
                             HeadUtil.makeHead(),
                             body(
-                                    NavigationUtil.createNavbar(request.session().get().get("username"),"Sales"),
+                                    NavigationUtil.createNavbar(req.session().get().get("username"),"Sales"),
                                     div(
                                             div(
                                                     makeSalesInsertWidget(user_id),
@@ -82,12 +82,12 @@ public final class SalesController {
                     ).render();
 
 
-            response.status(200);
-            response.type(ContentType.TEXT_HTML.toString());
+            res.status(200);
+            res.type(ContentType.TEXT_HTML.toString());
             return page;
 
         }else {
-            response.redirect("/login");
+            res.redirect("/login");
         }
     }
 

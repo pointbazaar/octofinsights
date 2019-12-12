@@ -18,12 +18,12 @@ public final class InvoicesController {
 
     //https://codeburst.io/generate-pdf-invoices-with-javascript-c8dbbfb56361
 
-    public static Object get(Request request, Response response) {
-        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
-                && request.session().get().containsKey("user_id")
+    public static Object get(Request req, Response res) {
+        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
+                && req.session().get().containsKey("user_id")
         ){
 
-            final int user_id = Integer.parseInt(request.session().get().get("user_id"));
+            final int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
             //TODO
 
@@ -35,7 +35,7 @@ public final class InvoicesController {
                                             .attr("crossorigin","anonymous")
                             ),
                             body(
-                                    NavigationUtil.createNavbar(request.session().get().get("username"),"Invoices"),
+                                    NavigationUtil.createNavbar(req.session().get().get("username"),"Invoices"),
                                     div(attrs(".container"),
                                             div(attrs("#main-content"),
                                                     p("TODO: make feature to generate invoices"),
@@ -80,11 +80,11 @@ public final class InvoicesController {
                             )
                     ).render();
 
-            response.status(200);
-            response.type(ContentType.TEXT_HTML.toString());
+            res.status(200);
+            res.type(ContentType.TEXT_HTML.toString());
             return page;
         }else {
-            response.redirect("/login");
+            res.redirect("/login");
             return "";
         }
     }

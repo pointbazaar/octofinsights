@@ -4,9 +4,9 @@ import j2html.tags.ContainerTag;
 
 import static j2html.TagCreator.*;
 
-public class ExpensesJ2HTMLUtils {
+public final class ExpensesJ2HTMLUtils {
 
-  public static ContainerTag makeExpenseInsertWidget(int user_id){
+  public static ContainerTag makeExpenseInsertWidget(){
     return
             div(
                     div("Add an Expense").withClasses("card-header"),

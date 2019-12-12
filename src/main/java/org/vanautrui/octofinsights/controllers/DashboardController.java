@@ -38,7 +38,7 @@ public final class DashboardController {
         .withId(cardId);
     }
 
-    public static Object get(Request request, Response response) {
+    public static Object get(Request req, Response res) {
         if( vhttpGetRequest.session().isPresent() && vhttpGetRequest.session().get().containsKey("authenticated") && vhttpGetRequest.session().get().get("authenticated").equals("true") ){
 
             final int user_id = Integer.parseInt(vhttpGetRequest.session().get().get("user_id"));
@@ -81,12 +81,12 @@ public final class DashboardController {
                     ).render();
 
 
-            response.status(200);
-            response.type(ContentType.TEXT_HTML.toString());
+            res.status(200);
+            res.type(ContentType.TEXT_HTML.toString());
             return page;
 
         }else {
-            response.redirect("/login");
+            res.redirect("/login");
             return "";
         }
     }

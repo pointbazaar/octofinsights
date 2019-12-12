@@ -24,21 +24,21 @@ import static org.vanautrui.octofinsights.generated.tables.Customers.CUSTOMERS;
 public final class CustomerViewController {
 
 
-    public static Object get(Request request, Response response) {
-        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
-                && request.session().get().containsKey("user_id")
+    public static Object get(Request req, Response res) {
+        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
+                && req.session().get().containsKey("user_id")
         ){
             //https://www.youtube.com/watch?v=JRWox-i6aAk&list=RDEMYGj5tu94_mNz6SrYkDD3_g&index=2
 
-            int user_id = parseInt(request.session().get().get("user_id"));
-            int customer_id = parseInt(request.getQueryParam("id"));
+            int user_id = parseInt(req.session().get().get("user_id"));
+            int customer_id = parseInt(req.getQueryParam("id"));
             Record customer = null;
             try {
                 customer = CustomersService.getCustomerById(user_id,customer_id);
             } catch (Exception e) {
                 e.printStackTrace();
-                response.status(500);
-                response.type(ContentType.TEXT_PLAIN.toString());
+                res.status(500);
+                res.type(ContentType.TEXT_PLAIN.toString());
                 return e.getMessage();
             }
 
@@ -48,8 +48,8 @@ public final class CustomerViewController {
                 sales_to_this_customer = SalesService.getSalesToCustomerByCustomerId(user_id,customer_id);
             } catch (Exception e) {
                 e.printStackTrace();
-                response.status(500);
-                response.type(ContentType.TEXT_PLAIN.toString());
+                res.status(500);
+                res.type(ContentType.TEXT_PLAIN.toString());
                 return e.getMessage();
             }
 
@@ -59,7 +59,7 @@ public final class CustomerViewController {
                     html(
                             HeadUtil.makeHead(),
                             body(
-                                    NavigationUtil.createNavbar(request.session().get().get("username"),"Customers"),
+                                    NavigationUtil.createNavbar(req.session().get().get("username"),"Customers"),
                                     div(
                                             div(
                                                     h3("Customer: "+customer_name),
@@ -73,12 +73,12 @@ public final class CustomerViewController {
                             )
                     ).render();
 
-            response.status(200);
-            response.type(ContentType.TEXT_HTML.toString());
+            res.status(200);
+            res.type(ContentType.TEXT_HTML.toString());
             return page;
 
         }else {
-            response.redirect("/login");
+            res.redirect("/login");
             return "";
         }
     }

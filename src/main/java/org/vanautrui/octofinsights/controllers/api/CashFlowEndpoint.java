@@ -28,7 +28,7 @@ import static org.vanautrui.octofinsights.generated.Tables.SALES;
 
 public final class CashFlowEndpoint {
 
-    public static Object get(Request req, Response response {
+    public static Object get(Request req, Response res) {
 
         req.cookie()
 
@@ -39,8 +39,8 @@ public final class CashFlowEndpoint {
             try {
                 conn = DBUtils.makeDBConnection();
             } catch (Exception e) {
-                response.status(500);
-                response.type(ContentType.TEXT_PLAIN.toString());
+                res.status(500);
+                res.type(ContentType.TEXT_PLAIN.toString());
                 return e.getMessage();
                 e.printStackTrace();
             }
@@ -97,13 +97,13 @@ public final class CashFlowEndpoint {
                 e.printStackTrace();
             }
 
-            response.status(200);
-            response.type(ContentType.APPLICATION_JSON.toString());
+            res.status(200);
+            res.type(ContentType.APPLICATION_JSON.toString());
             return node.toPrettyString();
         }else{
 
-            response.status(400);
-            response.type(ContentType.TEXT_PLAIN.toString());
+            res.status(400);
+            res.type(ContentType.TEXT_PLAIN.toString());
             return "Bad Request, no user_id found in session.";
         }
     }

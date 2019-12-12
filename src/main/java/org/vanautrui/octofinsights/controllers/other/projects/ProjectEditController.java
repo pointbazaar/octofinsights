@@ -28,24 +28,24 @@ import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
 
 public final class ProjectEditController  {
 
-  public static Object get(Request request, Response response) {
+  public static Object get(Request req, Response res) {
 
-    final boolean loggedin = request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true");
+    final boolean loggedin = req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true");
     if (!loggedin) {
-      response.redirect("/login");
+      res.redirect("/login");
       return;
     }
 
-    final int user_id = parseInt(request.session().get().get("user_id"));
-    final int project_id = parseInt(request.getQueryParam("id"));
+    final int user_id = parseInt(req.session().get().get("user_id"));
+    final int project_id = parseInt(req.getQueryParam("id"));
 
     final Record project;
     try {
       project = ProjectsService.getById(user_id,project_id);
     } catch (Exception e) {
       e.printStackTrace();
-      response.status(500);
-      response.type(ContentType.TEXT_PLAIN.toString());
+      res.status(500);
+      res.type(ContentType.TEXT_PLAIN.toString());
       return e.getMessage();
     }
 
@@ -53,7 +53,7 @@ public final class ProjectEditController  {
             html(
                     HeadUtil.makeHead(),
                     body(
-                            NavigationUtil.createNavbar(request.session().get().get("username"), "Projects"),
+                            NavigationUtil.createNavbar(req.session().get().get("username"), "Projects"),
                             div(
                                     h3("Edit Project").withClasses("text-center"),
                                     hr(),
@@ -90,8 +90,8 @@ public final class ProjectEditController  {
             ).render();
 
 
-    response.status(200);
-    response.type(ContentType.TEXT_HTML.toString());
+    res.status(200);
+    res.type(ContentType.TEXT_HTML.toString());
     return page;
   }
 

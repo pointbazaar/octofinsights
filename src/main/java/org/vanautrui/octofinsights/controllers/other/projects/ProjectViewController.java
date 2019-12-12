@@ -109,16 +109,16 @@ public final class ProjectViewController {
         ).withClasses("list-group-item");
     }
 
-    public static Object get(Request request, Response response) {
-        boolean loggedin=request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true");
+    public static Object get(Request req, Response res) {
+        boolean loggedin=req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true");
         if(!loggedin){
-            response.redirect("/login");
-            return;
+            res.redirect("/login");
+            return "";
         }
 
-        int user_id = parseInt(request.session().get().get("user_id"));
+        int user_id = parseInt(req.session().get().get("user_id"));
 
-        int project_id=Integer.parseInt(request.getQueryParam("id"));
+        int project_id=Integer.parseInt(req.getQueryParam("id"));
 
         Connection conn= null;
         try {
@@ -142,8 +142,8 @@ public final class ProjectViewController {
             project_customer = CustomersService.getCustomerById(user_id, project.get(PROJECTS.CUSTOMER_ID));
         }catch (Exception e){
             e.printStackTrace();
-            response.status(500);
-            response.type(ContentType.TEXT_PLAIN.toString());
+            res.status(500);
+            res.type(ContentType.TEXT_PLAIN.toString());
             return e.getMessage();
         }
 
@@ -151,7 +151,7 @@ public final class ProjectViewController {
                 html(
                         HeadUtil.makeHead(),
                         body(
-                                NavigationUtil.createNavbar(request.session().get().get("username"),"Projects"),
+                                NavigationUtil.createNavbar(req.session().get().get("username"),"Projects"),
                                 div(
                                         h3("Project: "+project.get(PROJECTS.PROJECT_NAME)),
 
@@ -221,8 +221,8 @@ public final class ProjectViewController {
                 ).render();
 
 
-        response.status(200);
-        response.type(ContentType.TEXT_HTML.toString());
+        res.status(200);
+        res.type(ContentType.TEXT_HTML.toString());
         return page;
     }
 }

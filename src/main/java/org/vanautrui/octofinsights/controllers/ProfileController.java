@@ -22,25 +22,25 @@ public final class ProfileController {
 
     //https://www.youtube.com/watch?v=o_1aF54DO60&list=RDEMYGj5tu94_mNz6SrYkDD3_g&start_radio=1
 
-    public static Object get(Request request, Response response) {
-        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true") ) {
+    public static Object get(Request req, Response res) {
+        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true") ) {
 
-            int user_id = Integer.parseInt(request.session().get().get("user_id"));
+            int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
             Record user = null;
             try {
                 user = UsersService.getUserById(user_id);
             } catch (Exception e) {
                 e.printStackTrace();
-                response.status(500);
-                response.type(ContentType.TEXT_PLAIN.toString());
+                res.status(500);
+                res.type(ContentType.TEXT_PLAIN.toString());
                 return e.getMessage();
             }
 
             ContainerTag page = html(
                     HeadUtil.makeHead(),
                     body(
-                            NavigationUtil.createNavbar(request.session().get().get("username"),"Profile"),
+                            NavigationUtil.createNavbar(req.session().get().get("username"),"Profile"),
                             div(
                                     div(
                                             p(
@@ -58,11 +58,11 @@ public final class ProfileController {
                     )
             );
 
-            response.status(200);
-            response.type(ContentType.TEXT_HTML.toString());
+            res.status(200);
+            res.type(ContentType.TEXT_HTML.toString());
             return page.render();
         }else {
-            response.redirect("/login");
+            res.redirect("/login");
             return "";
         }
     }

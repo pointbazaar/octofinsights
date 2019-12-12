@@ -21,19 +21,19 @@ import static j2html.TagCreator.*;
 
 public final class IndexController {
 
-    public static Object get(Request request, Response response) {
-        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true") ){
+    public static Object get(Request req, Response res) {
+        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true") ){
 
-            response.redirect("/dashboard");
+            res.redirect("/dashboard");
             return "";
         }else {
 
             String lang="ru";
             try {
                 System.out.println("INFO: LANG PARAMETER");
-                lang = request.getQueryParam("lang");
+                lang = req.getQueryParam("lang");
                 System.out.println("QUERRY PARAMETERS");
-                System.out.println(request.getQueryParams());
+                System.out.println(req.getQueryParams());
             }catch (Exception e){
                 //pass
                 e.printStackTrace();
@@ -116,9 +116,9 @@ public final class IndexController {
                     )
             );
 
-            response.status(200);
-            response.type(ContentType.TEXT_HTML.toString());
-            response.body(page.render());
+            res.status(200);
+            res.type(ContentType.TEXT_HTML.toString());
+            res.body(page.render());
             //String translated_content= InternationalizationTranslationServiceAndCachePoweredByYandexTranslationAPI.translateHTML(page.render(),"ru");
             //return new VaquitaHTMLResponse(200,translated_content);
         }

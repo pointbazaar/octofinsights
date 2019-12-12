@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public final class ProfitEndpoint {
 
-    public static Object get(Request request, Response response) {
+    public static Object get(Request req, Response res) {
         if(req.session().isPresent() && req.session().get().containsKey("user_id")){
             final int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
@@ -67,13 +67,13 @@ public final class ProfitEndpoint {
             final ObjectNode node = (new ObjectMapper()).createObjectNode();
             node.put("value",balance);
 
-            response.status(200);
-            response.type(ContentType.APPLICATION_JSON.toString());
+            res.status(200);
+            res.type(ContentType.APPLICATION_JSON.toString());
             return (node.toPrettyString());
         }else{
 
-            response.status(400);
-            response.type(ContentType.TEXT_PLAIN.toString());
+            res.status(400);
+            res.type(ContentType.TEXT_PLAIN.toString());
             return ("Bad Request, no user_id found in session.");
         }
     }

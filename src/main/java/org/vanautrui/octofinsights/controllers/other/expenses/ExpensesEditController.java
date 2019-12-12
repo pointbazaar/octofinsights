@@ -27,21 +27,21 @@ import static org.vanautrui.octofinsights.generated.Tables.EXPENSES;
 
 public final class ExpensesEditController {
 
-    public static Object get(Request request, Response response) {
-        if( request.session().isPresent() && request.session().get().containsKey("authenticated") && request.session().get().get("authenticated").equals("true")
-                && request.session().get().containsKey("user_id")
+    public static Object get(Request req, Response res) {
+        if( req.session().isPresent() && req.session().get().containsKey("authenticated") && req.session().get().get("authenticated").equals("true")
+                && req.session().get().containsKey("user_id")
         ){
-            int user_id = Integer.parseInt(request.session().get().get("user_id"));
+            int user_id = Integer.parseInt(req.session().get().get("user_id"));
 
-            int expense_id = Integer.parseInt(request.getQueryParam("id"));
+            int expense_id = Integer.parseInt(req.getQueryParam("id"));
 
             Record expense = null;
             try {
                 expense = ExpensesService.getById(user_id,expense_id);
             } catch (Exception e) {
                 e.printStackTrace();
-                response.status(500);
-                response.type(ContentType.TEXT_PLAIN.toString());
+                res.status(500);
+                res.type(ContentType.TEXT_PLAIN.toString());
                 return e.getMessage();
             }
 
@@ -49,7 +49,7 @@ public final class ExpensesEditController {
                     html(
                             HeadUtil.makeHead(),
                             body(
-                                    NavigationUtil.createNavbar(request.session().get().get("username"),"Expenses"),
+                                    NavigationUtil.createNavbar(req.session().get().get("username"),"Expenses"),
                                     div(attrs(".container"),
                                             div(attrs("#main-content"),
                                                     h1("Edit an Expense"),
@@ -86,12 +86,12 @@ public final class ExpensesEditController {
 
             //conn.close();
 
-            response.status(200);
-            response.type(ContentType.TEXT_HTML.toString());
+            res.status(200);
+            res.type(ContentType.TEXT_HTML.toString());
             return page;
 
         }else {
-            response.redirect("/login");
+            res.redirect("/login");
             return "";
         }
     }
