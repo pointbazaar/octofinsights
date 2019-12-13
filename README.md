@@ -35,7 +35,7 @@ You can self host this web app easily.
   - or get a managed database from a cloud provider,
   - or get a free database from [db4free.net](https://www.db4free.net/signup.php)
 
-- packages you should install on your server: `jdk>=1.8` , `maven`, `mysql` 
+- packages you should install on your server: `jdk >= 11` , `maven`, 
 - clone this repository to your server
 - it could be that you need some jar files for JOOQ to function correctly
     - `jaxb-api-2.2.12.jar`, `jaxb-core-2.2.11.jar`, 
