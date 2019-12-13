@@ -43,17 +43,7 @@ public final class CustomersController {
                                     NavigationUtil.createNavbar(req.session().attribute("username"),"Customers"),
                                     div(
                                             div(
-                                                    form(
-                                                            div(
-                                                                    input().withType("text").withName("customer-name").withPlaceholder("name").withClasses("form-control")
-                                                            ).withClasses("form-group"),
-                                                            div(
-                                                                    input().withType("text").withName("customer-source").withPlaceholder("source").withClasses("form-control")
-                                                            ).withClasses("form-group"),
-                                                            button("Insert Customer")
-                                                                    .withType("submit")
-                                                                    .withClasses("btn","btn-outline-success")
-                                                    ).withAction("/customers?action=insert").withMethod("post"),
+                                                    CustomersJ2HTMLUtils.makeCustomerInsertWidget(),
                                                     table(
                                                             attrs(".table"),
                                                             thead(
