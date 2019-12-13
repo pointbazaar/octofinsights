@@ -2,10 +2,7 @@ package org.vanautrui.octofinsights.controllers.auth;
 
 import j2html.tags.ContainerTag;
 import org.apache.http.entity.ContentType;
-import org.jooq.DSLContext;
-import org.jooq.Record1;
-import org.jooq.Result;
-import org.jooq.SQLDialect;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
@@ -87,13 +84,12 @@ public final class RegisterController {
     }
 
     public static Object post(Request req, Response res) {
-        final Map<String,String> params= req.params();
 
-        final String username = URLDecoder.decode(params.get("username"));
-        final String email = URLDecoder.decode(params.get("email"));
-        final String password = URLDecoder.decode(params.get("password"));
+        final String username = URLDecoder.decode(req.queryParams("username"));
+        final String email = URLDecoder.decode(req.queryParams("email"));
+        final String password = URLDecoder.decode(req.queryParams("password"));
 
-        final Integer challenge_solution = Integer.parseInt(params.get("challenge"));
+        final int challenge_solution = Integer.parseInt(req.queryParams("challenge"));
 
         if(challenge_solution!=9){
             res.status(500);
@@ -119,15 +115,19 @@ public final class RegisterController {
             return e.getMessage();
         }
 
-        final DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+        final DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
 
-        final Result<Record1<Integer>> fetch = create.select(USERS.ID).from(USERS).where(USERS.USERNAME.eq(username).or(USERS.EMAIL.eq(email))).fetch();
+        final Result<Record1<Integer>> fetch = ctx.select(USERS.ID).from(USERS).where(USERS.USERNAME.eq(username).or(USERS.EMAIL.eq(email))).fetch();
 
         if(fetch.size()==0) {
-            create.insertInto(USERS).columns(USERS.USERNAME, USERS.PASSWORD, USERS.EMAIL).values(username, password, email).execute();
+            ctx.insertInto(USERS).columns(USERS.USERNAME, USERS.PASSWORD, USERS.EMAIL).values(username, password, email).execute();
+
+            final Record1<Integer> id = ctx.select(USERS.ID).from(USERS).where(USERS.USERNAME.eq(username)).fetchOne();
+            AuthUtils.authenticate_user(req,id.value1(),req.queryParams("username"));
         }else{
-            System.out.println("\t user with this username or email already exists");
+            return "user with this username or email already exists";
         }
+
 
         try {
             conn.close();

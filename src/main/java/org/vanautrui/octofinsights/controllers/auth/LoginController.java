@@ -100,10 +100,7 @@ public final class LoginController {
 
 
         if(id.isPresent() && password.equals(password_in_db)) {
-            req.session(true);
-            req.session().attribute("authenticated", "true");
-            req.session().attribute("username", req.queryParams("username"));
-            req.session().attribute("user_id", id.get().toString());
+            AuthUtils.authenticate_user(req,id.get(),req.queryParams("username"));
 
             res.redirect("/");
             return "";
