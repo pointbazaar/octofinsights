@@ -25,6 +25,7 @@ import java.util.Optional;
 
 import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.tables.Leads.LEADS;
+import static org.vanautrui.octofinsights.controllers.other.leads.LeadsJ2HTMLUtils.*;
 
 public final class LeadsController   {
 
@@ -88,11 +89,7 @@ public final class LeadsController   {
                                                             input().withName("search").withPlaceholder("search").withType("text"),
                                                             button(attrs(".btn .btn-outline-info"),"Search").withType("submit")
                                                     ).withAction("/leads").withMethod("get"),
-                                                    form(
-                                                            input().withName("name").withPlaceholder("name"),
-                                                            input().withName("what_the_lead_wants").withPlaceholder("what the lead wants"),
-                                                            button(attrs(".btn .btn-outline-success"),"Insert").withType("submit")
-                                                    ).withAction("/leads?action=insert").withMethod("post"),
+                                                    makeLeadInsertWidget(),
                                                     table(
                                                             attrs(".table"),
                                                             thead(
