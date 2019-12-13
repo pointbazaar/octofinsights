@@ -47,7 +47,7 @@ public final class ExpensesController {
                                             div(attrs("#main-content"),
                                                     ExpensesJ2HTMLUtils.makeExpenseInsertWidget(),
                                                     table(
-                                                            attrs(".table"),
+                                                            attrs(".table .table-sm"),
                                                             thead(
                                                                     //th("ID").attr("scope","col"),
                                                                     th("Expense Name").attr("scope","col"),

@@ -56,7 +56,7 @@ public class SalesJ2HTMLUtils {
                                     )
                     )
             )
-    ).withClasses("table");
+    ).withClasses("table","table-sm");
     return mytable;
   }
 

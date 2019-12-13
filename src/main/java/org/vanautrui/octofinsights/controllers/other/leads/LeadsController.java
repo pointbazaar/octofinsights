@@ -91,7 +91,7 @@ public final class LeadsController   {
                                                     ).withAction("/leads").withMethod("get"),
                                                     makeLeadInsertWidget(),
                                                     table(
-                                                            attrs(".table"),
+                                                            attrs(".table .table-sm"),
                                                             thead(
                                                                     //th("ID").attr("scope","col"),
                                                                     th("Lead Name").attr("scope","col"),
