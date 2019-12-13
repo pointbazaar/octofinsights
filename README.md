@@ -1,4 +1,4 @@
-# Octofinsights 
+# [Octofinsights](http://octofinsights.com)
 
 [![CodeFactor](https://www.codefactor.io/repository/github/vanautrui/octofinsights/badge)](https://www.codefactor.io/repository/github/vanautrui/octofinsights)
 [![](https://jitpack.io/v/vanautrui/octofinsights.svg)](https://jitpack.io/#vanautrui/octofinsights)
@@ -29,6 +29,11 @@ alex23667@gmail.com
 ### Steps to self-host this web app:
 
 You can self host this web app easily.
+
+- obtain a database
+  - either install mysql on your server,
+  - or get a managed database from a cloud provider,
+  - or get a free database from [db4free.net](https://www.db4free.net/signup.php)
 
 - packages you should install on your server: `jdk>=1.8` , `maven`, `mysql` 
 - clone this repository to your server
