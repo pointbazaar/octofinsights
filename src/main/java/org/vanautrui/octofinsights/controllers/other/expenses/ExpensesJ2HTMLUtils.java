@@ -34,13 +34,15 @@ public final class ExpensesJ2HTMLUtils {
                                     div(
                                             div(
                                               input().withName("expense_date").withPlaceholder("expense date").withType("date").withClasses("form-control")
-                                            ).withClasses("input-group","col")
-                                    ).withClasses("row","mb-3"),
+                                            ).withClasses("input-group","col"),
 
-                                    button("Insert")
-                                            .withType("submit")
-                                            .withClasses("btn","btn-outline-success","btn-block")
-
+                                            div(
+                                                    button("Insert")
+                                                            .withType("submit")
+                                                            .withClasses("btn","btn-outline-success","btn-block")
+                                            ).withClasses("col","input-group")
+                                            
+                                    ).withClasses("row","mb-3")
 
                             ).withAction("/expenses?action=insert").withMethod("post")
                     ).withClasses("card-body")
