@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.tables.Users.USERS;
+import static org.vanautrui.octofinsights.html_util_domain_specific.ErrorUtil.errorHTML;
 
 public final class LoginController {
 
@@ -73,19 +74,20 @@ public final class LoginController {
 
         final DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 
-        final Result<Record1<Integer>> does_it_login= create
-                .select(USERS.ID)
+        final Result<Record2<Integer, String>> does_it_login= create
+                .select(USERS.ID,USERS.PASSWORD)
                 .from(USERS)
                 .where(
                         USERS.USERNAME.eq(username)
-                                .and(USERS.PASSWORD.eq(password))
                 )
                 .fetch();
         Optional<Integer> id = Optional.empty();
+        String password_in_db = "";
 
         if(does_it_login.size()>0){
             for(Record r : does_it_login){
                 id=Optional.of(r.getValue(USERS.ID));
+                password_in_db=r.get(USERS.PASSWORD);
             }
         }
 
@@ -97,7 +99,7 @@ public final class LoginController {
         }
 
 
-        if(id.isPresent()) {
+        if(id.isPresent() && password.equals(password_in_db)) {
             req.session(true);
             req.session().attribute("authenticated", "true");
             req.session().attribute("username", req.queryParams("username"));
@@ -107,8 +109,13 @@ public final class LoginController {
             return "";
         }else {
             res.status(400);
-            res.type(ContentType.TEXT_PLAIN.toString());
-            return "user seems not to exist";
+            res.type(ContentType.TEXT_HTML.toString());
+
+            if(id.isPresent()){
+                return errorHTML("user exists, but password was wrong.").renderFormatted();
+            }else {
+                return errorHTML("user "+username+" does not exist.").renderFormatted();
+            }
         }
 
     }

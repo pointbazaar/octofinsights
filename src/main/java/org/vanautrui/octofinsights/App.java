@@ -27,6 +27,10 @@ import static spark.Spark.*;
 
 public final class App
 {
+    /*
+    Good Music:
+    https://www.youtube.com/watch?v=x2P7nDtXg-A
+     */
 
     public static final String octofinsights_primary_color = "#ffc143";
 
