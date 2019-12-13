@@ -47,7 +47,7 @@ public class SalesJ2HTMLUtils {
 
                                                             form(
                                                                     input().withName("id").isHidden().withValue(record.get(SALES.ID).toString()),
-                                                                    RecordEditIconUtils.updateButton()
+                                                                    RecordEditIconUtils.editButton()
                                                             ).withAction("/sales/edit")
                                                                     .withMethod("get")
                                                                     .withClasses("col-sm-6")

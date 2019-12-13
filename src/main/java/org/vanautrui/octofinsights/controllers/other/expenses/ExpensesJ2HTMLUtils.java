@@ -41,7 +41,7 @@ public final class ExpensesJ2HTMLUtils {
                                                             .withType("submit")
                                                             .withClasses("btn","btn-outline-success","btn-block")
                                             ).withClasses("col","input-group")
-                                            
+
                                     ).withClasses("row","mb-3")
 
                             ).withAction("/expenses?action=insert").withMethod("post")

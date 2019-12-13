@@ -73,7 +73,7 @@ public final class ExpensesController {
 
                                                                                                             form(
                                                                                                                     input().withName("id").isHidden().withValue(record.get(EXPENSES.ID).toString()),
-                                                                                                                    RecordEditIconUtils.updateButton()
+                                                                                                                    RecordEditIconUtils.editButton()
                                                                                                             ).withAction("/expenses/edit").withMethod("get")
                                                                                                     )
                                                                                             )

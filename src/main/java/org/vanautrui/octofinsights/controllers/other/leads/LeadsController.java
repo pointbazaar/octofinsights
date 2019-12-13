@@ -123,7 +123,7 @@ public final class LeadsController   {
                                                                                                                     record.get(LEADS.LEAD_STATUS).startsWith("closed"),
                                                                                                                     form(
                                                                                                                             input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                                            button(attrs(".btn .btn-outline-info .p-2 .m-1"),"open").withType("submit")
+                                                                                                                            RecordEditIconUtils.blueButton("open")
                                                                                                                     ).withAction("/leads?action=open").withMethod("post")
                                                                                                             ),
 
@@ -131,7 +131,7 @@ public final class LeadsController   {
                                                                                                                     record.get(LEADS.LEAD_STATUS).startsWith("open"),
                                                                                                                     form(
                                                                                                                             input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                                            button(attrs(".btn .btn-outline-info .p-2 .m-1"),"convert").withType("submit")
+                                                                                                                            RecordEditIconUtils.blueButton("convert")
                                                                                                                     ).withAction("/leads?action=convert").withMethod("post")
                                                                                                             ),
 
@@ -142,7 +142,7 @@ public final class LeadsController   {
                                                                                                                     record.get(LEADS.LEAD_STATUS).startsWith("open"),
                                                                                                                     form(
                                                                                                                             input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                                            button(attrs(".btn .btn-outline-info .p-2 .m-1"),"close").withType("submit")
+                                                                                                                            RecordEditIconUtils.blueButton("close")
                                                                                                                     ).withAction("/leads?action=close").withMethod("post")
                                                                                                             )
                                                                                                     )

@@ -1,33 +1,28 @@
 package org.vanautrui.octofinsights.html_util_domain_specific;
 
 import j2html.tags.ContainerTag;
+import j2html.tags.DomContent;
 import j2html.tags.EmptyTag;
 
 import static j2html.TagCreator.*;
 
 public final class RecordEditIconUtils {
 
-    public static EmptyTag deleteIcon(){
-        return img()
-                .withSrc("https://image.flaticon.com/icons/svg/1214/1214428.svg")
-                .withStyle("height: 2rem;");
+    private static ContainerTag smallbtn(final String content, final String extra_class){
+        return button(
+                content
+        ).withType("submit").withClasses("btn",extra_class,"btn-sm","ml-1");
     }
 
     public static ContainerTag deleteButton(){
-        return button(
-                RecordEditIconUtils.deleteIcon()
-        ).withType("submit").withClasses("btn","btn-outline-danger","btn-sm");
+        return smallbtn("delete","btn-outline-danger");
     }
 
-    public static EmptyTag updateIcon(){
-        return img()
-                .withSrc("https://image.flaticon.com/icons/svg/1159/1159633.svg")
-                .withStyle("height: 2rem;");
+    public static ContainerTag editButton(){
+        return smallbtn("edit","btn-outline-info");
     }
 
-    public static ContainerTag updateButton(){
-        return button(
-                RecordEditIconUtils.updateIcon()
-        ).withType("submit").withClasses("btn","btn-outline-info","btn-sm");
+    public static ContainerTag blueButton(String content) {
+        return smallbtn(content,"btn-outline-info");
     }
 }
