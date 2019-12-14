@@ -85,10 +85,7 @@ public final class LeadsController   {
                                     NavigationUtil.createNavbar(req.session().attribute("username"),"Leads"),
                                     div(attrs(".container"),
                                             div(attrs("#main-content"),
-                                                    form(
-                                                            input().withName("search").withPlaceholder("search").withType("text"),
-                                                            button(attrs(".btn .btn-outline-info"),"Search").withType("submit")
-                                                    ).withAction("/leads").withMethod("get"),
+
                                                     makeLeadInsertWidget(),
                                                     table(
                                                             attrs(".table .table-sm"),

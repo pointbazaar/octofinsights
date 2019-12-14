@@ -47,7 +47,6 @@ public final class NavigationUtil {
                                         li(
                                                 a("Logout "+username).withClasses("nav-link mt-1").withHref("/logout")
                                         ).withClasses("nav-item")
-
                                 ).withClasses("navbar-nav", "mr-auto")
                         ).withId("navbarSupportedContent")
 
