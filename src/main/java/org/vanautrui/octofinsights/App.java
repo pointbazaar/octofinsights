@@ -99,6 +99,7 @@ public final class App
         });
 
         get("/invoices",InvoicesController::get);
+        post("/invoices",InvoicesController::post);
 
         get("/profile",ProfileController::get);
 

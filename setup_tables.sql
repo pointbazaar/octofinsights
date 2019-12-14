@@ -131,3 +131,14 @@ CREATE TABLE IF NOT EXISTS customers (
     customer_name varchar(500) DEFAULT NULL,
     source varchar(500) DEFAULT NULL
 );
+
+-- invoices table contains items that customers have not paid for. so each invoice item needs a customer_id to
+-- see which customer should pay.
+
+CREATE TABLE IF NOT EXISTS invoices (
+    id int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    user_id int(11) NOT NULL,
+    customer_id int(11) NOT NULL,
+    product_or_service varchar(500) NOT NULL,
+    price int(11) NOT NULL
+);
