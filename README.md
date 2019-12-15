@@ -1,4 +1,4 @@
-# [Octofinsights](http://octofinsights.com)
+# [octofinsights.com](http://octofinsights.com)
 
 [![CodeFactor](https://www.codefactor.io/repository/github/vanautrui/octofinsights/badge)](https://www.codefactor.io/repository/github/vanautrui/octofinsights)
 [![](https://jitpack.io/v/vanautrui/octofinsights.svg)](https://jitpack.io/#vanautrui/octofinsights)
@@ -13,12 +13,17 @@ Tracking of Sales, Leads, Expenses and Projects
 - [x] Track Sales
 - [x] Track Expenses
 - [x] Track Projects
+  - [x] Projects have Tasks
+  - [ ] track time worked on Tasks
+  - [ ] connect Projects to Sales and Expenses
 - [x] Dashboard Widgets
     - [x] Monthly Profits Graph
     - [x] Open Leads Widget
     - [x] Business Value over time Graph
-- [ ] use Google Calendar API to track work on Projects
+- [ ] export / import data from common formats
 
+- will there be an android app? **no**
+- is the project actively maintained? **yes**
 
 ### Feedback and Feature Requests
 Further Features are planned.
