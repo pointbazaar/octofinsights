@@ -7,6 +7,7 @@ import org.apache.http.entity.ContentType;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
+import org.vanautrui.octofinsights.services.TransactionsService;
 import spark.Request;
 import spark.Response;
 
@@ -48,10 +49,10 @@ public final class CashFlowEndpoint {
         ).from(SALES,EXPENSES).fetch();
          */
 
-            int current_year = LocalDateTime.now().getYear();
+            final int current_year = LocalDateTime.now().getYear();
 
 
-            //Result<Record3<Integer, String, Timestamp>> result =
+
             SelectLimitStep<Record2<BigDecimal, Integer>> record3s = create.select(
                     sum((SALES.PRICE_OF_SALE)).as("value"),
                     month(SALES.TIME_OF_SALE).as("month")
@@ -68,11 +69,16 @@ public final class CashFlowEndpoint {
                     .orderBy(2);
             //.fetch();
 
-            Result<Record2<BigDecimal, Integer>> result =record3s.fetch();
+            //Result<Record2<BigDecimal, Integer>> result =record3s.fetch();
+	        Result<Record2<BigDecimal, Integer>> result = null;
+	        try {
+		        result = TransactionsService.getAllTransactionsForUserIdInThisYearGroupedByMonth(user_id);
+	        } catch (Exception e) {
+		        e.printStackTrace();
+	        }
 
-            //List<Integer> sales_list = new ArrayList<>();
 
-            for(Record2<BigDecimal, Integer> r : result){
+	        for(Record2<BigDecimal, Integer> r : result){
                 ObjectNode objectNode = mapper.createObjectNode();
                 objectNode.put("value",r.value1());
 
