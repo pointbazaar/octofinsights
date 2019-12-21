@@ -50,52 +50,73 @@ public final class ProjectViewController {
       return res;
     }
 
+    private static ContainerTag makeCompletedTask(Record task){
+        return makeCompletedTask(task.get(TASKS.TASK_NAME),task.get(TASKS.ID),task.get(TASKS.INITIAL_EFFORT_ESTIMATE_HOURS),task.get(TASKS.EFFORT_SPENT),task.get(TASKS.PROJECT_ID));
+    }
+
     private static ContainerTag makeCompletedTask(String task_name, int task_id, int effort_estimate, int effort_spent, int project_id){
         //TODO: make that checking or unchecking the checkbox makes a POST request to change the task in the DB
-        return li(
-          div(
-            div(
+        return tr(
+
+            td(
                     s(task_name)
-            ).withClasses("col-md-5"),
-            div(
-                    makeEffortDisplay(effort_spent,effort_estimate)
-            ).withClasses("col-md-3"),
-            div(
+            ),
+            td(effort_spent+""),
+            td(effort_estimate+""),
+            td(
               form(
                 button(
                         "DELETE"
                 ).withClasses("btn","btn-sm","btn-outline-danger","m-2","mr-4").withType("submit")
               ).withAction("/tasks/action?id="+task_id+"&action=delete&redirect="+"/projects/view?id="+project_id).withMethod("POST")
-            ).withClasses("col-md-4","row","justify-content-end")
-          ).withClasses("row","align-items-center")
-        ).withClasses("list-group-item");
+            ).withClasses("row","justify-content-end")
+
+        );
+    }
+
+    private static ContainerTag makeTask(Record task){
+        return makeTask(
+                task.get(TASKS.TASK_NAME),task.get(TASKS.ID),task.get(TASKS.INITIAL_EFFORT_ESTIMATE_HOURS),task.get(TASKS.EFFORT_SPENT),task.get(TASKS.PROJECT_ID)
+        );
     }
 
     private static ContainerTag makeTask(String task, int task_id, int effort_estimate, int effort_spent, int project_id){
-        return li(
-            div(
-                div(
-                      span(task)
-                ).withClasses("col-md-5"),
-                div(
-                        makeEffortDisplay(effort_spent,effort_estimate)
-                ).withClasses("col-md-3"),
+        return tr(
 
-                div(
-                    form(
-                            button(
-                              "spend 1h"
-                            ).withClasses("btn","btn-primary","btn-sm","mr-3").withType("submit")
-                    ).withAction("/tasks/action?id="+task_id+"&action=spend1hour&redirect="+"/projects/view?id="+project_id).withMethod("POST"),
-                    form(
-                      button(
+            td(span(task)),
+            td(effort_spent+""),
+            td(effort_estimate+""),
+            td(
+                form(
+                        button(
+                          "spend 1h"
+                        ).withClasses("btn","btn-primary","btn-sm","mr-3").withType("submit")
+                ).withAction("/tasks/action?id="+task_id+"&action=spend1hour&redirect="+"/projects/view?id="+project_id).withMethod("POST"),
+                form(
+                  button(
 
-                      ).withStyle("width:30px; height:30px; border: 3px solid black; border-radius:4px;").withType("submit")
-                    ).withAction("/tasks/action?id="+task_id+"&action=complete&redirect="+"/projects/view?id="+project_id).withMethod("POST")
-                ).withClasses("col-md-4","row","justify-content-end")
+                  ).withStyle("width:30px; height:30px; border: 3px solid black; border-radius:4px;").withType("submit")
+                ).withAction("/tasks/action?id="+task_id+"&action=complete&redirect="+"/projects/view?id="+project_id).withMethod("POST")
+            ).withClasses("row","justify-content-end")
 
-            ).withClasses("row","align-items-center")
-        ).withClasses("list-group-item");
+        );
+    }
+
+    private static ContainerTag makeTasksTable(final List<Record> tasks, final boolean isCompletedTasksTable){
+        return
+        table(
+            thead(
+                th("Task").attr("scope","col"),
+                th("Effort spent").attr("scope","col"),
+                th("Effort estimated").attr("scope","col"),
+                th("Actions").attr("scope","col")
+            ),
+            tbody(
+                each(tasks,task->
+                    iffElse(isCompletedTasksTable,makeCompletedTask(task),makeTask(task))
+                )
+            )
+        ).withClasses("table","table-sm");
     }
 
     public static Object get(Request req, Response res) {
@@ -148,19 +169,21 @@ public final class ProjectViewController {
                                                 div(
                                                         h5("Description"),
                                                         p(project.get(PROJECTS.PROJECT_DESCRIPTION))
-                                                ).withClasses("card","mt-3","mb-3","p-3"),
+                                                ).withClasses("col","mt-3","mb-3","p-3"),
                                                 div(
                                                         strong(
                                                                 span("Customer: "),
                                                                 a(project_customer.get(CUSTOMERS.CUSTOMER_NAME)).withHref("/customers/view?id="+project_customer.get(CUSTOMERS.ID))
                                                         ),
-                                                        p("Project Start Date: "+project.get(PROJECTS.PROJECT_START).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
-                                                        p("Project End Date Estimate: "+project.get(PROJECTS.PROJECT_END_ESTIMATE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
-                                                        p("Project End Date: "+project.get(PROJECTS.PROJECT_END).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
-                                                        p("Estimated Earnings: "+project.get(PROJECTS.PROJECT_EARNINGS_ESTIMATE)+" $"),
-                                                        p("Initial Effort Estimate: "+project.get(PROJECTS.INITIAL_EFFORT_ESTIMATE_HOURS)+" hours")
-                                                ).withClasses("card","mt-3","mb-3","p-3")
-                                        ),
+                                                        p(
+                                                            span("Project Start Date: "+project.get(PROJECTS.PROJECT_START).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)), br(),
+                                                            span("Project End Date Estimate: "+project.get(PROJECTS.PROJECT_END_ESTIMATE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),br(),
+                                                            span("Project End Date: "+project.get(PROJECTS.PROJECT_END).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),br(),
+                                                            span("Estimated Earnings: "+project.get(PROJECTS.PROJECT_EARNINGS_ESTIMATE)+" $"),br(),
+                                                            span("Initial Effort Estimate: "+project.get(PROJECTS.INITIAL_EFFORT_ESTIMATE_HOURS)+" hours")
+                                                        )
+                                                ).withClasses("col","mt-3","mb-3","p-3")
+                                        ).withClasses("row","justify-content-center"),
                                         a(
                                                 button(
                                                         "Edit Project"
@@ -189,23 +212,10 @@ public final class ProjectViewController {
                                         ).withAction("/tasks/add?project_id="+project_id+"&redirect="+"/projects/view?id="+project_id).withMethod("POST"),
                                         div().withClasses("mt-4","mb-4"),
                                         h3("Tasks"),
-                                        ul(
-                                                each(
-                                                        tasks,
-                                                        task->makeTask(
-                                                                task.get(TASKS.TASK_NAME),task.get(TASKS.ID),task.get(TASKS.INITIAL_EFFORT_ESTIMATE_HOURS),task.get(TASKS.EFFORT_SPENT),project_id
-                                                        )
-                                                )
-                                        ).withClasses("list-group"),
+                                        makeTasksTable(tasks,false),
+
                                         h3("Completed Tasks").withClasses("mt-3", "mb-1"),
-                                        ul(
-                                                each(
-                                                        tasks_complete,
-                                                        task->makeCompletedTask(
-                                                                task.get(TASKS.TASK_NAME),task.get(TASKS.ID),task.get(TASKS.INITIAL_EFFORT_ESTIMATE_HOURS),task.get(TASKS.EFFORT_SPENT),project_id
-                                                        )
-                                                )
-                                        ).withClasses("list-group")
+                                        makeTasksTable(tasks,true)
                                 ).withClasses("container")
                         )
                 ).render();
