@@ -43,8 +43,8 @@ public final class ProjectViewController {
         div(
             span(strong(effort_spent+"h ")).withStyle("color: "+color+";"),
             span("spent").withClasses("ml-1"),
-            span(strong("|")).withClasses("mr-1","ml-1"),
-            span(strong(effort_estimated+"h ")),
+            span("|").withClasses("mr-1","ml-1"),
+            span(effort_estimated+"h "),
             span("estimate").withClasses("ml-1")
         ).withClasses("row justify-content-center");
       return res;
@@ -55,11 +55,11 @@ public final class ProjectViewController {
         return li(
           div(
             div(
-                    s(strong(task_name))
-            ).withClasses("col-md-6"),
+                    s(task_name)
+            ).withClasses("col-md-5"),
             div(
                     makeEffortDisplay(effort_spent,effort_estimate)
-            ).withClasses("col-md-2"),
+            ).withClasses("col-md-3"),
             div(
               form(
                 button(
@@ -75,11 +75,11 @@ public final class ProjectViewController {
         return li(
             div(
                 div(
-                      strong(task)
-                ).withClasses("col-md-6"),
+                      span(task)
+                ).withClasses("col-md-5"),
                 div(
                         makeEffortDisplay(effort_spent,effort_estimate)
-                ).withClasses("col-md-2"),
+                ).withClasses("col-md-3"),
 
                 div(
                     form(
