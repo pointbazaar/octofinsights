@@ -215,7 +215,7 @@ public final class ProjectViewController {
                                         makeTasksTable(tasks,false),
 
                                         h3("Completed Tasks").withClasses("mt-3", "mb-1"),
-                                        makeTasksTable(tasks,true)
+                                        makeTasksTable(tasks_complete,true)
                                 ).withClasses("container")
                         )
                 ).render();
