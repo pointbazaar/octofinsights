@@ -175,16 +175,17 @@ public final class ProjectViewController {
                                                                         //label("Task"),
                                                                         input().withType("text").withClasses("form-control").withName("task_name").withPlaceholder("Task")
                                                                 ).withClasses("input-group")
-                                                        ).withClasses("col-md-9"),
+                                                        ).withClasses("col-md-6"),
                                                         div(
                                                                 div(
                                                                         //label("Time Estimate (hours)"),
                                                                         input().withType("number").withClasses("form-control").withName("effort_estimate").withPlaceholder("0"),
                                                                         div(span(" hours ").withClasses("input-group-text")).withClasses("input-group-append")
                                                                 ).withClasses("input-group")
-                                                        ).withClasses("col-md-3")
-                                                ).withClasses("form-row","mt-3","mb-3"),
-                                                button("ADD TASK").withClasses("btn","btn-primary","btn-block").withType("submit")
+                                                        ).withClasses("col-md-3"),
+                                                        button("ADD TASK").withClasses("btn","btn-primary","btn-block","col-md-3").withType("submit")
+                                                ).withClasses("form-row","mt-3","mb-3")
+
                                         ).withAction("/tasks/add?project_id="+project_id+"&redirect="+"/projects/view?id="+project_id).withMethod("POST"),
                                         div().withClasses("mt-4","mb-4"),
                                         h3("Tasks"),
