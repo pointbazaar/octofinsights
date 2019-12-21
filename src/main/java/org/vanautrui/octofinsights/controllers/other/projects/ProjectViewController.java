@@ -88,9 +88,9 @@ public final class ProjectViewController {
             td(effort_estimate+""),
             td(
                 form(
-                        button(
-                          "spend 1h"
-                        ).withClasses("btn","btn-primary","btn-sm","mr-3").withType("submit")
+                    button("spend 1h")
+                            .withClasses("btn","btn-outline-primary","btn-sm","mr-3")
+                            .withType("submit")
                 ).withAction("/tasks/action?id="+task_id+"&action=spend1hour&redirect="+"/projects/view?id="+project_id).withMethod("POST"),
                 form(
                   button(
