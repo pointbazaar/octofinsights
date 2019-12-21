@@ -25,29 +25,6 @@ public final class TransactionsService {
 
 	 */
 
-	/*
-	public static Result<Record3<Integer, Integer, Timestamp>> getAllTransactionsForUserId(final int user_id) throws Exception {
-		try(Connection conn= DBUtils.makeDBConnection()) {
-			final DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
-
-			final var records = create
-					.select(SALES.ID.as("id"),SALES.PRICE_OF_SALE.as("value"),SALES.TIME_OF_SALE.as("time"))
-					.from(SALES)
-					.where(SALES.USER_ID.eq(user_id))
-					.union(
-							create
-									.select(EXPENSES.ID.as("id"),EXPENSES.EXPENSE_VALUE.as("value"),EXPENSES.EXPENSE_DATE.as("time"))
-									.from(EXPENSES)
-									.where(EXPENSES.USER_ID.eq(user_id))
-					)
-					.fetch()
-					.sortDesc(SALES.TIME_OF_SALE);
-
-			return records;
-		}
-	}
-
-	 */
 
 	public static Result<Record2<BigDecimal, Integer>> getAllTransactionsForUserIdInThisYearGroupedByMonth(final int user_id) throws Exception {
 		try(Connection conn= DBUtils.makeDBConnection()) {
