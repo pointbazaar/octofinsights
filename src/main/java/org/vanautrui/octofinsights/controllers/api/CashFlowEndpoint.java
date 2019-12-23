@@ -51,25 +51,6 @@ public final class CashFlowEndpoint {
 
             final int current_year = LocalDateTime.now().getYear();
 
-
-
-            SelectLimitStep<Record2<BigDecimal, Integer>> record3s = create.select(
-                    sum((SALES.PRICE_OF_SALE)).as("value"),
-                    month(SALES.TIME_OF_SALE).as("month")
-            )
-                    .from(SALES).where(SALES.USER_ID.eq(user_id).and(year(SALES.TIME_OF_SALE).eq(current_year))).groupBy(year(SALES.TIME_OF_SALE),month(SALES.TIME_OF_SALE))
-
-                    .union(
-                            create.select(
-                                    sum((EXPENSES.EXPENSE_VALUE)).as("value"),
-                                    month(EXPENSES.EXPENSE_DATE).as("month")
-                            )
-                                    .from(EXPENSES).where(EXPENSES.USER_ID.eq(user_id).and(year(EXPENSES.EXPENSE_DATE).eq(current_year))).groupBy(year(EXPENSES.EXPENSE_DATE),month(EXPENSES.EXPENSE_DATE))
-                    )
-                    .orderBy(2);
-            //.fetch();
-
-            //Result<Record2<BigDecimal, Integer>> result =record3s.fetch();
 	        Result<Record2<BigDecimal, Integer>> result = null;
 	        try {
 		        result = TransactionsService.getAllTransactionsForUserIdInThisYearGroupedByMonth(user_id);
@@ -85,7 +66,6 @@ public final class CashFlowEndpoint {
                 String month_str = LocalDateTime.of(current_year,r.value2(),1,1,1).getMonth().toString();
 
                 objectNode.put("label",month_str+" "+current_year);
-                //objectNode.put("label",r.value2().substring(0,Math.min(r.value2().length(),25)));
 
                 node.add(objectNode);
             }
