@@ -17,7 +17,7 @@ function make_data_item(record){
         backgroundColor: color,
         borderColor: color,
         fill: false,
-        borderWidth : 15,
+        borderWidth : 10,
         pointRadius : 0,
         data: [
             {
@@ -66,7 +66,7 @@ function draw_projects(values){
                         },
                         ticks : {
                             beginAtZero :true,
-                            max : values.length,
+                            max : values.length+1,
                             display: false
                         }
 

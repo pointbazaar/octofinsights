@@ -44,11 +44,11 @@ public final class DashboardController {
                                             div(attrs("#main-content"),
                                                     div(
                                                             div(canvas(attrs("#myChart")))
-                                                                    .withClasses("col-md-6"),
+                                                                    .withClasses("col-md-4"),
                                                             div(canvas(attrs("#myChartBusinessValue")))
-                                                                    .withClasses("col-md-6"),
+                                                                    .withClasses("col-md-4"),
                                                             div(canvas().withId("myChartProjects"))
-                                                                    .withClasses("col-md-6")
+                                                                    .withClasses("col-md-4","row","align-content-center")
                                                     ).withClasses("row justify-content-center"),
 
                                                     //some tiles on the dashboard are only shown conditionally. the dashboard adapts to the current
