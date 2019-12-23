@@ -9,7 +9,11 @@ import org.vanautrui.octofinsights.services.ProjectsService;
 import spark.Request;
 import spark.Response;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
@@ -18,6 +22,10 @@ import static java.lang.Integer.parseInt;
 import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
 
 public final class ProjectEditController  {
+
+    private final static SimpleDateFormat format =
+            new SimpleDateFormat("yyyy-MM-dd");
+
 
     public static Object get(Request req, Response res) {
 
@@ -62,6 +70,14 @@ public final class ProjectEditController  {
                                                     ).withClasses("form-group"),
 
                                                     div(
+                                                            label("Project End Date"),
+                                                            input().withType("date")
+                                                                    .withClasses("form-control")
+                                                                    .withName("project-end-date")
+                                                                    .withValue(format.format(project.get(PROJECTS.PROJECT_END)))
+                                                    ).withClasses("form-group"),
+
+                                                    div(
                                                             label("Project Description"),
                                                             textarea(
                                                                     project.get(PROJECTS.PROJECT_DESCRIPTION)
@@ -97,41 +113,20 @@ public final class ProjectEditController  {
                 && req.session().attribute("authenticated").equals("true")
                 && req.session().attributes().contains("user_id")
         ){
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-            //TODO : handle missing parameters
-
             final int id = parseInt(req.queryParams("id"));
             final int user_id = parseInt(req.session().attribute("user_id"));
 
-            Optional<Integer> customer_id_opt=Optional.empty();
-            if(req.queryParams().contains("customer_id")) {
-                customer_id_opt = Optional.of(parseInt(req.queryParams("customer_id")));
-            }
+            final int customer_id= parseInt(req.queryParams("customer_id"));
 
-            Optional<String> project_name=Optional.empty();
-            if(req.queryParams().contains("project-name")) {
-                project_name = Optional.of(req.queryParams("project-name"));
-            }
+            final String project_name= req.queryParams("project-name");
 
 
-            Optional<String> project_description = Optional.empty();
-            if(req.queryParams().contains("project-description")){
-                project_description = Optional.of(req.queryParams("project-description"));
-            }
-
-            if(customer_id_opt.isPresent()) {
-                try {
-                    ProjectsService.updateProjectCustomer(user_id, id, customer_id_opt.get());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    res.status(500);
-                    res.type(ContentType.TEXT_PLAIN.toString());
-                    return e.getMessage();
-                }
-            }
             try {
-                ProjectsService.updateProject(user_id,id,project_name,project_description);
+                final Date new_end_date = format.parse(req.queryParams("project-end-date"));
+                final String project_description = req.queryParams("project-description");
+
+                ProjectsService.updateProject(id,user_id,customer_id,project_name,new_end_date,project_description);
+
             } catch (Exception e) {
                 e.printStackTrace();
                 res.status(500);

@@ -58,8 +58,8 @@ public final class ProjectsGanttEndpoint {
 
 					final int start_month = r.get(PROJECTS.PROJECT_START).getMonth();
 					final int end_month = r.get(PROJECTS.PROJECT_END).getMonth();
-					obj.put("start_month",start_month+"");
-					obj.put("end_month",end_month+"");
+					obj.put("start_month",start_month);
+					obj.put("end_month",end_month);
 
 					node.add(obj);
 					i++;

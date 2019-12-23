@@ -3,13 +3,16 @@ package org.vanautrui.octofinsights.services;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
+import org.vanautrui.octofinsights.generated.tables.Customers;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Optional;
 
 import static org.jooq.impl.DSL.count;
+import static org.vanautrui.octofinsights.generated.tables.Customers.CUSTOMERS;
 import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
 import static org.vanautrui.octofinsights.generated.tables.Tasks.TASKS;
 
@@ -114,7 +117,15 @@ public final class ProjectsService {
         }
     }
 
-    public static void updateProject(int user_id, int id, Optional<String> project_name, Optional<String> project_description) throws Exception{
+    public static void updateProject(
+            final int id,
+            final int user_id,
+            final int customer_id,
+            final String project_name,
+            final Date new_end_date,
+            final String project_description
+
+    ) throws Exception{
 
         //https://www.jooq.org/doc/3.12/manual/sql-building/sql-statements/update-statement/
 
@@ -122,32 +133,27 @@ public final class ProjectsService {
         System.out.println(project_description);
 
         try(Connection conn = DBUtils.makeDBConnection()) {
-            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+            final DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
 
-            if (project_name.isPresent() && project_description.isPresent()) {
+            ctx
+                    .update(PROJECTS)
 
-                ctx.update(PROJECTS)
-                        .set(PROJECTS.PROJECT_NAME, project_name.get())
-                        .set(PROJECTS.PROJECT_DESCRIPTION, project_description.get())
-                        .where(PROJECTS.ID.eq(id).and(PROJECTS.USER_ID.eq(user_id)))
-                        .execute();
+                    .set(PROJECTS.CUSTOMER_ID, customer_id)
+                    .set(PROJECTS.PROJECT_NAME, project_name)
+                    .set(PROJECTS.PROJECT_DESCRIPTION, project_description)
+                    .set(PROJECTS.PROJECT_END,new Timestamp(new_end_date.getTime()))
 
-            } else if (project_description.isPresent()) {
+                    //checking  if the project even belongs to this user_id
+                    //checking that the new customer thats being assigns belongs to this user_id
 
-                ctx.update(PROJECTS)
-                        .set(PROJECTS.PROJECT_DESCRIPTION, project_description.get())
-                        .where(PROJECTS.ID.eq(id).and(PROJECTS.USER_ID.eq(user_id)))
-                        .execute();
-
-            } else if (project_name.isPresent()) {
-
-                ctx.update(PROJECTS)
-                        .set(PROJECTS.PROJECT_NAME, project_name.get())
-                        .where(PROJECTS.ID.eq(id).and(PROJECTS.USER_ID.eq(user_id)))
-                        .execute();
-
-            }
-
+                    .where(
+                            PROJECTS.ID.eq(id)
+                            .and(PROJECTS.USER_ID.eq(user_id))
+                            .and(PROJECTS.CUSTOMER_ID.in(
+                                ctx.select(CUSTOMERS.ID).from(CUSTOMERS).where(CUSTOMERS.USER_ID.eq(user_id))
+                            ))
+                    )
+                    .execute();
         }
     }
 
@@ -160,15 +166,4 @@ public final class ProjectsService {
         }
     }
 
-    public static void updateProjectCustomer(int user_id, int id, int customer_id) throws Exception{
-        try(Connection conn= DBUtils.makeDBConnection()) {
-            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
-
-            ctx.update(PROJECTS)
-                    .set(PROJECTS.CUSTOMER_ID, customer_id)
-                    .where(PROJECTS.ID.eq(id).and(PROJECTS.USER_ID.eq(user_id)))
-                    .execute();
-
-        }
-    }
 }
