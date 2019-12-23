@@ -142,3 +142,15 @@ CREATE TABLE IF NOT EXISTS invoices (
     product_or_service varchar(500) NOT NULL,
     price int(11) NOT NULL
 );
+
+-- a mysql view. to simplify queries about transactions to the business
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER
+VIEW `transactions_with_user`
+AS select `sales`.`id` AS `id`,`sales`.`price_of_sale` AS `value`,`sales`.`time_of_sale` AS `time`,`sales`.`user_id` AS `user_id`
+    from `sales`
+        union (
+            select `expenses`.`id` AS `id`,`expenses`.`expense_value` AS `value`,`expenses`.`expense_date` AS `time`,`expenses`.`user_id` AS `user_id`
+            from `expenses`
+        )
+    order by `value`

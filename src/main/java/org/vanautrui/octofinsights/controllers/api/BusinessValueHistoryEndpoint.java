@@ -37,7 +37,7 @@ public class BusinessValueHistoryEndpoint {
                 e.printStackTrace();
                 return e.getMessage();
             }
-            
+
             final ObjectMapper mapper = new ObjectMapper();
             final ArrayNode node =  mapper.createArrayNode();
 
