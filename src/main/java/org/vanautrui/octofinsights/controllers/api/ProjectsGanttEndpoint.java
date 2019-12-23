@@ -19,6 +19,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
+import static org.jooq.impl.DSL.month;
 import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
 
 public final class ProjectsGanttEndpoint {
@@ -47,14 +48,20 @@ public final class ProjectsGanttEndpoint {
 
 				int i=1;
 				for(Record r : fetch){
-					final ObjectNode objectNode = mapper.createObjectNode();
+					final ObjectNode obj = mapper.createObjectNode();
 
-					objectNode.put("index",i+"");
-					objectNode.put("project_name", r.get(PROJECTS.PROJECT_NAME));
-					objectNode.put("start_date",r.get(PROJECTS.PROJECT_START).toString());
-					objectNode.put("end_date",r.get(PROJECTS.PROJECT_END).toString());
+					obj.put("index",i+"");
+					obj.put("project_name", r.get(PROJECTS.PROJECT_NAME));
+					obj.put("start_date",r.get(PROJECTS.PROJECT_START).toString());
+					obj.put("end_date",r.get(PROJECTS.PROJECT_END).toString());
 
-					node.add(objectNode);
+
+					final int start_month = r.get(PROJECTS.PROJECT_START).getMonth();
+					final int end_month = r.get(PROJECTS.PROJECT_END).getMonth();
+					obj.put("start_month",start_month+"");
+					obj.put("end_month",end_month+"");
+
+					node.add(obj);
 					i++;
 				}
 			} catch (Exception e) {

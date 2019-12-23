@@ -6,20 +6,25 @@ fetch("/api/projects_gantt").then(data=>data.json()).then(data=>{draw_projects(d
 var myChart3;
 
 function make_data_item(record){
+    var r1 = Math.floor(Math.random()*256);
+    var r2 = Math.floor(Math.random()*256);
+    var r3 = Math.floor(Math.random()*256);
+
+    var color = "rgba("+r1+","+r2+","+r3+",1)";
 
     return {
         label: record.project_name,
-        backgroundColor: "rgba(246,156,85,1)",
-        borderColor: "rgba(246,156,85,1)",
+        backgroundColor: color,
+        borderColor: color,
         fill: false,
         borderWidth : 15,
         pointRadius : 0,
         data: [
             {
-             x: 0,
+             x: record.start_month,
              y: record.index
             }, {
-             x: 3,
+             x: record.end_month,
              y: record.index
             }
         ]
@@ -34,7 +39,7 @@ function draw_projects(values){
     var myChart3 = new Chart(ctx3, {
             type: 'line',
             data: {
-                labels: [0,1,2,3],
+                labels: [0,1,2,3,4,5,6,7,8,9,10,11,12],
                 datasets: values.map(x => make_data_item(x))
             },
             options: {
