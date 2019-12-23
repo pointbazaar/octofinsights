@@ -43,8 +43,12 @@ public final class DashboardController {
                                     div(attrs(".container-fluid"),
                                             div(attrs("#main-content"),
                                                     div(
-                                                            div(canvas(attrs("#myChart"))).withClass("col-md-6"),
-                                                            div(canvas(attrs("#myChartBusinessValue"))).withClass("col-md-6")
+                                                            div(canvas(attrs("#myChart")))
+                                                                    .withClasses("col-md-6"),
+                                                            div(canvas(attrs("#myChartBusinessValue")))
+                                                                    .withClasses("col-md-6"),
+                                                            div(canvas().withId("myChartProjects"))
+                                                                    .withClasses("col-md-6")
                                                     ).withClasses("row justify-content-center"),
 
                                                     //some tiles on the dashboard are only shown conditionally. the dashboard adapts to the current
@@ -66,9 +70,9 @@ public final class DashboardController {
                                             )
                                     ),
                                     script().withSrc("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"),
-                                    script().withSrc("/cashflow_chart.js"),
-                                    script().withSrc("/formerly_jsweet/dashboardapp.js")
-
+                                    script().withSrc("/dashboard/cashflow_chart.js"),
+                                    script().withSrc("/dashboard/dashboardapp.js"),
+                                    script().withSrc("/dashboard/projects_chart.js")
                             )
                     ).render();
 

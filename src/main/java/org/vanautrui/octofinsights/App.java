@@ -124,6 +124,7 @@ public final class App
             get("/activeprojects",ActiveProjectsEndpoint::get);
             get("/activetasks",ActiveTasksEndpoint::get);
             get("/openleads",OpenLeadsEndpoint::get);
+            get("/projects_gantt",ProjectsGanttEndpoint::get);
         });
 
     }
