@@ -32,9 +32,11 @@ function make_data_item(record){
 }
 
 function draw_projects(values){
-
-    console.log("values");
-    console.log(values);
+    var debug=false;
+    if(debug){
+        console.log("values");
+        console.log(values);
+    }
 
     var myChart3 = new Chart(ctx3, {
             type: 'line',

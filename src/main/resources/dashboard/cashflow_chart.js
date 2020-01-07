@@ -12,7 +12,11 @@ var myChart2;
 
 function draw_sales(values){
 
-    //console.log(values);
+    var debug=true;
+        if(debug){
+            console.log("draw_sales");
+            console.log(values);
+        }
 
     myChart = new Chart(ctx, {
         type: 'bar',
@@ -41,7 +45,11 @@ function draw_sales(values){
 
 function draw_business_value_history(values){
 
-    //console.log(values);
+    var debug=true;
+    if(debug){
+        console.log("draw_business_value_history");
+        console.log(values);
+    }
 
     var partial_sums=[];
 

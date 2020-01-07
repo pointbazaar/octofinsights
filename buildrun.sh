@@ -1,1 +1,1 @@
-mvn install && ./run.sh
+mvn -T 2C install && ./run.sh
