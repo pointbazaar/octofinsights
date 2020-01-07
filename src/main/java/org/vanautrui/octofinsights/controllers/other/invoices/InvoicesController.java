@@ -5,27 +5,17 @@ import org.apache.http.entity.ContentType;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.vanautrui.octofinsights.controllers.other.customers.CustomersJ2HTMLUtils;
-import org.vanautrui.octofinsights.generated.tables.Customers;
-import org.vanautrui.octofinsights.generated.tables.Invoices;
 import org.vanautrui.octofinsights.html_util_domain_specific.ErrorUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.HeadUtil;
 import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
-import org.vanautrui.octofinsights.services.CustomersService;
-import org.vanautrui.octofinsights.services.ExpensesService;
 import org.vanautrui.octofinsights.services.InvoicesService;
 import spark.Request;
 import spark.Response;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.stream.Collectors;
 
 import static j2html.TagCreator.*;
-import static org.vanautrui.octofinsights.generated.tables.Customers.CUSTOMERS;
 import static org.vanautrui.octofinsights.generated.tables.Invoices.INVOICES;
-import static org.vanautrui.octofinsights.html_util_domain_specific.RecordEditIconUtils.blueButton;
 import static org.vanautrui.octofinsights.html_util_domain_specific.RecordEditIconUtils.deleteButton;
 
 public final class InvoicesController {
@@ -40,11 +30,18 @@ public final class InvoicesController {
 
             final int user_id = Integer.parseInt(req.session().attribute("user_id"));
 
+            int totalAmountOwed = 0;
 
             Result<Record> invoiceItems=null;
             ContainerTag invoiceList = div("error retrieving invoice items");
             try {
                 invoiceItems = InvoicesService.getAllInvoicItemsForUserId(user_id);
+
+                totalAmountOwed = invoiceItems
+                        .stream()
+                        .map(record -> record.get(INVOICES.PRICE))
+                        .reduce(Integer::sum)
+                        .orElseGet(()->0);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -114,16 +111,17 @@ public final class InvoicesController {
                                     div(
                                             div(
                                                     invoiceItemInsertWidget,
-                                                    invoiceList,
-                                                    hr(),
+                                                    p("Total amount owed to you: "+totalAmountOwed+" $"),
                                                     button("Generate PDF (TODO)")
                                                             .withId("generateButton")
-                                                            .withClasses("btn btn-primary")
+                                                            .withClasses("btn btn-primary"),
+                                                    hr(),
+                                                    invoiceList
                                             ).withId("main-content")
                                     ).withClasses("container")
                             )
                     ).render();
-
+            
             res.status(200);
             res.type(ContentType.TEXT_HTML.toString());
             return page;
