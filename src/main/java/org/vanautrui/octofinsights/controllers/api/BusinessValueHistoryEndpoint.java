@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.http.entity.ContentType;
-import org.jooq.*;
-import org.jooq.impl.DSL;
+import org.jooq.Record3;
+import org.jooq.Result;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
 import org.vanautrui.octofinsights.services.TransactionsService;
 import spark.Request;
@@ -15,10 +15,6 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-
-import static org.jooq.impl.DSL.*;
-import static org.vanautrui.octofinsights.generated.Tables.EXPENSES;
-import static org.vanautrui.octofinsights.generated.Tables.SALES;
 
 
 public class BusinessValueHistoryEndpoint {
@@ -42,22 +38,22 @@ public class BusinessValueHistoryEndpoint {
             final ArrayNode node =  mapper.createArrayNode();
 
             //int current_year = LocalDateTime.now().getYear();
-            Result<Record2<BigDecimal, Integer>> fetch=null;
+            Result<Record3<BigDecimal, Integer, Integer>> fetch=null;
             try {
-                fetch = TransactionsService.getAllTransactionsForUserIdInThisYearGroupedByMonth(user_id);
+                fetch = TransactionsService.getAllTransactionsForUserIdGroupedByMonthAndYear(user_id);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            final int current_year = LocalDateTime.now().getYear();
-
-            for(Record2<BigDecimal,Integer> r : fetch){
+            for(Record3<BigDecimal, Integer, Integer> r : fetch){
                 final ObjectNode objectNode = mapper.createObjectNode();
                 objectNode.put("value",r.value1());
 
-                final String month_str = LocalDateTime.of(2000,r.value2(),1,1,1).getMonth().toString();
+                LocalDateTime ldt = LocalDateTime.of(r.value3(), r.value2(), 1, 1, 1);
 
-                objectNode.put("label",month_str+" "+current_year);
+                final String month_str = ldt.getMonth().toString();
+
+                objectNode.put("label",month_str+" "+ldt.getYear());
 
                 node.add(objectNode);
             }

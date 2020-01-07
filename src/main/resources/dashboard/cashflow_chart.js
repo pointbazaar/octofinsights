@@ -2,7 +2,7 @@ var ctx = document.getElementById('myChart').getContext('2d');
 var ctx2 = document.getElementById('myChartBusinessValue').getContext('2d');
 
 
-fetch("/api/cashflow").then(data=>data.json()).then(data=>{draw_sales(data);});
+fetch("/api/cashflow?fill=true").then(data=>data.json()).then(data=>{draw_sales(data);});
 fetch("/api/businessvaluehistory").then(data=>data.json()).then(data=>{draw_business_value_history(data);});
 
 
