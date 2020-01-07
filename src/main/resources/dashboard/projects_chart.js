@@ -44,7 +44,7 @@ function draw_projects(values){
             },
             options: {
                 responsive: true,
-                aspectRatio: 4,
+                aspectRatio: 2,
                 legend : {
                     display : true
                 },
