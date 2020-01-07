@@ -11,12 +11,14 @@ import org.vanautrui.octofinsights.html_util_domain_specific.NavigationUtil;
 import org.vanautrui.octofinsights.services.InvoicesService;
 import spark.Request;
 import spark.Response;
+import java.util.Arrays;
 
 import java.util.stream.Collectors;
 
 import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.tables.Invoices.INVOICES;
 import static org.vanautrui.octofinsights.html_util_domain_specific.RecordEditIconUtils.deleteButton;
+import org.vanautrui.octofinsights.html_util_domain_specific.BootstrapTableUtil;
 
 public final class InvoicesController {
 
@@ -47,45 +49,34 @@ public final class InvoicesController {
             }
 
             if(invoiceItems!=null){
-                invoiceList=ul(
-                        invoiceItems
-                                .stream()
-                                .map(
-                                        r-> {
-                                            try {
-                                                return li(
-                                                    div(
-                                                        div(
-                                                                CustomersJ2HTMLUtils.createLinkToCustomer(user_id,r.get(INVOICES.CUSTOMER_ID))
-                                                        ).withClasses("col"),
-                                                        div(
-                                                        " owes "+
-                                                                r.get(INVOICES.PRICE)+" Euro" +
-                                                                " for "+r.get(INVOICES.PRODUCT_OR_SERVICE)
-                                                        ).withClasses("col"),
-                                                        div(
-                                                            form(
-                                                                    input().isHidden().withName("id").withValue(r.get(INVOICES.ID).toString()),
-                                                                    deleteButton().withType("submit")
-                                                            )
-                                                                    .withClasses("form-inline")
-                                                                    .withMethod("post")
-                                                                    .withAction("/invoices?action=delete")
-                                                        ).withClasses("col")
-
-                                                        //TODO: have option to convert the invoice item to a sale, if the customer has paid it
-                                                    ).withClasses("row")
-                                                ).withClasses("list-group-item");
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                                return "ERROR "+e.getMessage();
-                                            }
-                                        }
+                invoiceList = 
+                BootstrapTableUtil.makeBootstrapTable(
+                    Arrays.asList("Customer","Amount","Due Date","Description","Actions"),
+                    invoiceItems,
+                    (r)->{ 
+                        try{
+                            return tr(
+                                td(CustomersJ2HTMLUtils.createLinkToCustomer(user_id,r.get(INVOICES.CUSTOMER_ID))),
+                                td(r.get(INVOICES.PRICE)+" Euro"),
+                                td("TODO "),
+                                td(" owes "+r.get(INVOICES.PRICE)+" Euro" +
+                                    " for "+r.get(INVOICES.PRODUCT_OR_SERVICE)
+                                ),
+                                td(
+                                    form(
+                                            input().isHidden().withName("id").withValue(r.get(INVOICES.ID).toString()),
+                                            deleteButton().withType("submit")
+                                    )
+                                    .withClasses("form-inline")
+                                    .withMethod("post")
+                                    .withAction("/invoices?action=delete")
                                 )
-                                .collect(Collectors.toList())
-                                .toArray(new ContainerTag[]{})
-                ).withId("invoice-list")
-                .withClasses("list-group");
+                            );
+                        }catch(Exception e){
+                            return tr("Exception drawing this invoice.");
+                        }
+                    }
+                );
             }
 
             final ContainerTag invoiceItemInsertWidget;
