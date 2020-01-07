@@ -20,9 +20,6 @@ public final class IndexController {
             res.redirect("/dashboard");
             return "";
         }else {
-
-            //TODO: provide a choice between logging in or registering
-
             ContainerTag page=html(
                     HeadUtil.makeHead(),
                     body(
@@ -37,11 +34,6 @@ public final class IndexController {
                                                     a(
                                                             button(strong("Login")).withClasses("btn btn-primary btn-block m-3")
                                                     ).withHref("/login").withClasses("row")
-                                            ).withClasses("col-md-2"),
-                                            div(
-                                                    a(
-                                                            button(strong("Register")).withClasses("btn btn-secondary btn-block m-3")
-                                                    ).withHref("/register").withClasses("row")
                                             ).withClasses("col-md-2")
 
                                     ).withClasses("row justify-content-center align-items-center")
@@ -80,6 +72,10 @@ public final class IndexController {
                                             p("Login with username and password:"),
                                             p("username: test3"),
                                             p("password: test3"),
+
+                                            hr(),
+                                            h3("How to obtain an account?"),
+                                            p("Email   alex23667 AT gmail.com   with your desired username and password."),
 
                                             hr(),
                                             h3("Credits for Images, Vector Graphics, ..."),
