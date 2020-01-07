@@ -43,12 +43,27 @@ public final class DashboardController {
                                     div(attrs(".container-fluid"),
                                             div(attrs("#main-content"),
                                                     div(
-                                                            div(canvas(attrs("#myChart")))
-                                                                    .withClasses("col-md-4"),
-                                                            div(canvas(attrs("#myChartBusinessValue")))
-                                                                    .withClasses("col-md-4"),
-                                                            div(canvas().withId("myChartProjects"))
-                                                                    .withClasses("col-md-4","row","align-content-center")
+                                                        div(
+                                                            canvas().withId("myChart")
+                                                        )
+                                                        .withClasses("col-md-6"),
+
+                                                        div(
+                                                            canvas().withId("myChartBusinessValue")
+                                                        )
+                                                        .withClasses("col-md-6")
+
+                                                    ).withClasses("row justify-content-center"),
+                                                    div(
+                                                        div(
+                                                            canvas().withId("myChartProjects")
+                                                        )
+                                                        .withClasses("col-md-6","row","align-content-center"),
+
+                                                        div(
+                                                            canvas().withId("myChartCustomerProfits")
+                                                        )
+                                                        .withClasses("col-md-6","row","align-content-center")
                                                     ).withClasses("row justify-content-center"),
 
                                                     //some tiles on the dashboard are only shown conditionally. the dashboard adapts to the current
@@ -70,9 +85,11 @@ public final class DashboardController {
                                             )
                                     ),
                                     script().withSrc("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"),
-                                    script().withSrc("/dashboard/cashflow_chart.js"),
-                                    script().withSrc("/dashboard/dashboardapp.js"),
-                                    script().withSrc("/dashboard/projects_chart.js")
+
+                                    script().withSrc("/dashboard/cashflow_chart.js"), //business value history and 'sales and expenses' chart
+                                    script().withSrc("/dashboard/dashboardapp.js"), //mini widgets
+                                    script().withSrc("/dashboard/projects_chart.js"), //projects gantt
+                                    script().withSrc("/dashboard/mostprofitablecustomers.js") //most profitable customers
                             )
                     ).render();
 

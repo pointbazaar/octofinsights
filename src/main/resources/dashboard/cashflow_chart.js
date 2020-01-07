@@ -12,7 +12,7 @@ var myChart2;
 
 function draw_sales(values){
 
-    var debug=true;
+    var debug=false;
         if(debug){
             console.log("draw_sales");
             console.log(values);
@@ -45,7 +45,7 @@ function draw_sales(values){
 
 function draw_business_value_history(values){
 
-    var debug=true;
+    var debug=false;
     if(debug){
         console.log("draw_business_value_history");
         console.log(values);
