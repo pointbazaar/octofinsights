@@ -5,21 +5,15 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.http.entity.ContentType;
 import org.jooq.Record;
-import org.jooq.Record2;
 import org.jooq.Result;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
-import org.vanautrui.octofinsights.generated.tables.Projects;
 import org.vanautrui.octofinsights.services.ProjectsService;
-import org.vanautrui.octofinsights.services.TransactionsService;
 import spark.Request;
 import spark.Response;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 
-import static org.jooq.impl.DSL.month;
 import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
 
 public final class ProjectsGanttEndpoint {
@@ -44,7 +38,7 @@ public final class ProjectsGanttEndpoint {
 
 			Result<Record> fetch=null;
 			try {
-				fetch = ProjectsService.getProjectsByUserId(user_id);
+				fetch = ProjectsService.getActiveProjectsByUserId(user_id);
 
 				int i=1;
 				for(Record r : fetch){

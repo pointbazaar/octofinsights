@@ -3,7 +3,6 @@ package org.vanautrui.octofinsights.services;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.vanautrui.octofinsights.db_utils.DBUtils;
-import org.vanautrui.octofinsights.generated.tables.Customers;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -17,6 +16,19 @@ import static org.vanautrui.octofinsights.generated.tables.Projects.PROJECTS;
 import static org.vanautrui.octofinsights.generated.tables.Tasks.TASKS;
 
 public final class ProjectsService {
+
+    public static Result<Record> getActiveProjectsByUserId(int user_id)throws Exception{
+
+        try(Connection conn = DBUtils.makeDBConnection()) {
+            DSLContext ctx = DSL.using(conn, SQLDialect.MYSQL);
+
+            return ctx
+                    .select(PROJECTS.asterisk())
+                    .from(PROJECTS)
+                    .where(PROJECTS.USER_ID.eq(user_id).and(PROJECTS.ISACTIVE.equal((byte)1)))
+                    .fetch();
+        }
+    }
 
     public static Result<Record> getProjectsByUserId(int user_id)throws Exception{
 
