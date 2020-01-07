@@ -15,9 +15,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Arrays;
 
 import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.tables.Expenses.EXPENSES;
+import org.vanautrui.octofinsights.html_util_domain_specific.BootstrapTableUtil;
 
 public final class ExpensesController {
 
@@ -38,53 +40,41 @@ public final class ExpensesController {
                 return e.getMessage();
             }
 
-            String page=
-                    html(
-                            HeadUtil.makeHead(),
-                            body(
-                                    NavigationUtil.createNavbar(req.session().attribute("username"),"Expenses"),
-                                    div(attrs(".container"),
-                                            div(attrs("#main-content"),
-                                                    ExpensesJ2HTMLUtils.makeExpenseInsertWidget(),
-                                                    table(
-                                                            attrs(".table .table-sm"),
-                                                            thead(
-                                                                    //th("ID").attr("scope","col"),
-                                                                    th("Expense Name").attr("scope","col"),
-                                                                    th("Expense Date").attr("scope","col"),
-                                                                    th("Expense Value").attr("scope","col"),
-                                                                    th("Actions").attr("scope","col")
-                                                            ).withClasses("thead-light"),
-                                                            tbody(
-                                                                    each(
-                                                                            records,
-                                                                            record ->
-                                                                                    tr(
-                                                                                            //td(record.get(EXPENSES.ID).toString()),
-                                                                                            td(record.get(EXPENSES.EXPENSE_NAME)),
-                                                                                            td(record.get(EXPENSES.EXPENSE_DATE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
-                                                                                            td(record.get(EXPENSES.EXPENSE_VALUE).toString()+" Euro"),
-                                                                                            td(
-                                                                                                    div(attrs(".row"),
-                                                                                                            form(
-                                                                                                                    input().withName("id").isHidden().withValue(record.get(EXPENSES.ID).toString()),
-                                                                                                                    RecordEditIconUtils.deleteButton()
-                                                                                                            ).withAction("/expenses?action=delete").withMethod("post"),
+            String page =
+                html(
+                    HeadUtil.makeHead(),
+                    body(
+                        NavigationUtil.createNavbar(req.session().attribute("username"),"Expenses"),
+                        div(attrs(".container"),
+                            div(attrs("#main-content"),
+                                ExpensesJ2HTMLUtils.makeExpenseInsertWidget(),
+                                BootstrapTableUtil.makeBootstrapTable(
+                                    Arrays.asList("Expense Name","Expense Date","Expense Value","Actions"),
+                                    records,
+                                    (record)->tr(
+                                        //td(record.get(EXPENSES.ID).toString()),
+                                        td(record.get(EXPENSES.EXPENSE_NAME)),
+                                        td(record.get(EXPENSES.EXPENSE_DATE).toLocalDateTime().format(DateTimeFormatter.ISO_DATE)),
+                                        td(record.get(EXPENSES.EXPENSE_VALUE).toString()+" Euro"),
+                                        td(
+                                            div(attrs(".row"),
+                                                form(
+                                                    input().withName("id").isHidden().withValue(record.get(EXPENSES.ID).toString()),
+                                                    RecordEditIconUtils.deleteButton()
+                                                ).withAction("/expenses?action=delete").withMethod("post"),
 
-                                                                                                            form(
-                                                                                                                    input().withName("id").isHidden().withValue(record.get(EXPENSES.ID).toString()),
-                                                                                                                    RecordEditIconUtils.editButton()
-                                                                                                            ).withAction("/expenses/edit").withMethod("get")
-                                                                                                    )
-                                                                                            )
-                                                                                    )
-                                                                    )
-                                                            )
-                                                    )
+                                                form(
+                                                    input().withName("id").isHidden().withValue(record.get(EXPENSES.ID).toString()),
+                                                    RecordEditIconUtils.editButton()
+                                                ).withAction("/expenses/edit").withMethod("get")
                                             )
+                                        )
                                     )
+                                )
                             )
-                    ).render();
+                        )
+                    )
+                ).render();
 
             res.status(200);
             res.type(ContentType.TEXT_HTML.toString());

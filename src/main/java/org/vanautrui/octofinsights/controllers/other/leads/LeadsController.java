@@ -21,11 +21,13 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Arrays;
 import java.util.Optional;
 
 import static j2html.TagCreator.*;
 import static org.vanautrui.octofinsights.generated.tables.Leads.LEADS;
 import static org.vanautrui.octofinsights.controllers.other.leads.LeadsJ2HTMLUtils.*;
+import org.vanautrui.octofinsights.html_util_domain_specific.BootstrapTableUtil;
 
 public final class LeadsController   {
 
@@ -87,66 +89,54 @@ public final class LeadsController   {
                                             div(attrs("#main-content"),
 
                                                     makeLeadInsertWidget(),
-                                                    table(
-                                                            attrs(".table .table-sm"),
-                                                            thead(
-                                                                    //th("ID").attr("scope","col"),
-                                                                    th("Lead Name").attr("scope","col"),
-                                                                    th("Lead Status").attr("scope","col"),
-                                                                    th("What the Lead wants").attr("scope","col"),
-                                                                    th("Actions").attr("scope","col")
-                                                            ).withClasses("thead-light"),
-                                                            tbody(
-                                                                    each(
-                                                                            filtered_records,
-                                                                            record ->
-                                                                                    tr(
-                                                                                            //td(record.get(LEADS.ID).toString()),
-                                                                                            td(record.get(LEADS.LEAD_NAME)),
-                                                                                            td(makeLeadBadge(record.get(LEADS.LEAD_STATUS))),
-                                                                                            td(record.get(LEADS.WHAT_THE_LEAD_WANTS)),
-                                                                                            td(
-                                                                                                    div(attrs(".row .align-items-center"),
-                                                                                                            form(
-                                                                                                                    input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                                    RecordEditIconUtils.deleteButton()
-                                                                                                            ).withAction("/leads?action=delete").withMethod("post"),
+                                                    BootstrapTableUtil.makeBootstrapTable(
+                                                        Arrays.asList("Lead Name","Lead Status","What the Lead wants","Actions"),
+                                                        filtered_records,
+                                                        (record) -> tr(
+                                                            //td(record.get(LEADS.ID).toString()),
+                                                            td(record.get(LEADS.LEAD_NAME)),
+                                                            td(makeLeadBadge(record.get(LEADS.LEAD_STATUS))),
+                                                            td(record.get(LEADS.WHAT_THE_LEAD_WANTS)),
+                                                            td(
+                                                                    div(attrs(".row .align-items-center"),
+                                                                            form(
+                                                                                    input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
+                                                                                    RecordEditIconUtils.deleteButton()
+                                                                            ).withAction("/leads?action=delete").withMethod("post"),
 
-                                                                                                            /*Open the lead again, after it has been closed.
-                                                                                                             * Some people become repeat customers.
-                                                                                                             * Some people get back to you, even after you have forgotten them
-                                                                                                             * */
-                                                                                                            iff(
-                                                                                                                    record.get(LEADS.LEAD_STATUS).startsWith("closed"),
-                                                                                                                    form(
-                                                                                                                            input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                                            RecordEditIconUtils.blueButton("open")
-                                                                                                                    ).withAction("/leads?action=open").withMethod("post")
-                                                                                                            ),
+                                                                            /*Open the lead again, after it has been closed.
+                                                                             * Some people become repeat customers.
+                                                                             * Some people get back to you, even after you have forgotten them
+                                                                             * */
+                                                                            iff(
+                                                                                    record.get(LEADS.LEAD_STATUS).startsWith("closed"),
+                                                                                    form(
+                                                                                            input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
+                                                                                            RecordEditIconUtils.blueButton("open")
+                                                                                    ).withAction("/leads?action=open").withMethod("post")
+                                                                            ),
 
-                                                                                                            iff(
-                                                                                                                    record.get(LEADS.LEAD_STATUS).startsWith("open"),
-                                                                                                                    form(
-                                                                                                                            input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                                            RecordEditIconUtils.blueButton("convert")
-                                                                                                                    ).withAction("/leads?action=convert").withMethod("post")
-                                                                                                            ),
+                                                                            iff(
+                                                                                    record.get(LEADS.LEAD_STATUS).startsWith("open"),
+                                                                                    form(
+                                                                                            input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
+                                                                                            RecordEditIconUtils.blueButton("convert")
+                                                                                    ).withAction("/leads?action=convert").withMethod("post")
+                                                                            ),
 
-                                                                                                            /*close the lead. either they accepted to become a client, or not,
-                                                                                                             * the important thing is that we no longer worry about the lead
-                                                                                                             * */
-                                                                                                            iff(
-                                                                                                                    record.get(LEADS.LEAD_STATUS).startsWith("open"),
-                                                                                                                    form(
-                                                                                                                            input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
-                                                                                                                            RecordEditIconUtils.blueButton("close")
-                                                                                                                    ).withAction("/leads?action=close").withMethod("post")
-                                                                                                            )
-                                                                                                    )
-                                                                                            )
-                                                                                    )
+                                                                            /*close the lead. either they accepted to become a client, or not,
+                                                                             * the important thing is that we no longer worry about the lead
+                                                                             * */
+                                                                            iff(
+                                                                                    record.get(LEADS.LEAD_STATUS).startsWith("open"),
+                                                                                    form(
+                                                                                            input().withName("id").isHidden().withValue(record.get(LEADS.ID).toString()),
+                                                                                            RecordEditIconUtils.blueButton("close")
+                                                                                    ).withAction("/leads?action=close").withMethod("post")
+                                                                            )
                                                                     )
                                                             )
+                                                        )
                                                     )
                                             )
                                     )
