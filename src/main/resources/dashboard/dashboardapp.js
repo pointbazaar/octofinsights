@@ -119,9 +119,13 @@
         var mydiv = $("#openleadsdiv");
         lowOpacity(mydiv);
         fetch("/api/openleads").then(data=>data.json()).then(openleads=>{
-            $("#openleads").get()[0].textContent=openleads.value+"";
-
-            fullOpacity(mydiv);
+            var openleadscount = openleads.value;
+            if(openleadscount>0){
+                $("#openleads").get()[0].textContent=openleadscount+"";
+                fullOpacity(mydiv);
+            }else{
+                mydiv.remove();
+            }
         });
     }
 

@@ -60,7 +60,7 @@ public final class TransactionsService {
 					.groupBy(year(TRANSACTIONS_WITH_USER.TIME),month(TRANSACTIONS_WITH_USER.TIME))
 					.orderBy(year(TRANSACTIONS_WITH_USER.TIME),month(TRANSACTIONS_WITH_USER.TIME))
 					.fetch();
-			
+
 
 			return records;
 		}
