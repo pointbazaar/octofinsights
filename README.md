@@ -1,11 +1,13 @@
-# [octofinsights.com](http://octofinsights.com)
+# octofinsights
 
 [![CodeFactor](https://www.codefactor.io/repository/github/vanautrui/octofinsights/badge)](https://www.codefactor.io/repository/github/vanautrui/octofinsights)
 [![](https://jitpack.io/v/vanautrui/octofinsights.svg)](https://jitpack.io/#vanautrui/octofinsights)
 [![Known Vulnerabilities](https://snyk.io/test/github/vanautrui/octofinsights/badge.svg)](https://snyk.io/test/github/vanautrui/octofinsights)
 
 Basic web application which allows for the 
-Tracking of Sales, Leads, Expenses and Projects
+Tracking of Sales, Leads, Expenses and Projects.
+
+It was hosted on http://octofinsights.com before, but did not have active users.
 
 ## Features
 
@@ -22,14 +24,10 @@ Tracking of Sales, Leads, Expenses and Projects
     - [x] Business Value over time Graph
 - [ ] export / import data from common formats
 
-- will there be an android app? **no**
-- is the project actively maintained? **yes**
-
 ### Feedback and Feature Requests
-Further Features are planned.
+Further Features are currently **not planned**.
 Feedback is welcome. Please open an issue or contact
 alex23667@gmail.com 
-
 
 ### Steps to self-host this web app:
 
